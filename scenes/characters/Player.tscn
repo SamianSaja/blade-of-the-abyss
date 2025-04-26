@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://chfbt250gix6k"]
+
+[ext_resource type="Script" uid="uid://u1df4il7a0xy" path="res://scripts/characters/Player.gd" id="1_gin2a"]
+[ext_resource type="PackedScene" uid="uid://wooit8t26gi" path="res://scenes/characters/Kyle.tscn" id="1_pq8s5"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_gin2a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+visible = false
+
+[node name="Kyle" parent="." instance=ExtResource("1_pq8s5")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.674328, 0.738432, 0, -0.738432, 0.674328, 0, 8.9832, 6.68254)
