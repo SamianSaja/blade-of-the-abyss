@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmmfatev726dt"]
+
+[ext_resource type="Script" uid="uid://uwkqqwdhhrge" path="res://UI/SkillOneButton.gd" id="1_brjcm"]
+[ext_resource type="Texture2D" uid="uid://b7qoxperap2w7" path="res://UI/kyle-skill-one.png" id="1_drqt5"]
+
+[node name="SkillOneButton" type="TextureButton"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_brjcm")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 81.0
+offset_bottom = 85.0
+texture = ExtResource("1_drqt5")
+expand_mode = 1

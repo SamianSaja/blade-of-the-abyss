@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5lwl5fpgwm80"]
+
+[ext_resource type="Script" uid="uid://8f1j7dwkgeh5" path="res://scripts/ui/joystick.gd" id="1_413m4"]
+[ext_resource type="Texture2D" uid="uid://bue8bitjg64ru" path="res://assets/ui/movement-analog.png" id="1_dm1l1"]
+[ext_resource type="Texture2D" uid="uid://dgclnpshygs86" path="res://assets/ui/child-movement-analog.png" id="2_413m4"]
+
+[node name="Joystick" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_413m4")
+
+[node name="Base" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 131.0
+offset_top = 618.0
+offset_right = 496.0
+offset_bottom = 1001.0
+scale = Vector2(1.14631, 1.15805)
+texture = ExtResource("1_dm1l1")
+expand_mode = 1
+
+[node name="Knob" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 758.0
+offset_right = 361.0
+offset_bottom = 859.0
+scale = Vector2(1.55483, 1.57861)
+texture = ExtResource("2_413m4")
+expand_mode = 1

@@ -2,9 +2,11 @@ extends Node
 
 @onready var player_scene = preload("res://scenes/characters/Player.tscn")
 @onready var world_scene = preload("res://scenes/world/final-area/AltarRoom.tscn")
+@onready var camera_scene = preload("res://scenes/Camera3D.tscn") # Camera3D buatanmu, pisah dari Player
 
 var player_instance: Node3D
 var world_instance: Node3D
+var camera_instance: Camera3D
 
 func _ready():
 	load_world()
@@ -22,12 +24,26 @@ func spawn_player():
 	if player_instance:
 		player_instance.queue_free()
 
-	var spawn_point = world_instance.get_node_or_null("PlayerSpawn")
 	player_instance = player_scene.instantiate()
 
+	var spawn_point = world_instance.get_node_or_null("PlayerSpawn")
 	if spawn_point:
 		player_instance.global_transform.origin = spawn_point.global_transform.origin
 	else:
 		player_instance.global_transform.origin = Vector3.ZERO
 
 	add_child(player_instance)
+
+	# Spawn camera setelah player
+	spawn_camera()
+
+func spawn_camera():
+	if camera_instance:
+		camera_instance.queue_free()
+	
+	# camera configuration
+	camera_instance = camera_scene.instantiate()
+	camera_instance.set_script(load("res://scripts/CameraFollow.gd"))
+	camera_instance.player_path = player_instance.get_path()
+
+	add_child(camera_instance)

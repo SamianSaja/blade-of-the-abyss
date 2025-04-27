@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://dysup4haa7tc0"]
 
-[ext_resource type="Texture2D" uid="uid://2n8vsiealkmx" path="res://assets/environments/final-area/altar_room.jpg" id="1_et14e"]
+[ext_resource type="Texture2D" uid="uid://dc4orrdq52xoi" path="res://assets/environments/final-area/final-area.png" id="1_et14e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_et14e"]
 
 [node name="AltarRoom" type="Node3D"]
 
 [node name="Background" type="Sprite3D" parent="."]
-transform = Transform3D(7.33579, -0.00169042, -0.00711058, 0.00712489, 0.0631599, 7.33551, -0.00162906, -7.33552, 0.0631615, 0, -0.000110745, 0)
+transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
 texture = ExtResource("1_et14e")
 
 [node name="FloorCollision" type="StaticBody3D" parent="."]
@@ -18,3 +18,69 @@ shape = SubResource("BoxShape3D_et14e")
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="BlueLight" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.00546303, -0.999985, 0, 0.999985, 0.00546303, 0, 0.446801, 0)
+light_color = Color(0.561565, 0.805246, 1, 1)
+light_energy = 16.0
+light_indirect_energy = 16.0
+light_volumetric_fog_energy = 16.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 17.631
+spot_angle = 77.72
+
+[node name="FireLight1" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0573375, -0.998355, 0, 0.998355, 0.0573375, 57.641, 0.413436, -16.1697)
+light_color = Color(0.980392, 0.882353, 0.478431, 1)
+light_energy = 16.0
+light_indirect_energy = 16.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 11.376
+spot_angle = 74.09
+spot_angle_attenuation = 0.0853775
+
+[node name="FireLight2" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0573375, -0.998355, 0, 0.998355, 0.0573375, 42.538, 0.413436, 42.5445)
+light_color = Color(0.980392, 0.882353, 0.478431, 1)
+light_energy = 16.0
+light_indirect_energy = 16.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 11.376
+spot_angle = 74.09
+spot_angle_attenuation = 0.0853775
+
+[node name="FireLight3" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0573375, -0.998355, 0, 0.998355, 0.0573375, -59.5643, 0.413436, 19.8298)
+light_color = Color(0.980392, 0.882353, 0.478431, 1)
+light_energy = 16.0
+light_indirect_energy = 16.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 11.376
+spot_angle = 74.09
+spot_angle_attenuation = 0.0853775
+
+[node name="FireLight4" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0573375, -0.998355, 0, 0.998355, 0.0573375, -33.8246, 0.413436, -31.3205)
+light_color = Color(0.980392, 0.882353, 0.478431, 1)
+light_energy = 16.0
+light_indirect_energy = 16.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 11.376
+spot_angle = 74.09
+spot_angle_attenuation = 0.0853775
+
+[node name="FireLight5" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0573375, -0.998355, 0, 0.998355, 0.0573375, 2.95141, 0.413436, -41.2374)
+light_color = Color(0.980392, 0.882353, 0.478431, 1)
+light_energy = 16.0
+light_indirect_energy = 16.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 11.376
+spot_angle = 74.09
+spot_angle_attenuation = 0.0853775

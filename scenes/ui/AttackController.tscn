@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://kp3s3c8k3122"]
+
+[ext_resource type="Script" uid="uid://cblm1pyu4poyt" path="res://UI/AttackController.gd" id="1_vaype"]
+[ext_resource type="Texture2D" uid="uid://b5vffcfntlmup" path="res://UI/basic-attack.png" id="2_jxkdm"]
+
+[node name="AttackController" type="TextureButton"]
+script = ExtResource("1_vaype")
+
+[node name="basic-attack" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 1291.0
+offset_top = 447.0
+offset_right = 1452.0
+offset_bottom = 615.0
+texture = ExtResource("2_jxkdm")
+expand_mode = 1
