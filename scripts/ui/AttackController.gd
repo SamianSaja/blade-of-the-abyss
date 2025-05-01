@@ -1,4 +1,4 @@
-extends TextureButton
+extends TouchScreenButton
 
 signal attack_buffered  # Emit tiap kali tombol ditekan (sekali per tekan)
 signal attack_pressed 

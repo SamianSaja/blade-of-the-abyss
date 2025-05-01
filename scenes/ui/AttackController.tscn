@@ -1,16 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://kp3s3c8k3122"]
+[gd_scene load_steps=4 format=3 uid="uid://kp3s3c8k3122"]
 
-[ext_resource type="Script" uid="uid://cblm1pyu4poyt" path="res://UI/AttackController.gd" id="1_vaype"]
-[ext_resource type="Texture2D" uid="uid://b5vffcfntlmup" path="res://UI/basic-attack.png" id="2_jxkdm"]
+[ext_resource type="Script" uid="uid://bcdba4t3ptn68" path="res://scripts/ui/AttackController.gd" id="1_vaype"]
+[ext_resource type="Texture2D" uid="uid://dak0d27x6wv4y" path="res://assets/ui/basic-attack-pressed.png" id="2_8erba"]
+[ext_resource type="Texture2D" uid="uid://daibwlj3x2tow" path="res://assets/ui/basic-attack.png" id="2_jxkdm"]
 
-[node name="AttackController" type="TextureButton"]
+[node name="AttackController" type="TouchScreenButton"]
+position = Vector2(1433, 588)
+scale = Vector2(0.757, 0.8)
+texture_normal = ExtResource("2_jxkdm")
+texture_pressed = ExtResource("2_8erba")
 script = ExtResource("1_vaype")
-
-[node name="basic-attack" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 1291.0
-offset_top = 447.0
-offset_right = 1452.0
-offset_bottom = 615.0
-texture = ExtResource("2_jxkdm")
-expand_mode = 1

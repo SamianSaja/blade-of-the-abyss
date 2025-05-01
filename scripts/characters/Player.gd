@@ -3,25 +3,33 @@ extends CharacterBody3D
 @export var speed := 7.0
 @export var acceleration := 20.0
 @onready var joystick_scene = preload("res://scenes/ui/Joystick.tscn")
-var joystick: Joystick
+@onready var basic_attack_scene = preload("res://scenes/ui/AttackController.tscn")
 
+var joystick: Joystick
+var basic_attack: TouchScreenButton
 var direction := Vector3.ZERO
 var velocity_local := Vector3.ZERO
 
 var anim_player: AnimationPlayer
 var model: Node3D
 
+var is_attacking := false  # <- Tambahkan ini!
+
 func _ready():
+	# instance joystick
 	joystick = joystick_scene.instantiate()
 	add_child(joystick)
+
+	# instance basic attack button
+	basic_attack = basic_attack_scene.instantiate()
+	add_child(basic_attack)
+	
+	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
+
 	anim_player = $Kyle/AnimationPlayer
 	model = $Kyle
 
-	if joystick:
-		print("Joystick ditemukan:", joystick)
-	else:
-		print("Joystick TIDAK ditemukan!")
-	print("Player ready")
+	anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
 
 func _physics_process(delta):
 	handle_input()
@@ -30,6 +38,10 @@ func _physics_process(delta):
 	rotate_model()
 
 func handle_input():
+	if is_attacking:
+		direction = Vector3.ZERO
+		return  # Tidak input kalau lagi attack
+
 	direction = Vector3.ZERO
 
 	var joystick_input = Vector2.ZERO
@@ -46,6 +58,9 @@ func handle_input():
 	direction = direction.normalized()
 
 func move_player(delta):
+	if is_attacking:
+		return  # Tidak gerak kalau lagi attack
+
 	var target_velocity = direction * speed
 	velocity_local = velocity_local.lerp(target_velocity, acceleration * delta)
 
@@ -55,6 +70,11 @@ func move_player(delta):
 	move_and_slide()
 
 func play_animation():
+	if is_attacking:
+		if not anim_player.is_playing() or anim_player.current_animation != "kyle-basic-attack":
+			anim_player.play("kyle-basic-attack")
+		return  # Jangan ubah animasi lain kalau lagi attack
+
 	if direction.length() > 0.1:
 		if not anim_player.is_playing() or anim_player.current_animation != "kyle-run-side-sword-modif":
 			anim_player.play("kyle-run-side-sword-modif")
@@ -65,7 +85,6 @@ func play_animation():
 func rotate_model():
 	if direction.length() > 0.1:
 		var camera_basis = get_viewport().get_camera_3d().global_transform.basis
-		print(camera_basis, "camera")
 		var forward = -camera_basis.z
 		var right = -camera_basis.x
 
@@ -73,3 +92,14 @@ func rotate_model():
 
 		var target_rotation = Quaternion(Vector3.UP, atan2(-look_dir.x, -look_dir.z))
 		model.rotation = model.rotation.slerp(target_rotation.get_euler(), 0.2)
+
+# --- Tambahan fungsi baru untuk handle attack
+func _on_attack_pressed():
+	if not is_attacking:
+		is_attacking = true
+		anim_player.play("kyle-basic-attack")
+		velocity = Vector3.ZERO  # Paksa berhenti
+
+func _on_animation_finished(anim_name: String):
+	if anim_name == "kyle-basic-attack":
+		is_attacking = false
