@@ -151,7 +151,7 @@ bones/100/rotation = Quaternion(0.126231, -0.0248807, -0.12031, 0.984364)
 bones/101/position = Vector3(3.33786e-06, 7.63208, -2.14576e-06)
 
 [node name="Father_Sword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.651556, -0.222135, 0.874714, -0.835231, -0.557078, 0.480675, 0.341846, -0.937718, -0.492769, -43.7627, 3.18709, -104.859)
+transform = Transform3D(0.651556, -0.222137, 0.874714, -0.835232, -0.557079, 0.480674, 0.341846, -0.937718, -0.49277, -43.7627, 3.18711, -104.859)
 
 [node name="Null" parent="." index="1"]
 visible = false

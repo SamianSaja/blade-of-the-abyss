@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://batard5tuosvq" path="res://assets/ui/kyle-skill-one.png" id="1_s777t"]
 [ext_resource type="Texture2D" uid="uid://bwi8x6l5krwuu" path="res://assets/ui/kyle-skill-one-pressed.png" id="2_vpmg3"]
-[ext_resource type="Script" uid="uid://6cxy260tgvxq" path="res://scenes/ui/SkillOne.gd" id="3_vpmg3"]
+[ext_resource type="Script" uid="uid://6cxy260tgvxq" path="res://scripts/ui/SkillOne.gd" id="3_vpmg3"]
 
 [node name="SkillOneButton" type="TouchScreenButton"]
-position = Vector2(1279, 728)
+position = Vector2(1246, 833)
 scale = Vector2(0.2, 0.2)
 texture_normal = ExtResource("1_s777t")
 texture_pressed = ExtResource("2_vpmg3")
