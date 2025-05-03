@@ -2,7 +2,7 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fjbv1pi7rasq"
+uid="uid://dkaw0nrhlybnq"
 path.s3tc="res://.godot/imported/Kyle_maria_normal.png-53ad73f479ab86a80777a8551a774489.s3tc.ctex"
 path.etc2="res://.godot/imported/Kyle_maria_normal.png-53ad73f479ab86a80777a8551a774489.etc2.ctex"
 metadata={
@@ -28,8 +28,8 @@ compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://assets/characters/kyle/Kyle_maria_normal.png"
+roughness/mode=0
+roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

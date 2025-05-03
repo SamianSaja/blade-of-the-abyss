@@ -191,7 +191,7 @@ func _on_skill_three_pressed():
 func _on_skill_four_pressed():
 	if not is_attacking:
 		is_attacking = true
-		current_attack_anim = "shadow-dash"
+		current_attack_anim = "kyle-searing"
 		current_effects_anim = "Take 001"
 		effect_active = true
 		anim_player.play(current_attack_anim)

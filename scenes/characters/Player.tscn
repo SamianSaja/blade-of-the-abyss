@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://chfbt250gix6k"]
 
 [ext_resource type="Script" uid="uid://u1df4il7a0xy" path="res://scripts/characters/Player.gd" id="1_gin2a"]
-[ext_resource type="PackedScene" uid="uid://cg08l6tyg0abp" path="res://scenes/characters/KyleModel.tscn" id="2_gin2a"]
+[ext_resource type="PackedScene" uid="uid://c8n83i75e85f0" path="res://scenes/characters/KyleModel.tscn" id="2_gin2a"]
 [ext_resource type="PackedScene" uid="uid://dgi4qapyp8jop" path="res://scenes/characters/Effects/PortalEffect.tscn" id="3_7n8ao"]
 
 [node name="Player" type="CharacterBody3D"]
