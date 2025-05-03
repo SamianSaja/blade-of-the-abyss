@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg08l6tyg0abp"]
+
+[ext_resource type="PackedScene" uid="uid://col2otfqu7eow" path="res://assets/characters/kyle/Kyle.glb" id="1_q6p4i"]
+
+[node name="KyleModel" instance=ExtResource("1_q6p4i")]
+
+[node name="Father_Sword" parent="Armature/Skeleton3D" index="0"]
+transform = Transform3D(0.297508, -0.0563991, 1.07112, -0.290342, 1.06583, 0.136764, -1.03256, -0.315947, 0.270162, -66.9018, 13.5303, -103.431)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, -0.0101052, 0.999949, 0, -0.999949, -0.0101052, 0.0704639, 11.7092, -0.0603476)
+light_energy = 16.0
+light_indirect_energy = 0.0
+spot_range = 17.0

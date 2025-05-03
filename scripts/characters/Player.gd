@@ -40,8 +40,10 @@ func _ready():
 	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
 	skill_one_button.connect("skill_one_pressed", Callable(self, "_on_skill_one_pressed"))
 
-	anim_player = $Kyle/AnimationPlayer
-	model = $Kyle
+	anim_player = $KyleModel/AnimationPlayer
+	model = $KyleModel
+	# atur posisi model TODO: atur tiap world
+	model.position = Vector3(0, 0, -6)
 
 	anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
 
