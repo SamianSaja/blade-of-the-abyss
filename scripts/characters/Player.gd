@@ -6,11 +6,13 @@ extends CharacterBody3D
 @onready var basic_attack_scene = preload("res://scenes/ui/AttackController.tscn")
 @onready var skill_one_button_scene = preload("res://scenes/ui/SkillOneButton.tscn")
 @onready var skill_two_button_scene = preload("res://scenes/ui/SkillTwoButton.tscn")
+@onready var skill_three_button_scene = preload("res://scenes/ui/SkillThreeButton.tscn")
 
 var joystick: Joystick
 var basic_attack: TouchScreenButton
 var skill_one_button: TouchScreenButton
 var skill_two_button: TouchScreenButton
+var skill_three_button: TouchScreenButton
 var direction := Vector3.ZERO
 var velocity_local := Vector3.ZERO
 
@@ -36,6 +38,10 @@ func _ready():
 	# instance skill two button
 	skill_two_button = skill_two_button_scene.instantiate()
 	add_child(skill_two_button)
+	
+	# instance skill three button
+	skill_three_button = skill_three_button_scene.instantiate()
+	add_child(skill_three_button)
 
 	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
 	skill_one_button.connect("skill_one_pressed", Callable(self, "_on_skill_one_pressed"))

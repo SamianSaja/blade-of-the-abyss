@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://dskpa5mxtx8wu"]
+
+[ext_resource type="Texture2D" uid="uid://c0ppau1vk2e76" path="res://assets/ui/kyle-skill-three.png" id="1_2pc02"]
+[ext_resource type="Script" uid="uid://dqfmd7c1a5df8" path="res://scripts/ui/SkillThree.gd" id="1_ft58a"]
+[ext_resource type="Texture2D" uid="uid://c6vqjpmlexo42" path="res://assets/ui/kyle-skill-three-pressed.png" id="2_ie3s2"]
+
+[node name="SkillThreeButton" type="TouchScreenButton"]
+position = Vector2(1343, 540)
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("1_2pc02")
+texture_pressed = ExtResource("2_ie3s2")
+script = ExtResource("1_ft58a")
