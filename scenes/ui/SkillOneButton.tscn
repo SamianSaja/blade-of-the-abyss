@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://6cxy260tgvxq" path="res://scripts/ui/SkillOne.gd" id="3_vpmg3"]
 
 [node name="SkillOneButton" type="TouchScreenButton"]
-position = Vector2(1246, 833)
+position = Vector2(1264, 833)
 scale = Vector2(0.2, 0.2)
 texture_normal = ExtResource("1_s777t")
 texture_pressed = ExtResource("2_vpmg3")

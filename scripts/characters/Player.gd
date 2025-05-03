@@ -7,12 +7,18 @@ extends CharacterBody3D
 @onready var skill_one_button_scene = preload("res://scenes/ui/SkillOneButton.tscn")
 @onready var skill_two_button_scene = preload("res://scenes/ui/SkillTwoButton.tscn")
 @onready var skill_three_button_scene = preload("res://scenes/ui/SkillThreeButton.tscn")
+@onready var skill_four_button_scene = preload("res://scenes/ui/SkillFourButton.tscn")
+@onready var skill_ultimate_button_scene = preload("res://scenes/ui/SkillUltimateButton.tscn")
+@onready var defend_button_scene = preload("res://scenes/ui/DefendButton.tscn")
 
 var joystick: Joystick
 var basic_attack: TouchScreenButton
 var skill_one_button: TouchScreenButton
 var skill_two_button: TouchScreenButton
 var skill_three_button: TouchScreenButton
+var skill_four_button: TouchScreenButton
+var skill_ultimate_button: TouchScreenButton
+var defend_button: TouchScreenButton
 var direction := Vector3.ZERO
 var velocity_local := Vector3.ZERO
 
@@ -42,6 +48,18 @@ func _ready():
 	# instance skill three button
 	skill_three_button = skill_three_button_scene.instantiate()
 	add_child(skill_three_button)
+	
+	# instance skill four button
+	skill_four_button = skill_four_button_scene.instantiate()
+	add_child(skill_four_button)
+	
+	# instance skill ultimate button
+	skill_ultimate_button = skill_ultimate_button_scene.instantiate()
+	add_child(skill_ultimate_button)
+	
+	# instance defend button
+	defend_button = defend_button_scene.instantiate()
+	add_child(defend_button)
 
 	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
 	skill_one_button.connect("skill_one_pressed", Callable(self, "_on_skill_one_pressed"))
