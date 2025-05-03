@@ -25,8 +25,14 @@ var velocity_local := Vector3.ZERO
 var anim_player: AnimationPlayer
 var model: Node3D
 
+var anim_effects: AnimationPlayer
+var effect_model: Node3D
+
 var is_attacking := false
-var current_attack_anim := ""  # untuk tracking animasi serangan saat ini
+var effect_active := false
+
+var current_attack_anim := ""
+var current_effects_anim := ""
 
 func _ready():
 	# instance joystick
@@ -70,8 +76,12 @@ func _ready():
 
 	anim_player = $KyleModel/AnimationPlayer
 	model = $KyleModel
+	
+	anim_effects = $PortalEffect/AnimationPlayer
+	effect_model = $PortalEffect
 	# atur posisi model TODO: atur tiap world
 	model.position = Vector3(0, 0, -6)
+	effect_model.position = Vector3(0, 0, -6)
 
 	anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
 
@@ -182,7 +192,10 @@ func _on_skill_four_pressed():
 	if not is_attacking:
 		is_attacking = true
 		current_attack_anim = "shadow-dash"
+		current_effects_anim = "Take 001"
+		effect_active = true
 		anim_player.play(current_attack_anim)
+		anim_effects.play(current_effects_anim)
 		velocity = Vector3.ZERO
 
 # ---- Callback selesai animasi ----
@@ -190,4 +203,9 @@ func _on_animation_finished(anim_name: String):
 	if anim_name == current_attack_anim:
 		is_attacking = false
 		current_attack_anim = ""
-		anim_player.speed_scale = 1.0 
+		anim_player.speed_scale = 1.0
+		if effect_active:
+			anim_effects.stop()
+			effect_model.position = Vector3(0, 0, -6)
+			current_effects_anim = ""
+			effect_active = false

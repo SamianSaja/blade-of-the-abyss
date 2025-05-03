@@ -1,0 +1,137 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgi4qapyp8jop"]
+
+[ext_resource type="PackedScene" uid="uid://cvnwbv47kd4lb" path="res://assets/characters/effects/effect-portal.glb" id="1_qa60h"]
+
+[node name="PortalEffect" instance=ExtResource("1_qa60h")]
+
+[node name="1_3" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="0"]
+transform = Transform3D(0.000999987, 0, 0, 0, 0.000999987, 0, 0, 0, 0.000999987, 0, 0, 0)
+
+[node name="2_4" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="1"]
+transform = Transform3D(0.000999987, 0, 0, 0, 0.000999987, 0, 0, 0, 0.000999987, 0, 0, 0)
+
+[node name="3_5" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="2"]
+transform = Transform3D(0.000999987, 0, 0, 0, 0.000999987, 0, 0, 0, 0.000999987, 0, 0.06, 0)
+
+[node name="5_6" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="3"]
+transform = Transform3D(0.000100017, 0, 0, 0, 4.40693e-06, 9.99195e-05, 0, -9.99195e-05, 4.40693e-06, 0, 0.349, 0)
+
+[node name="liang_7" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="4"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.242, 0.206, -0.038)
+
+[node name="liang (1)_8" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="5"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.154, 0.262, -0.112)
+
+[node name="liang (2)_9" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="6"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.088, 0.351, -0.186)
+
+[node name="liang (3)_10" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="7"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.01, 0.4224, -0.215)
+
+[node name="liang (4)_11" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="8"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.053, 0.4224, -0.193)
+
+[node name="liang (5)_12" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="9"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.123, 0.4224, -0.168)
+
+[node name="liang (6)_13" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="10"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.166, 0.514, -0.113)
+
+[node name="liang (7)_14" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="11"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.211, 0.208, -0.048)
+
+[node name="liang (8)_15" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="12"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.264, 0.159, 0.042)
+
+[node name="liang (9)_16" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="13"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.241, 0.4224, 0.101)
+
+[node name="liang (10)_17" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="14"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.153, 0.4224, 0.203)
+
+[node name="liang (11)_18" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="15"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.085, 0.4224, 0.225)
+
+[node name="liang (12)_19" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="16"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.028, 0.507, 0.239)
+
+[node name="liang (13)_20" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="17"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.068, 0.4224, 0.229)
+
+[node name="liang (14)_21" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="18"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.121, 0.4224, 0.209)
+
+[node name="liang (15)_22" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="19"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.178, 0.305, 0.131)
+
+[node name="liang (16)_23" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="20"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.205, 0.338, 0.08)
+
+[node name="liang (17)_24" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="21"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.106, 0.545, -0.196)
+
+[node name="liang (18)_25" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="22"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, -0.149, 0.275, -0.124)
+
+[node name="liang (19)_26" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="23"]
+transform = Transform3D(-0.000999987, 0, -8.74217e-11, 0, 0.000999987, 0, 8.74217e-11, 0, -0.000999987, 0.037, 0.341, -0.179)
+
+[node name="liang (20)_27" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="24"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.19799, -0.253, 0.14425)
+
+[node name="liang (21)_28" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="25"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.18809, -0.197, 0.0296985)
+
+[node name="liang (22)_29" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="26"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.193747, -0.108, -0.0692965)
+
+[node name="liang (23)_30" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="27"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.159099, -0.0365996, -0.144957)
+
+[node name="liang (24)_31" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="28"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.098995, -0.0365996, -0.173948)
+
+[node name="liang (25)_32" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="29"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0318198, -0.0365996, -0.205768)
+
+[node name="liang (26)_33" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="30"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0374767, 0.055, -0.197283)
+
+[node name="liang (27)_34" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="31"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.115258, -0.251, -0.183141)
+
+[node name="liang (28)_35" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="32"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.216375, -0.3, -0.156978)
+
+[node name="liang (29)_36" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="33"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.24183, -0.0365996, -0.0989949)
+
+[node name="liang (30)_37" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="34"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.25173, -0.0365996, 0.0353553)
+
+[node name="liang (31)_38" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="35"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.219203, -0.0365996, 0.098995)
+
+[node name="liang (32)_39" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="36"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.188798, 0.048, 0.1492)
+
+[node name="liang (33)_40" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="37"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.113844, -0.0365996, 0.210011)
+
+[node name="liang (34)_41" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="38"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0622254, -0.0365996, 0.233345)
+
+[node name="liang (35)_42" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="39"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.033234, -0.154, 0.218496)
+
+[node name="liang (36)_43" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="40"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0883884, -0.121, 0.201525)
+
+[node name="liang (37)_44" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="41"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0636396, 0.086, -0.213546)
+
+[node name="liang (38)_45" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="42"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0176777, -0.184, -0.19304)
+
+[node name="liang (39)_46" parent="Sketchfab_model/root/GLTF_SceneRootNode/Effect_2" index="43"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.152735, -0.118, -0.100409)
