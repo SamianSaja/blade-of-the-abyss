@@ -62,7 +62,11 @@ func _ready():
 	add_child(defend_button)
 
 	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
+	defend_button.connect("defend_pressed", Callable(self, "_on_defend_pressed"))
 	skill_one_button.connect("skill_one_pressed", Callable(self, "_on_skill_one_pressed"))
+	skill_two_button.connect("skill_two_pressed", Callable(self, "_on_skill_two_pressed"))
+	skill_three_button.connect("skill_three_pressed", Callable(self, "_on_skill_three_pressed"))
+	skill_four_button.connect("skill_four_pressed", Callable(self, "_on_skill_four_pressed"))
 
 	anim_player = $KyleModel/AnimationPlayer
 	model = $KyleModel
@@ -142,11 +146,42 @@ func _on_attack_pressed():
 		anim_player.play(current_attack_anim)
 		velocity = Vector3.ZERO
 
+func _on_defend_pressed():
+	if not is_attacking:
+		is_attacking = true
+		current_attack_anim = "defend"
+		anim_player.play(current_attack_anim)
+		velocity = Vector3.ZERO
+
 # ---- Fungsi event: skill one ----
 func _on_skill_one_pressed():
 	if not is_attacking:
 		is_attacking = true
 		current_attack_anim = "kyle-slash-attack"
+		anim_player.play(current_attack_anim)
+		velocity = Vector3.ZERO
+
+# ---- Fungsi event: skill two ----
+func _on_skill_two_pressed():
+	if not is_attacking:
+		is_attacking = true
+		current_attack_anim = "kyle-broken-slash"
+		anim_player.play(current_attack_anim)
+		velocity = Vector3.ZERO
+
+# ---- Fungsi event: skill three ----
+func _on_skill_three_pressed():
+	if not is_attacking:
+		is_attacking = true
+		current_attack_anim = "shadow-dash"
+		anim_player.play(current_attack_anim)
+		velocity = Vector3.ZERO
+
+# ---- Fungsi event: skill four ----
+func _on_skill_four_pressed():
+	if not is_attacking:
+		is_attacking = true
+		current_attack_anim = "shadow-dash"
 		anim_player.play(current_attack_anim)
 		velocity = Vector3.ZERO
 
