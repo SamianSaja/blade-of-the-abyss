@@ -36,6 +36,24 @@ func spawn_player():
 
 	# Spawn camera setelah player
 	spawn_camera()
+	spawn_enemy()
+
+func spawn_enemy():
+	var enemy_scene = preload("res://scenes/characters/EnemyWraith.tscn")
+	var enemy_instance = enemy_scene.instantiate()
+
+	var spawn_point = world_instance.get_node_or_null("EnemyWraithSpawn")
+	if spawn_point:
+		enemy_instance.global_transform.origin = spawn_point.global_transform.origin
+	else:
+		enemy_instance.global_transform.origin = Vector3(5, 0, 5)
+
+	add_child(enemy_instance)
+
+	# Set player as target (contoh)
+	if enemy_instance.has_method("set_target"):
+		enemy_instance.set_target(player_instance.global_transform.origin)
+
 
 func spawn_camera():
 	if camera_instance:

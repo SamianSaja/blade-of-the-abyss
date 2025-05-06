@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvwrfhsjlpmhg"]
+
+[ext_resource type="PackedScene" uid="uid://bavivjliqdvb1" path="res://assets/characters/wraith/wraith-animation.glb" id="1_sojn8"]
+
+[node name="WraithModel" instance=ExtResource("1_sojn8")]

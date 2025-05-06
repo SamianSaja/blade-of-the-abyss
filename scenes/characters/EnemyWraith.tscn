@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://pwgnjy71d6xa"]
+
+[ext_resource type="Script" uid="uid://d2aotqpw6dyyl" path="res://scripts/characters/EnemyWraith.gd" id="1_gel8h"]
+[ext_resource type="PackedScene" uid="uid://bvwrfhsjlpmhg" path="res://scenes/characters/WraithModel.tscn" id="1_s71dw"]
+[ext_resource type="PackedScene" uid="uid://wooit8t26gi" path="res://scenes/characters/Kyle.tscn" id="3_8om6s"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gel8h"]
+
+[node name="EnemyWraith" type="CharacterBody3D"]
+script = ExtResource("1_gel8h")
+
+[node name="WraithModel" parent="." instance=ExtResource("1_s71dw")]
+transform = Transform3D(1.17435, 0, 0, 0, 1.17435, 0, 0, 0, 1.17435, 0, 0, 0)
+visible = false
+
+[node name="DetectionArea" type="Area3D" parent="."]
+transform = Transform3D(2.69219, 0, 0, 0, 2.69219, 0, 0, 0, 2.69219, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(22.0127, 0, 0, 0, 22.0127, 0, 0, 0, 22.0127, 0, 0, 0)
+shape = SubResource("SphereShape3D_gel8h")
+
+[node name="Kyle" parent="." instance=ExtResource("3_8om6s")]
+transform = Transform3D(1.34787, 0, 0, 0, 1.34787, 0, 0, 0, 1.34787, 0, 0, 0)

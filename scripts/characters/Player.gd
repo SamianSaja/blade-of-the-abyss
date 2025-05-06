@@ -80,10 +80,11 @@ func _ready():
 	anim_effects = $PortalEffect/AnimationPlayer
 	effect_model = $PortalEffect
 	# atur posisi model TODO: atur tiap world
-	model.position = Vector3(0, 0, -6)
-	effect_model.position = Vector3(0, 0, -6)
+	global_position = Vector3(-30, 0, -20)
 
 	anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
+	
+	add_to_group("player")
 
 func _physics_process(delta):
 	handle_input()

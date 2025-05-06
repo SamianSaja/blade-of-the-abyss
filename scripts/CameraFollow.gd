@@ -24,4 +24,5 @@ func _process(delta):
 	target_pos.z = clamp(target_pos.z, min_z, max_z)
 	target_pos.y = fixed_y
 
+	target_pos.z += 5
 	global_position = target_pos
