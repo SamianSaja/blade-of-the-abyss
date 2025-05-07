@@ -4,6 +4,9 @@
 
 [node name="WraithModel" instance=ExtResource("1_sojn8")]
 
+[node name="wraith" parent="." index="0"]
+transform = Transform3D(2.8378, 0, 0, 0, 1.01488e-06, -2.8378, 0, 2.8378, 1.01488e-06, -0.179651, 0, 0)
+
 [node name="SpotLight3D" type="SpotLight3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, -0.0101052, 0.999949, 0, -0.999949, -0.0101052, 0.0704639, 11.7092, -0.0603476)
 light_energy = 16.0

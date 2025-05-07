@@ -1,7 +1,9 @@
 extends CharacterBody3D
 
-@export var speed := 2.0
-@export var acceleration := 5.0
+@export var speed := 3.0
+@export var acceleration := 20.0
+@export var attack_range := 10.0  # Jarak maksimum untuk menyerang
+@export var stop_distance := 8.0  # Jarak minimum sebelum musuh mulai mundur
 
 @onready var anim_player: AnimationPlayer = $WraithModel/AnimationPlayer
 @onready var model: Node3D = $WraithModel
@@ -28,17 +30,21 @@ func _physics_process(delta):
 
 func handle_ai():
 	if is_instance_valid(player) and not is_attacking:
-		print("Player Pos:", player.global_transform.origin)
 		var to_player = player.global_transform.origin - global_transform.origin
-		print("Distance to player:", to_player.length())
-		if to_player.length() < 1:
+		var distance = to_player.length()
+
+		if distance <= attack_range and distance >= stop_distance:
+			# Dalam jarak serang → diam & serang
 			direction = Vector3.ZERO
 			start_attack("wraith-magic-attack")
+		elif distance < stop_distance:
+			# Terlalu dekat → mundur menjauh
+			direction = -to_player.normalized()
 		else:
+			# Terlalu jauh → dekati pemain
 			direction = to_player.normalized()
 	else:
 		direction = Vector3.ZERO
-
 
 func move_enemy(delta):
 	if is_attacking:
@@ -67,13 +73,23 @@ func play_animation():
 			anim_player.play("wraith-idle")
 
 func rotate_model():
-	if direction.length() > 0.1:
-		var target_rotation = Quaternion(Vector3.UP, atan2(direction.x, direction.z))
+	if is_attacking and is_instance_valid(player):
+		# Saat menyerang, selalu menghadap ke pemain
+		var to_player = (player.global_transform.origin - global_transform.origin).normalized()
+		var target_yaw = atan2(to_player.x, to_player.z)
+		var target_rotation = Quaternion(Vector3.UP, target_yaw)
 		model.rotation = model.rotation.slerp(target_rotation.get_euler(), 0.2)
+	elif direction.length() > 0.1:
+		# Saat berjalan, menghadap ke arah gerakan
+		var target_yaw = atan2(direction.x, direction.z)
+		var target_rotation = Quaternion(Vector3.UP, target_yaw)
+		model.rotation = model.rotation.slerp(target_rotation.get_euler(), 0.2)
+
 
 func start_attack(anim_name: String):
 	is_attacking = true
 	current_attack_anim = anim_name
+	anim_player.speed_scale = 0.3
 	anim_player.play(current_attack_anim)
 
 func _on_animation_finished(anim_name: String):

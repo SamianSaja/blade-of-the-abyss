@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://s55s342nbwsv"]
+
+[ext_resource type="PackedScene" uid="uid://c530fegr1yim8" path="res://assets/characters/effects/magic_ring_-_green.glb" id="1_4r23l"]
+
+[node name="GreenRingEffect" instance=ExtResource("1_4r23l")]
