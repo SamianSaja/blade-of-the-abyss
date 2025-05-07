@@ -1,10 +1,10 @@
 extends CharacterBody3D
 
-@export var speed := 7.0
-@export var acceleration := 20.0
+@export var speed := 2.0
+@export var acceleration := 5.0
 
-@onready var anim_player: AnimationPlayer = $Kyle/AnimationPlayer
-@onready var model: Node3D = $Kyle
+@onready var anim_player: AnimationPlayer = $WraithModel/AnimationPlayer
+@onready var model: Node3D = $WraithModel
 @onready var detection_area: Area3D = $DetectionArea
 
 var velocity_local := Vector3.ZERO
@@ -33,7 +33,7 @@ func handle_ai():
 		print("Distance to player:", to_player.length())
 		if to_player.length() < 1:
 			direction = Vector3.ZERO
-			start_attack("kyle-basic-attack")
+			start_attack("wraith-magic-attack")
 		else:
 			direction = to_player.normalized()
 	else:
@@ -60,11 +60,11 @@ func play_animation():
 		return
 
 	if direction.length() > 0.1:
-		if not anim_player.is_playing() or anim_player.current_animation != "kyle-run-side-sword-modif":
-			anim_player.play("kyle-run-side-sword-modif")
+		if not anim_player.is_playing() or anim_player.current_animation != "wraith-standar-walk":
+			anim_player.play("wraith-standar-walk")
 	else:
-		if not anim_player.is_playing() or anim_player.current_animation != "idle":
-			anim_player.play("idle")
+		if not anim_player.is_playing() or anim_player.current_animation != "wraith-idle":
+			anim_player.play("wraith-idle")
 
 func rotate_model():
 	if direction.length() > 0.1:
