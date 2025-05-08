@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://mywu670tj8x2"]
+
+[ext_resource type="FontFile" uid="uid://dv2f4fdq2y0xn" path="res://assets/fonts/LibreBaskerville-Bold.ttf" id="1_fp3pw"]
+[ext_resource type="Script" uid="uid://dgt05jmyi43sy" path="res://scripts/ui/PauseMenuButton.gd" id="1_qaixg"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_qaixg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvama"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fp3pw"]
+bg_color = Color(0.717647, 0.717647, 0.717647, 0.494118)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[node name="PauseMenuButton" type="TouchScreenButton"]
+position = Vector2(1807, 78)
+scale = Vector2(3.71349, 1.66135)
+texture_normal = SubResource("MeshTexture_qaixg")
+shape = SubResource("RectangleShape2D_uvama")
+script = ExtResource("1_qaixg")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -10.233
+offset_top = -8.42688
+offset_right = 49.767
+offset_bottom = 12.5731
+scale = Vector2(0.341123, 0.825412)
+theme_override_fonts/font = ExtResource("1_fp3pw")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fp3pw")
+text = "menu"
+uppercase = true
+visible_characters = 4

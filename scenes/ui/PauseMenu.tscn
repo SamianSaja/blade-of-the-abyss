@@ -1,0 +1,267 @@
+[gd_scene load_steps=6 format=3 uid="uid://ct2dt5yd3xsss"]
+
+[ext_resource type="FontFile" uid="uid://bl8a5rxphaf4k" path="res://assets/fonts/Anton-Regular.ttf" id="1_7ida2"]
+[ext_resource type="FontFile" uid="uid://coeunusrc37eh" path="res://assets/fonts/OpenSans-VariableFont_wdth,wght.ttf" id="2_n5dsq"]
+[ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="3_n5dsq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cup6r"]
+bg_color = Color(0.219608, 0.713726, 1, 0.141176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ida2"]
+bg_color = Color(1, 1, 1, 0.235294)
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 2
+
+[node name="Label" type="Label" parent="."]
+offset_left = 115.0
+offset_top = 16.0
+offset_right = 357.0
+offset_bottom = 114.0
+theme_override_colors/font_color = Color(0.683077, 0.683077, 0.683077, 1)
+theme_override_fonts/font = ExtResource("1_7ida2")
+theme_override_font_sizes/font_size = 52
+text = "PAUSE MENU"
+uppercase = true
+visible_characters = 10
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1952.0
+offset_bottom = 1080.0
+scale = Vector2(0.983965, 1.00404)
+theme_override_styles/panel = SubResource("StyleBoxFlat_cup6r")
+
+[node name="lines" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 114.0
+offset_top = 91.0
+offset_right = 202.0
+offset_bottom = 132.0
+scale = Vector2(19.7346, 0.0632285)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgResume" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 163.34
+offset_right = 155.0
+offset_bottom = 203.34
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgItems" type="Panel" parent="Panel"]
+offset_left = 115.0
+offset_top = 257.958
+offset_right = 155.0
+offset_bottom = 297.958
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgEquipments" type="Panel" parent="Panel"]
+offset_left = 115.0
+offset_top = 353.572
+offset_right = 155.0
+offset_bottom = 393.572
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgSkills" type="Panel" parent="Panel"]
+offset_left = 115.0
+offset_top = 451.177
+offset_right = 155.0
+offset_bottom = 491.177
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgStatus" type="Panel" parent="Panel"]
+offset_left = 115.0
+offset_top = 546.791
+offset_right = 155.0
+offset_bottom = 586.791
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgReturn" type="Panel" parent="Panel"]
+offset_left = 115.0
+offset_top = 922.274
+offset_right = 155.0
+offset_bottom = 962.274
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgKyleBar" type="Panel" parent="Panel"]
+offset_left = 1287.81
+offset_top = 163.34
+offset_right = 1317.81
+offset_bottom = 335.34
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgNoraBar" type="Panel" parent="Panel"]
+offset_left = 1287.81
+offset_top = 451.177
+offset_right = 1317.81
+offset_bottom = 623.177
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="BgGold" type="Panel" parent="Panel"]
+offset_left = 1571.19
+offset_top = 922.274
+offset_right = 1586.19
+offset_bottom = 962.274
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 127.0
+offset_top = 165.0
+offset_right = 563.0
+offset_bottom = 472.0
+theme_override_constants/separation = 45
+
+[node name="ResumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/ResumeContainer"]
+layout_mode = 2
+
+[node name="ResumeButton" type="Button" parent="VBoxContainer/ResumeContainer"]
+layout_direction = 4
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Resume"
+flat = true
+
+[node name="ItemsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/ItemsContainer"]
+layout_mode = 2
+
+[node name="ItemsButton" type="Button" parent="VBoxContainer/ItemsContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Items"
+flat = true
+
+[node name="EquipmentsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/EquipmentsContainer"]
+layout_mode = 2
+
+[node name="EquipmentsButton" type="Button" parent="VBoxContainer/EquipmentsContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Equipments"
+flat = true
+
+[node name="SkillsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/SkillsContainer"]
+layout_mode = 2
+
+[node name="SkillsButton" type="Button" parent="VBoxContainer/SkillsContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Skills"
+flat = true
+
+[node name="StatusContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/StatusContainer"]
+layout_mode = 2
+
+[node name="StatusButton" type="Button" parent="VBoxContainer/StatusContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Status"
+flat = true
+
+[node name="ReturnMainMenu" type="Button" parent="."]
+offset_left = 131.0
+offset_top = 930.0
+offset_right = 446.0
+offset_bottom = 982.0
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Return to Main Menu"
+flat = true
+
+[node name="CharacterStatusKyle" type="VBoxContainer" parent="."]
+visible = false
+offset_left = 1267.0
+offset_top = 163.0
+offset_right = 1380.0
+offset_bottom = 244.0
+scale = Vector2(4.88181, 3.24456)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+
+[node name="Name" type="Label" parent="CharacterStatusKyle"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_n5dsq")
+theme_override_font_sizes/font_size = 12
+
+[node name="HpBar" type="TextureProgressBar" parent="CharacterStatusKyle"]
+layout_mode = 2
+
+[node name="MpBar" type="TextureProgressBar" parent="CharacterStatusKyle"]
+layout_mode = 2
+
+[node name="TpBar" type="TextureProgressBar" parent="CharacterStatusKyle"]
+layout_mode = 2
+
+[node name="CharacterStatusNora" type="VBoxContainer" parent="."]
+visible = false
+offset_left = 1267.0
+offset_top = 450.0
+offset_right = 1380.0
+offset_bottom = 531.0
+scale = Vector2(4.88181, 3.29302)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+
+[node name="Name" type="Label" parent="CharacterStatusNora"]
+layout_mode = 2
+
+[node name="HpBar" type="TextureProgressBar" parent="CharacterStatusNora"]
+layout_mode = 2
+
+[node name="MpBar" type="TextureProgressBar" parent="CharacterStatusNora"]
+layout_mode = 2
+
+[node name="TpBar" type="TextureProgressBar" parent="CharacterStatusNora"]
+layout_mode = 2
+
+[node name="GoldPanel" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="IconGold" type="TextureRect" parent="GoldPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GoldPanel"]
+layout_mode = 2

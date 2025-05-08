@@ -10,6 +10,7 @@ extends CharacterBody3D
 @onready var skill_four_button_scene = preload("res://scenes/ui/SkillFourButton.tscn")
 @onready var skill_ultimate_button_scene = preload("res://scenes/ui/SkillUltimateButton.tscn")
 @onready var defend_button_scene = preload("res://scenes/ui/DefendButton.tscn")
+#@onready var pause_menu_button_scene = preload("res://scenes/ui/PauseMenuButton.tscn")
 
 var joystick: Joystick
 var basic_attack: TouchScreenButton
@@ -19,6 +20,8 @@ var skill_three_button: TouchScreenButton
 var skill_four_button: TouchScreenButton
 var skill_ultimate_button: TouchScreenButton
 var defend_button: TouchScreenButton
+#var pause_menu_button: TouchScreenButton
+
 var direction := Vector3.ZERO
 var velocity_local := Vector3.ZERO
 
@@ -59,6 +62,9 @@ func _ready():
 
 	defend_button = defend_button_scene.instantiate()
 	add_child(defend_button)
+	
+	#pause_menu_button = pause_menu_button_scene.instantiate()
+	#add_child(pause_menu_button)
 
 	# Connect
 	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
