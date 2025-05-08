@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://dcpwwff758u2c"]
 
 [ext_resource type="Script" uid="uid://dqk3d6u7psx0p" path="res://scripts/ui/MainMenu.gd" id="1_2ysvc"]
-[ext_resource type="Texture2D" uid="uid://b0x0im1je8ho3" path="res://assets/ui/BgMainMenuFull.png" id="1_6jbdy"]
+[ext_resource type="Texture2D" uid="uid://gr5eclx1im10" path="res://assets/ui/bg-main-menu.png" id="2_2ysvc"]
 [ext_resource type="Texture2D" uid="uid://bk254j5url6ej" path="res://assets/ui/sword-icon.png" id="2_iwbf0"]
 [ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="3_2ysvc"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6jbdy"]
-texture = ExtResource("1_6jbdy")
+texture = ExtResource("2_2ysvc")
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_2ysvc")

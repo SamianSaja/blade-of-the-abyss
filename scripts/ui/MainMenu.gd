@@ -55,6 +55,7 @@ func _on_button_released(button: Button):
 	button.remove_theme_color_override("font_color")
 
 func _on_new_game_pressed():
-	# TODO: tambah loading screen
-	await get_tree().process_frame
-	get_tree().change_scene_to_file("res://main/Main.tscn")
+	var loading = load("res://scenes/ui/LoadingScreen.tscn").instantiate()
+	loading.target_scene_path = "res://main/Main.tscn"
+	get_tree().root.add_child(loading)
+	get_tree().current_scene.queue_free()

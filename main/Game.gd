@@ -57,7 +57,10 @@ func setup_pause_menu():
 	if return_button:
 		return_button.pressed.connect(func ():
 			get_tree().paused = false
-			get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")
+			var loading = load("res://scenes/ui/LoadingScreen.tscn").instantiate()
+			loading.target_scene_path = "res://scenes/ui/MainMenu.tscn"
+			get_tree().root.add_child(loading)
+			get_tree().current_scene.queue_free()
 		)
 	else:
 		print("❌ ReturnMainMenu button not found!")
