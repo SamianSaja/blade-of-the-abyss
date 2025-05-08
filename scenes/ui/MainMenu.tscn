@@ -1,0 +1,132 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcpwwff758u2c"]
+
+[ext_resource type="Script" uid="uid://dqk3d6u7psx0p" path="res://scripts/ui/MainMenu.gd" id="1_2ysvc"]
+[ext_resource type="Texture2D" uid="uid://b0x0im1je8ho3" path="res://assets/ui/BgMainMenuFull.png" id="1_6jbdy"]
+[ext_resource type="Texture2D" uid="uid://bk254j5url6ej" path="res://assets/ui/sword-icon.png" id="2_iwbf0"]
+[ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="3_2ysvc"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6jbdy"]
+texture = ExtResource("1_6jbdy")
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_2ysvc")
+
+[node name="Background" type="Label" parent="."]
+offset_right = 1920.0
+offset_bottom = 1077.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_6jbdy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 1238.0
+offset_top = 206.0
+offset_right = 1670.0
+offset_bottom = 981.0
+theme_override_constants/separation = 70
+
+[node name="NewGameContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/NewGameContainer"]
+layout_mode = 2
+texture = ExtResource("2_iwbf0")
+expand_mode = 2
+
+[node name="NewGameButton" type="Button" parent="VBoxContainer/NewGameContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_2ysvc")
+theme_override_font_sizes/font_size = 48
+text = "New Game"
+flat = true
+
+[node name="LoadGameContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/LoadGameContainer"]
+layout_mode = 2
+texture = ExtResource("2_iwbf0")
+expand_mode = 3
+
+[node name="LoadGameButton" type="Button" parent="VBoxContainer/LoadGameContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_2ysvc")
+theme_override_font_sizes/font_size = 48
+text = "Load Game"
+flat = true
+
+[node name="SettingsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/SettingsContainer"]
+layout_mode = 2
+texture = ExtResource("2_iwbf0")
+expand_mode = 3
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_2ysvc")
+theme_override_font_sizes/font_size = 48
+text = "Settings"
+flat = true
+
+[node name="HTPContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/HTPContainer"]
+layout_mode = 2
+texture = ExtResource("2_iwbf0")
+expand_mode = 3
+
+[node name="HTPButton" type="Button" parent="VBoxContainer/HTPContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_2ysvc")
+theme_override_font_sizes/font_size = 48
+text = "How To Play"
+flat = true
+
+[node name="CreditsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/CreditsContainer"]
+layout_mode = 2
+texture = ExtResource("2_iwbf0")
+expand_mode = 3
+
+[node name="CreditsButton" type="Button" parent="VBoxContainer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_2ysvc")
+theme_override_font_sizes/font_size = 48
+text = "Credits"
+flat = true
+
+[node name="ExitGameContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/ExitGameContainer"]
+layout_mode = 2
+texture = ExtResource("2_iwbf0")
+expand_mode = 3
+
+[node name="ExitGameButton" type="Button" parent="VBoxContainer/ExitGameContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_2ysvc")
+theme_override_font_sizes/font_size = 48
+text = "Exit Game"
+flat = true
