@@ -8,10 +8,11 @@
 bg_color = Color(0.219608, 0.713726, 1, 0.141176)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ida2"]
-bg_color = Color(1, 1, 1, 0.235294)
+bg_color = Color(1, 1, 1, 0.27451)
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 2
+layer = 10
 
 [node name="Label" type="Label" parent="."]
 offset_left = 115.0
@@ -96,19 +97,27 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="BgKyleBar" type="Panel" parent="Panel"]
 layout_mode = 0
-offset_left = 1287.81
-offset_top = 163.34
-offset_right = 1317.81
-offset_bottom = 335.34
+offset_left = 1347.0
+offset_top = 163.0
+offset_right = 1374.0
+offset_bottom = 335.0
 scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="lines2" type="Panel" parent="Panel"]
+offset_left = 1346.59
+offset_top = 199.195
+offset_right = 1371.59
+offset_bottom = 240.195
+scale = Vector2(20.1814, 0.0439313)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="BgNoraBar" type="Panel" parent="Panel"]
 layout_mode = 0
-offset_left = 1287.81
-offset_top = 451.177
-offset_right = 1317.81
-offset_bottom = 623.177
+offset_left = 1347.03
+offset_top = 451.0
+offset_right = 1374.03
+offset_bottom = 623.0
 scale = Vector2(18.6751, 1.52547)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 

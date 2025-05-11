@@ -130,6 +130,7 @@ offset_bottom = 40.0
 script = ExtResource("1_wxw3i")
 
 [node name="Panel" type="Panel" parent="."]
+layout_mode = 0
 offset_right = 1952.0
 offset_bottom = 1080.0
 scale = Vector2(0.983965, 1.00404)

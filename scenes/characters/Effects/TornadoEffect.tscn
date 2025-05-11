@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbu114ddsmxq"]
+
+[ext_resource type="PackedScene" uid="uid://fskp1n4ssxoh" path="res://assets/characters/effects/tornado-black.glb" id="1_oxngm"]
+
+[node name="TornadoEffect" instance=ExtResource("1_oxngm")]
+transform = Transform3D(0.307247, 0, 0, 0, 0.307247, 0, 0, 0, 0.307247, 0, 0, 0)

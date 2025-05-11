@@ -163,7 +163,7 @@ bones/103/position = Vector3(-5.96046e-07, 7.63208, 1.19211e-07)
 bones/104/position = Vector3(1.13249e-06, 7.63208, -1.78814e-07)
 
 [node name="Father_Sword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.92749, 0.193036, 0.584375, -0.259526, 1.08104, 0.054809, -0.558036, -0.18192, 0.945778, -87.2159, 21.6908, -151.925)
+transform = Transform3D(0.92749, 0.193036, 0.584374, -0.259527, 1.08104, 0.0548092, -0.558035, -0.18192, 0.945778, -87.216, 21.6908, -151.925)
 
 [node name="Null" parent="." index="1"]
 visible = false

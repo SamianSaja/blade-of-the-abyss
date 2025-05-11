@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyo5egp8ul3ou"]
+
+[ext_resource type="PackedScene" uid="uid://bbu114ddsmxq" path="res://scenes/characters/Effects/TornadoEffect.tscn" id="1_re1cq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_re1cq"]
+
+[node name="WraithTornadoSkill" type="CharacterBody3D"]
+
+[node name="TornadoEffect" parent="." instance=ExtResource("1_re1cq")]
+transform = Transform3D(0.197461, 0, 0, 0, 0.197461, 0, 0, 0, 0.197461, 0, 0, 0)
+
+[node name="HitArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea"]
+transform = Transform3D(2.17703, 0, 0, 0, 2.17703, 0, 0, 0, 2.17703, 0, 0, 0)
+shape = SubResource("SphereShape3D_re1cq")
