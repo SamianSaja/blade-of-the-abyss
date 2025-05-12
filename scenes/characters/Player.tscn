@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://chfbt250gix6k"]
+[gd_scene load_steps=7 format=3 uid="uid://chfbt250gix6k"]
 
 [ext_resource type="Script" uid="uid://u1df4il7a0xy" path="res://scripts/characters/Player.gd" id="1_gin2a"]
 [ext_resource type="PackedScene" uid="uid://c8n83i75e85f0" path="res://scenes/characters/KyleModel.tscn" id="2_gin2a"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dbxmfsqgxsd04" path="res://scenes/characters/Effects/BlueRingEffect.tscn" id="4_7wym0"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7n8ao"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7wym0"]
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_gin2a")
@@ -22,3 +24,10 @@ transform = Transform3D(0.74824, 0, 0, 0, 0.74824, 0, 0, 0, 0.74824, 0, 0.046774
 
 [node name="BlueRingEffect" parent="KyleModel" instance=ExtResource("4_7wym0")]
 transform = Transform3D(0.456802, 0, 0, 0, 0.456802, 0, 0, 0, 0.456802, 0, 0, 0)
+
+[node name="DetectionArea" type="Area3D" parent="."]
+transform = Transform3D(2.69219, 0, 0, 0, 2.69219, 0, 0, 0, 2.69219, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(22.0127, 0, 0, 0, 22.0127, 0, 0, 0, 22.0127, 0, 0, 0)
+shape = SubResource("SphereShape3D_7wym0")

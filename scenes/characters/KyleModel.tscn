@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://3wgflh1y503a" path="res://assets/characters/kyle/Kyle.glb" id="1_q6p4i"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_q6p4i"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q6p4i"]
 
 [node name="KyleModel" instance=ExtResource("1_q6p4i")]
 
@@ -169,13 +169,10 @@ transform = Transform3D(0.651556, -0.222136, 0.874714, -0.835231, -0.557078, 0.4
 
 [node name="SwordHitBox" type="Area3D" parent="Armature/Skeleton3D/Father_Sword" index="1"]
 transform = Transform3D(0.909925, -0.807816, -3.01422, -0.172496, 2.96544, -0.9223, 3.27602, 0.380517, 0.788649, -34.3859, 48.2929, -7.31766)
-collision_layer = 2
-collision_mask = 8
-monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/Father_Sword/SwordHitBox" index="0"]
-transform = Transform3D(14.6985, 1.90735e-06, 2.563e-06, 4.76837e-07, 12.8791, 1.49012e-06, 2.08616e-06, 1.43051e-06, 13.7807, 0, 0, 0)
-shape = SubResource("SphereShape3D_q6p4i")
+transform = Transform3D(19.5486, -4.95527, -1.02691, 5.55726, 17.117, -1.57587, 1.51635, 1.15101, 19.0143, -0.494606, 0.0583725, -0.755192)
+shape = SubResource("CapsuleShape3D_q6p4i")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." index="4"]
 transform = Transform3D(1, 0, 0, 0, -0.0101052, 0.999949, 0, -0.999949, -0.0101052, 0.0704639, 11.7092, -0.0603476)

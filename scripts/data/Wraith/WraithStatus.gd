@@ -12,7 +12,7 @@ var max_tp: int = 100
 var tp: int = 0
 
 # Untuk referensi ke healthbar atau UI boss (optional)
-var status_wraith = null
+var status_wraith = Control
 
 func set_wraith_status(status):
 	status_wraith = status
@@ -47,4 +47,4 @@ func is_dead() -> bool:
 
 func update_status():
 	if status_wraith and status_wraith.has_method("set_status"):
-		status_wraith.set_status(hp, max_hp, mp, max_mp, tp, max_tp)
+		status_wraith.set_status(hp, max_hp)

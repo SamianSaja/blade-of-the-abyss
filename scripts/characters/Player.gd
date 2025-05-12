@@ -15,6 +15,9 @@ extends CharacterBody3D
 # status and damage
 @onready var kyle_status = preload("res://scripts/data/Kyle/KyleStatus.gd").new()
 @onready var kyle_damage_system = preload("res://scripts/data/Kyle/KyleDamage.gd").new()
+@onready var sword_hit_box: Area3D = $KyleModel/Armature/Skeleton3D/Father_Sword/SwordHitBox
+@onready var detection_area: Area3D = $DetectionArea
+
 
 var joystick: Joystick
 var basic_attack: TouchScreenButton
@@ -41,8 +44,11 @@ var current_effect_name := ""
 var effect_active := false
 var effect_data := {}  # name -> {model, anim_player, anim_name}
 
+var wraith: Node3D = null
+
 func _ready():
 	# status and damage
+	print("sword", sword_hit_box)
 	add_child(kyle_status)
 	add_child(kyle_damage_system)
 	
@@ -91,6 +97,9 @@ func _ready():
 	anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
 
 	add_to_group("player")
+	sword_hit_box.body_entered.connect(_basic_attack_hit_entered)
+	detection_area.body_entered.connect(_on_body_entered)
+
 
 	# Setup effect registry
 	effect_data = {
@@ -240,3 +249,14 @@ func _on_animation_finished(anim_name: String):
 				effect.model.visible = false
 			effect_active = false
 			current_effect_name = ""
+
+func _on_body_entered(body: Node):
+	if body.is_in_group("wraith"):
+		wraith = body
+
+func take_damage(amount: int):
+	kyle_status.take_damage(amount)
+
+func _basic_attack_hit_entered(body: Node):
+	if body.is_in_group("wraith"):
+		kyle_damage_system.perform_basic_attack(body)

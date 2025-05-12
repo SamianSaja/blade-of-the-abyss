@@ -9,6 +9,14 @@ extends CharacterBody3D
 @onready var model: Node3D = $WraithModel
 @onready var detection_area: Area3D = $DetectionArea
 
+@onready var health_bar: Control = $HealthBar
+@onready var camera: Camera3D = null
+
+# status and damage
+@onready var wraith_status = preload("res://scripts/data/Wraith/WraithStatus.gd").new()
+@onready var wraith_damage_system = preload("res://scripts/data/Wraith/WraithDamage.gd").new()
+
+
 var velocity_local := Vector3.ZERO
 var direction := Vector3.ZERO
 var is_attacking := false
@@ -18,9 +26,21 @@ var player: Node3D = null
 
 
 func _ready():
+	camera = get_viewport().get_camera_3d()
+
 	detection_area.body_entered.connect(_on_body_entered)
 	detection_area.body_exited.connect(_on_body_exited)
 	anim_player.animation_finished.connect(_on_animation_finished)
+	add_to_group("wraith")
+
+func _process(delta):
+	if health_bar and camera:
+		var head_offset = Vector3(-1.5, 2.5, 0) # Tinggi di atas model
+		var world_pos = global_transform.origin + head_offset
+		var screen_pos = camera.unproject_position(world_pos)
+		health_bar.global_position = screen_pos
+		wraith_status.set_wraith_status(health_bar)
+		
 
 func _physics_process(delta):
 	handle_ai()
@@ -99,9 +119,16 @@ func _on_animation_finished(anim_name: String):
 
 func _on_body_entered(body: Node):
 	if body.is_in_group("player"):
-		print("player terdeteksi")
 		player = body
 
 func _on_body_exited(body: Node):
 	if body == player:
 		player = null
+
+func take_damage(amount: int):
+	wraith_status.take_damage(amount)
+	if wraith_status.is_dead():
+		die()
+
+func die():
+	queue_free()
