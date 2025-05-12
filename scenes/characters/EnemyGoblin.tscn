@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7ecrjirmrhpt"]
+
+[ext_resource type="PackedScene" uid="uid://3ivy46fbekri" path="res://scenes/characters/GoblinModel.tscn" id="1_nr2s4"]
+[ext_resource type="Script" uid="uid://cofhren3rwiih" path="res://scripts/characters/EnemyGoblin.gd" id="1_wnvpg"]
+[ext_resource type="Script" uid="uid://cijy73s3k7vdl" path="res://scripts/ui/GoblinStatusBar.gd" id="2_yrscn"]
+[ext_resource type="Texture2D" uid="uid://cgkj434ydjs15" path="res://assets/ui/bar-empty.png" id="3_wnvpg"]
+[ext_resource type="Texture2D" uid="uid://dqkk48ro04n2" path="res://assets/ui/bar-hp.png" id="4_xff75"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_02rm2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8qq7f"]
+
+[node name="EnemyGoblin" type="CharacterBody3D"]
+script = ExtResource("1_wnvpg")
+
+[node name="GoblinModel" parent="." instance=ExtResource("1_nr2s4")]
+
+[node name="DetectionArea" type="Area3D" parent="."]
+transform = Transform3D(2.69219, 0, 0, 0, 2.69219, 0, 0, 0, 2.69219, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(22.0127, 0, 0, 0, 22.0127, 0, 0, 0, 22.0127, 0, 0, 0)
+shape = SubResource("SphereShape3D_02rm2")
+
+[node name="HealthBar" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_yrscn")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HealthBar"]
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 50.0
+scale = Vector2(0.103106, 0.0577791)
+texture_under = ExtResource("3_wnvpg")
+texture_progress = ExtResource("4_xff75")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_8qq7f")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

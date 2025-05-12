@@ -31,6 +31,7 @@ func _ready():
 	detection_area.body_entered.connect(_on_body_entered)
 	detection_area.body_exited.connect(_on_body_exited)
 	anim_player.animation_finished.connect(_on_animation_finished)
+	add_child(wraith_damage_system)
 	add_to_group("wraith")
 
 func _process(delta):
@@ -40,6 +41,7 @@ func _process(delta):
 		var screen_pos = camera.unproject_position(world_pos)
 		health_bar.global_position = screen_pos
 		wraith_status.set_wraith_status(health_bar)
+		#wraith_damage_system.set_enemy_status(health_bar)
 		
 
 func _physics_process(delta):
@@ -49,22 +51,26 @@ func _physics_process(delta):
 	rotate_model()
 
 func handle_ai():
-	if is_instance_valid(player) and not is_attacking:
-		var to_player = player.global_transform.origin - global_transform.origin
-		var distance = to_player.length()
-
-		if distance <= attack_range and distance >= stop_distance:
-			# Dalam jarak serang → diam & serang
-			direction = Vector3.ZERO
-			start_attack("wraith-magic-attack")
-		elif distance < stop_distance:
-			# Terlalu dekat → mundur menjauh
-			direction = -to_player.normalized()
-		else:
-			# Terlalu jauh → dekati pemain
-			direction = to_player.normalized()
-	else:
+	if not is_instance_valid(player) or is_attacking:
 		direction = Vector3.ZERO
+		return
+
+	var to_player = player.global_transform.origin - global_transform.origin
+	var distance = to_player.length()
+
+	# --- Prioritaskan Summon jika MP cukup ---
+	if wraith_status and wraith_status.mp >= wraith_status.summon_cost:
+		start_summon()
+		return
+
+	# --- Attack / Move logic ---
+	if distance <= attack_range and distance >= stop_distance:
+		direction = Vector3.ZERO
+		start_attack("wraith-magic-attack")
+	elif distance < stop_distance:
+		direction = -to_player.normalized()
+	else:
+		direction = to_player.normalized()
 
 func move_enemy(delta):
 	if is_attacking:
@@ -111,6 +117,19 @@ func start_attack(anim_name: String):
 	current_attack_anim = anim_name
 	anim_player.speed_scale = 0.3
 	anim_player.play(current_attack_anim)
+
+func start_summon():
+	is_attacking = true
+	current_attack_anim = "wraith-magic-attack" # Pastikan kamu punya animasi summon
+	anim_player.speed_scale = 0.5
+	anim_player.play(current_attack_anim)
+
+	# Jalankan summon setelah delay kecil supaya animasi jalan
+	await get_tree().create_timer(0.5).timeout
+
+	if wraith_status:
+		wraith_status.perform_summon(get_parent(), global_transform.origin)
+
 
 func _on_animation_finished(anim_name: String):
 	if anim_name == current_attack_anim:

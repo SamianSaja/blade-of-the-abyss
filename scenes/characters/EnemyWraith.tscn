@@ -39,3 +39,7 @@ texture_progress = ExtResource("4_a0s6h")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_a0s6h")
+
+[node name="SummonPoints" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="SummonPoints"]

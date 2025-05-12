@@ -44,7 +44,7 @@ var current_effect_name := ""
 var effect_active := false
 var effect_data := {}  # name -> {model, anim_player, anim_name}
 
-var wraith: Node3D = null
+var current_target: Node3D = null
 
 func _ready():
 	# status and damage
@@ -99,6 +99,7 @@ func _ready():
 	add_to_group("player")
 	sword_hit_box.body_entered.connect(_basic_attack_hit_entered)
 	detection_area.body_entered.connect(_on_body_entered)
+	detection_area.body_exited.connect(_on_body_exited)
 
 
 	# Setup effect registry
@@ -251,12 +252,16 @@ func _on_animation_finished(anim_name: String):
 			current_effect_name = ""
 
 func _on_body_entered(body: Node):
-	if body.is_in_group("wraith"):
-		wraith = body
+	if body.is_in_group("wraith") or body.is_in_group("goblin"):
+		current_target = body
+
+func _on_body_exited(body: Node):
+	if body == current_target:
+		current_target = null
 
 func take_damage(amount: int):
 	kyle_status.take_damage(amount)
 
 func _basic_attack_hit_entered(body: Node):
-	if body.is_in_group("wraith"):
+	if body.is_in_group("wraith") or body.is_in_group("goblin"):
 		kyle_damage_system.perform_basic_attack(body)
