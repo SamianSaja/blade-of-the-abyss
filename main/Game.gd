@@ -159,8 +159,8 @@ func spawn_player():
 	spawn_camera()
 	spawn_enemy()
 	
-	if player_instance.has_method("set_player_status") and player_status_bar:
-		player_instance.set_player_status(player_status_bar)
+	if player_instance.kyle_status.has_method("set_player_status") and player_status_bar:
+		player_instance.kyle_status.set_player_status(player_status_bar)
 
 func spawn_enemy():
 	var enemy_scene = preload("res://scenes/characters/EnemyWraith.tscn")

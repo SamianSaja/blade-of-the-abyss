@@ -12,6 +12,10 @@ extends CharacterBody3D
 @onready var defend_button_scene = preload("res://scenes/ui/DefendButton.tscn")
 #@onready var pause_menu_button_scene = preload("res://scenes/ui/PauseMenuButton.tscn")
 
+# status and damage
+@onready var kyle_status = preload("res://scripts/data/Kyle/KyleStatus.gd").new()
+@onready var kyle_damage_system = preload("res://scripts/data/Kyle/KyleDamage.gd").new()
+
 var joystick: Joystick
 var basic_attack: TouchScreenButton
 var skill_one_button: TouchScreenButton
@@ -20,7 +24,7 @@ var skill_three_button: TouchScreenButton
 var skill_four_button: TouchScreenButton
 var skill_ultimate_button: TouchScreenButton
 var defend_button: TouchScreenButton
-var player_status_bar: CanvasLayer
+#var player_status_bar: CanvasLayer
 #var pause_menu_button: TouchScreenButton
 
 var direction := Vector3.ZERO
@@ -37,18 +41,11 @@ var current_effect_name := ""
 var effect_active := false
 var effect_data := {}  # name -> {model, anim_player, anim_name}
 
-# konfigurasi awal status player
-var hp := 80
-var max_hp := 100
-var mp := 50
-var max_mp := 50
-var tp := 30
-var max_tp := 30
-#var exp := 0
-#var max_exp := 100
-
-
 func _ready():
+	# status and damage
+	add_child(kyle_status)
+	add_child(kyle_damage_system)
+	
 	# instance joystick
 	joystick = joystick_scene.instantiate()
 	add_child(joystick)
@@ -120,14 +117,6 @@ func _physics_process(delta):
 	move_player(delta)
 	play_animation()
 	rotate_model()
-
-func set_player_status(player_status):
-	player_status_bar = player_status
-	update_status_player()
-
-func update_status_player():
-	if player_status_bar and player_status_bar.has_method("set_status"):
-		player_status_bar.set_status(hp, max_hp, mp, max_mp, tp, max_tp)
 
 func handle_input():
 	if is_attacking:

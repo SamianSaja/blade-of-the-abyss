@@ -105,6 +105,7 @@ scale = Vector2(18.6751, 1.52547)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="lines2" type="Panel" parent="Panel"]
+layout_mode = 0
 offset_left = 1346.59
 offset_top = 199.195
 offset_right = 1371.59

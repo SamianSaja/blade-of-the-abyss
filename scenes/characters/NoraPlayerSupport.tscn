@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdxflvaoe5w3c"]
+
+[ext_resource type="Script" uid="uid://2eoaa0cvkqus" path="res://scripts/characters/NoraPlayerSupport.gd" id="1_hrp5b"]
+[ext_resource type="PackedScene" uid="uid://c6b6osd23t4mu" path="res://scenes/characters/NoraModel.tscn" id="1_w26b1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hrp5b"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_w26b1"]
+
+[node name="NoraPlayerSupport" type="CharacterBody3D"]
+transform = Transform3D(0.577507, 0, 0, 0, 0.577507, 0, 0, 0, 0.577507, 0, -4.93309, 0)
+script = ExtResource("1_hrp5b")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_hrp5b")
+
+[node name="NoraModel" parent="." instance=ExtResource("1_w26b1")]
+
+[node name="DetectionAreaNora" type="Area3D" parent="."]
+transform = Transform3D(1.58499, 0, 0, 0, 1.58499, 0, 0, 0, 1.58499, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionAreaNora"]
+transform = Transform3D(22.0127, 0, 0, 0, 22.0127, 0, 0, 0, 22.0127, 0, 0, 0)
+shape = SubResource("SphereShape3D_w26b1")
