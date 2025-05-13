@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
-@export var speed := 7.0
-@export var acceleration := 20.0
+#@export var speed := 7.0
+#@export var acceleration := 20.0
 @onready var joystick_scene = preload("res://scenes/ui/Joystick.tscn")
 @onready var basic_attack_scene = preload("res://scenes/ui/AttackController.tscn")
 @onready var skill_one_button_scene = preload("res://scenes/ui/SkillOneButton.tscn")
@@ -45,12 +45,13 @@ var effect_active := false
 var effect_data := {}  # name -> {model, anim_player, anim_name}
 
 var current_target: Node3D = null
+var current_attack_type: String = "none"
 
 func _ready():
 	# status and damage
-	print("sword", sword_hit_box)
 	add_child(kyle_status)
 	add_child(kyle_damage_system)
+	kyle_damage_system.set_player_status(kyle_status)
 	
 	# instance joystick
 	joystick = joystick_scene.instantiate()
@@ -92,7 +93,7 @@ func _ready():
 	# Setup model & animation
 	anim_player = $KyleModel/AnimationPlayer
 	model = $KyleModel
-	global_position = Vector3(-30, 0, -20)
+	#global_position = Vector3(-30, 0, -20)
 
 	anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
 
@@ -122,6 +123,10 @@ func _ready():
 		if eff.model:
 			eff.model.visible = false
 
+#func _process(delta):
+	#if current_attack_type == "skill-four":
+		#kyle_damage_system.perform_skill_four()
+
 func _physics_process(delta):
 	handle_input()
 	move_player(delta)
@@ -149,8 +154,8 @@ func move_player(delta):
 	if is_attacking:
 		return
 
-	var target_velocity = direction * speed
-	velocity_local = velocity_local.lerp(target_velocity, acceleration * delta)
+	var target_velocity = direction * kyle_status.speed
+	velocity_local = velocity_local.lerp(target_velocity, kyle_status.acceleration * delta)
 	velocity.x = velocity_local.x
 	velocity.z = velocity_local.z
 	move_and_slide()
@@ -181,6 +186,7 @@ func rotate_model():
 func _on_attack_pressed():
 	if not is_attacking:
 		is_attacking = true
+		current_attack_type = "basic-attack"
 		current_attack_anim = "kyle-basic-attack"
 		anim_player.speed_scale = 1.5
 		anim_player.play(current_attack_anim)
@@ -189,6 +195,7 @@ func _on_attack_pressed():
 func _on_defend_pressed():
 	if not is_attacking:
 		is_attacking = true
+		current_attack_type = "defend"
 		current_attack_anim = "defend"
 		anim_player.play(current_attack_anim)
 		velocity = Vector3.ZERO
@@ -196,6 +203,7 @@ func _on_defend_pressed():
 func _on_skill_one_pressed():
 	if not is_attacking:
 		is_attacking = true
+		current_attack_type = "skill-one"
 		current_attack_anim = "kyle-slash-attack"
 		anim_player.play(current_attack_anim)
 		velocity = Vector3.ZERO
@@ -203,6 +211,7 @@ func _on_skill_one_pressed():
 func _on_skill_two_pressed():
 	if not is_attacking:
 		is_attacking = true
+		current_attack_type = "skill-two"
 		current_attack_anim = "kyle-broken-slash"
 		anim_player.play(current_attack_anim)
 		velocity = Vector3.ZERO
@@ -210,6 +219,7 @@ func _on_skill_two_pressed():
 func _on_skill_three_pressed():
 	if not is_attacking:
 		is_attacking = true
+		current_attack_type = "skill-three"
 		current_attack_anim = "shadow-dash"
 		anim_player.play(current_attack_anim)
 		play_effect("blue_ring")
@@ -218,6 +228,7 @@ func _on_skill_three_pressed():
 func _on_skill_four_pressed():
 	if not is_attacking:
 		is_attacking = true
+		current_attack_type = "skill-four"
 		current_attack_anim = "kyle-searing"
 		anim_player.play(current_attack_anim)
 		play_effect("portal")
@@ -239,6 +250,7 @@ func play_effect(effect_name: String):
 func _on_animation_finished(anim_name: String):
 	if anim_name == current_attack_anim:
 		is_attacking = false
+		current_attack_type = "none"
 		current_attack_anim = ""
 		anim_player.speed_scale = 1.0
 
@@ -260,8 +272,19 @@ func _on_body_exited(body: Node):
 		current_target = null
 
 func take_damage(amount: int):
+	if current_attack_type == "defend":
+		amount = amount * 0.2  # kurangi damage jika defend
 	kyle_status.take_damage(amount)
 
 func _basic_attack_hit_entered(body: Node):
 	if body.is_in_group("wraith") or body.is_in_group("goblin"):
-		kyle_damage_system.perform_basic_attack(body)
+		match current_attack_type:
+			"basic-attack":
+				print("basic attack")
+				kyle_damage_system.perform_basic_attack(body)
+			"skill-one":
+				print("skill one")
+				kyle_damage_system.perform_skill_one(body)
+				#kyle_status.consume_mana(30)
+			_:
+				print("No attack type matched or idle")

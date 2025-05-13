@@ -8,7 +8,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gel8h"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_a0s6h"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a0s6h"]
 
 [node name="EnemyWraith" type="CharacterBody3D"]
 script = ExtResource("1_gel8h")
@@ -38,7 +38,8 @@ texture_under = ExtResource("3_p48rc")
 texture_progress = ExtResource("4_a0s6h")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_a0s6h")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.159919, 1.05294, 0)
+shape = SubResource("CapsuleShape3D_a0s6h")
 
 [node name="SummonPoints" type="Node3D" parent="."]
 

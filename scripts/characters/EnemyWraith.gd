@@ -32,6 +32,7 @@ func _ready():
 	detection_area.body_exited.connect(_on_body_exited)
 	anim_player.animation_finished.connect(_on_animation_finished)
 	add_child(wraith_damage_system)
+	wraith_damage_system.set_wraith_status(wraith_status)
 	add_to_group("wraith")
 
 func _process(delta):
@@ -59,9 +60,10 @@ func handle_ai():
 	var distance = to_player.length()
 
 	# --- Prioritaskan Summon jika MP cukup ---
-	if wraith_status and wraith_status.mp >= wraith_status.summon_cost:
-		start_summon()
-		return
+	if wraith_status and wraith_damage_system:
+		if wraith_status.mp >= wraith_damage_system.summon_cost:
+			if wraith_damage_system.active_summons.size() < wraith_damage_system.max_summons:
+				start_summon()
 
 	# --- Attack / Move logic ---
 	if distance <= attack_range and distance >= stop_distance:
@@ -125,10 +127,10 @@ func start_summon():
 	anim_player.play(current_attack_anim)
 
 	# Jalankan summon setelah delay kecil supaya animasi jalan
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.8).timeout
 
-	if wraith_status:
-		wraith_status.perform_summon(get_parent(), global_transform.origin)
+	if wraith_damage_system:
+		wraith_damage_system.perform_summon(get_parent(), global_transform.origin)
 
 
 func _on_animation_finished(anim_name: String):

@@ -8,7 +8,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_02rm2"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_8qq7f"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wnvpg"]
 
 [node name="EnemyGoblin" type="CharacterBody3D"]
 script = ExtResource("1_wnvpg")
@@ -38,6 +38,7 @@ texture_under = ExtResource("3_wnvpg")
 texture_progress = ExtResource("4_xff75")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_8qq7f")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.899113, 0)
+shape = SubResource("CapsuleShape3D_wnvpg")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

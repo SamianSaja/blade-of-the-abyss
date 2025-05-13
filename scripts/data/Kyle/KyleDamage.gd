@@ -28,6 +28,8 @@ func perform_basic_attack(target):
 	deal_damage_to_enemy(target, basic_attack_damage)
 
 func perform_skill_one(target):
+	if player_status:
+		player_status.consume_mana(10)
 	deal_damage_to_enemy(target, skill_one_damage)
 
 func perform_skill_two(target):
@@ -36,8 +38,11 @@ func perform_skill_two(target):
 func perform_skill_three(target):
 	deal_damage_to_enemy(target, skill_three_damage)
 
-func perform_skill_four(target):
-	deal_damage_to_enemy(target, skill_four_damage)
+func perform_skill_four():
+	if player_status:
+		player_status.consume_mana(20)
+		#await player_status.gain_speed(3, 3.0)
+	#deal_damage_to_enemy(target, skill_four_damage)
 
 func perform_ultimate_skill(target):
 	deal_damage_to_enemy(target, ultimate_skill_damage)
