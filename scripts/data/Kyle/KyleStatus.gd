@@ -2,14 +2,14 @@
 extends Node
 
 # Status Player
-var hp: int = 100
-var mp: int = 50
+var hp: int = 200
+var mp: int = 100
 var tp: int = 100
 var speed: int = 7
 var acceleration: int = 20
 
-var max_hp: int = 100
-var max_mp: int = 50
+var max_hp: int = 200
+var max_mp: int = 100
 var max_tp: int = 100
 var max_speed: int = 100
 

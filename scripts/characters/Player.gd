@@ -85,6 +85,7 @@ func _ready():
 	# Connect
 	basic_attack.connect("attack_pressed", Callable(self, "_on_attack_pressed"))
 	defend_button.connect("defend_pressed", Callable(self, "_on_defend_pressed"))
+	defend_button.connect("defend_held", Callable(self, "_on_defend_pressed"))
 	skill_one_button.connect("skill_one_pressed", Callable(self, "_on_skill_one_pressed"))
 	skill_two_button.connect("skill_two_pressed", Callable(self, "_on_skill_two_pressed"))
 	skill_three_button.connect("skill_three_pressed", Callable(self, "_on_skill_three_pressed"))

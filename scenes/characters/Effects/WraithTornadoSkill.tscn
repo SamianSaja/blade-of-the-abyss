@@ -1,10 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://dyo5egp8ul3ou"]
+[gd_scene load_steps=6 format=3 uid="uid://dyo5egp8ul3ou"]
 
+[ext_resource type="Script" uid="uid://bpf3elhajhf48" path="res://scripts/characters/Effects/WraithTornadoSkill.gd" id="1_fovww"]
 [ext_resource type="PackedScene" uid="uid://bbu114ddsmxq" path="res://scenes/characters/Effects/TornadoEffect.tscn" id="1_re1cq"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_re1cq"]
 
-[node name="WraithTornadoSkill" type="CharacterBody3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fovww"]
+transparency = 1
+albedo_color = Color(0.478431, 0.0392157, 0.72549, 0.203922)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fovww"]
+material = SubResource("StandardMaterial3D_fovww")
+height = 0.001
+
+[node name="WraithTornadoSkill" type="Node3D"]
+transform = Transform3D(1.8277, 0, 0, 0, 1.8277, 0, 0, 0, 1.8277, 0, 0, 0)
+script = ExtResource("1_fovww")
 
 [node name="TornadoEffect" parent="." instance=ExtResource("1_re1cq")]
 transform = Transform3D(0.197461, 0, 0, 0, 0.197461, 0, 0, 0, 0.197461, 0, 0, 0)
@@ -14,3 +25,6 @@ transform = Transform3D(0.197461, 0, 0, 0, 0.197461, 0, 0, 0, 0.197461, 0, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea"]
 transform = Transform3D(2.17703, 0, 0, 0, 2.17703, 0, 0, 0, 2.17703, 0, 0, 0)
 shape = SubResource("SphereShape3D_re1cq")
+
+[node name="TelegraphDecal" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_fovww")

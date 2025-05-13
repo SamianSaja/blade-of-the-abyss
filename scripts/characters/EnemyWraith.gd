@@ -59,20 +59,31 @@ func handle_ai():
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
 
-	# --- Prioritaskan Summon jika MP cukup ---
+	# --- Skill Decision ---
 	if wraith_status and wraith_damage_system:
-		if wraith_status.mp >= wraith_damage_system.summon_cost:
-			if wraith_damage_system.active_summons.size() < wraith_damage_system.max_summons:
-				start_summon()
+		# ✅ Prioritaskan Summon jika MP cukup dan belum max summon
+		if wraith_status.mp >= wraith_damage_system.summon_cost and wraith_damage_system.active_summons.size() < wraith_damage_system.max_summons:
+			start_summon()
 
-	# --- Attack / Move logic ---
+		# ✅ Gunakan ultimate jika player hampir mati
+		#if player.has_method("get_hp") and player.get_hp() <= 30:
+			#start_attack("wraith-ultimate")
+			#return
+
+		# ✅ Gunakan tornado jika cukup dekat
+		if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
+			print("tornadoo")
+			start_tornado()
+
+	# --- Basic Attack atau Movement ---
 	if distance <= attack_range and distance >= stop_distance:
 		direction = Vector3.ZERO
 		start_attack("wraith-magic-attack")
 	elif distance < stop_distance:
-		direction = -to_player.normalized()
+		direction = -to_player.normalized()  # Mundur
 	else:
-		direction = to_player.normalized()
+		direction = to_player.normalized()   # Kejar
+
 
 func move_enemy(delta):
 	if is_attacking:
@@ -120,6 +131,13 @@ func start_attack(anim_name: String):
 	anim_player.speed_scale = 0.3
 	anim_player.play(current_attack_anim)
 
+func start_tornado():
+	is_attacking = true
+	anim_player.play("wraith-magic-attack")
+	await anim_player.animation_finished
+	wraith_damage_system.perform_tornado_skill()
+	is_attacking = false
+
 func start_summon():
 	is_attacking = true
 	current_attack_anim = "wraith-magic-attack" # Pastikan kamu punya animasi summon
@@ -141,6 +159,8 @@ func _on_animation_finished(anim_name: String):
 func _on_body_entered(body: Node):
 	if body.is_in_group("player"):
 		player = body
+		if wraith_damage_system:
+			wraith_damage_system.set_player_reference(player)
 
 func _on_body_exited(body: Node):
 	if body == player:
