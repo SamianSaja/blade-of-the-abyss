@@ -74,6 +74,7 @@ func rotate_towards(dir: Vector3):
 
 func start_attack():
 	is_attacking = true
+	anim_player.speed_scale = 0.5
 	anim_player.play("monster-attack")
 
 func _on_animation_finished(anim_name: String):

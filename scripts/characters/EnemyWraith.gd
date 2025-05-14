@@ -62,7 +62,7 @@ func handle_ai():
 	# --- Skill Decision ---
 	if wraith_status and wraith_damage_system:
 		# ✅ Prioritaskan Summon jika MP cukup dan belum max summon
-		if wraith_status.mp >= wraith_damage_system.summon_cost and wraith_damage_system.active_summons.size() < wraith_damage_system.max_summons:
+		if wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown:
 			start_summon()
 
 		# ✅ Gunakan ultimate jika player hampir mati

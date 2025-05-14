@@ -206,6 +206,7 @@ func _on_skill_one_pressed():
 		is_attacking = true
 		current_attack_type = "skill-one"
 		current_attack_anim = "kyle-slash-attack"
+		anim_player.speed_scale = 1.5
 		anim_player.play(current_attack_anim)
 		velocity = Vector3.ZERO
 

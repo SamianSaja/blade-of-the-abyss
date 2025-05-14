@@ -1,35 +1,36 @@
 extends Node
 
-# Damage boss magic attack
-var magic_attack_damage: int = 25
-var ultimate_magic_damage: int = 60
+# ================== DAMAGE VALUES ==================
+const MAGIC_ATTACK_DAMAGE: int = 25
+const ULTIMATE_MAGIC_DAMAGE: int = 60
 
-# Preload skill scenes
-var tornado_scene: PackedScene = preload("res://scenes/characters/Effects/WraithTornadoSkill.tscn")
+# ================== SUMMON CONFIG ==================
+const SUMMON_COST: int = 20
+const MAX_SUMMONS: int = 3
+const SUMMON_COOLDOWN: float = 6.0
+var active_summons: Array = []
+var summon_on_cooldown: bool = false
 var summon_scene: PackedScene = preload("res://scenes/characters/EnemyGoblin.tscn")
 
-# MP cost dan batas summon
-var summon_cost: int = 20
-var max_summons: int = 3
-var active_summons: Array = []
+# ================== TORNADO CONFIG ==================
+const TORNADO_COOLDOWN: float = 8.0
+var tornado_on_cooldown: bool = false
+var tornado_scene: PackedScene = preload("res://scenes/characters/Effects/WraithTornadoSkill.tscn")
 
-# Referensi ke wraith status dan player
-var wraith_status = null
+# ================== REFERENCES ==================
+var wraith_status: Node = null
 var player: Node3D = null
 
-# Cooldown tornado (dalam detik)
-var tornado_cooldown: float = 8.0
-var tornado_on_cooldown: bool = false
 
-
-# Setter
+# ================== SETTERS ==================
 func set_wraith_status(status_node):
 	wraith_status = status_node
 
 func set_player_reference(player_node):
 	player = player_node
 
-# Damage Utility
+
+# ================== DAMAGE HELPERS ==================
 func deal_damage_to_self(damage: int):
 	if wraith_status:
 		wraith_status.take_damage(damage)
@@ -38,14 +39,16 @@ func deal_damage_to_target(target, damage: int):
 	if target and target.has_method("take_damage"):
 		target.take_damage(damage)
 
-# === SKILL FUNCTIONS ===
 
+# ================== SKILL: MAGIC ATTACK ==================
 func perform_magic_attack(target):
-	deal_damage_to_target(target, magic_attack_damage)
+	deal_damage_to_target(target, MAGIC_ATTACK_DAMAGE)
 
 func perform_ultimate_magic(target):
-	deal_damage_to_target(target, ultimate_magic_damage)
+	deal_damage_to_target(target, ULTIMATE_MAGIC_DAMAGE)
 
+
+# ================== SKILL: TORNADO ==================
 func perform_tornado_skill():
 	if tornado_on_cooldown:
 		print("Tornado masih cooldown.")
@@ -63,15 +66,22 @@ func perform_tornado_skill():
 	get_tree().current_scene.add_child(tornado_instance)
 	tornado_instance.start_skill(player.global_transform.origin)
 
-	# Mulai cooldown
-	start_tornado_cooldown()
+	# Cooldown
+	start_cooldown("tornado")
 
+
+
+# ================== SKILL: SUMMON ==================
 func perform_summon(parent: Node, position: Vector3, count: int = 1):
+	if summon_on_cooldown:
+		print("Summon masih cooldown.")
+		return
+
 	if not wraith_status:
 		print("Enemy status tidak tersedia.")
 		return
 
-	if wraith_status.mp < summon_cost:
+	if wraith_status.mp < SUMMON_COST:
 		print("MP tidak cukup untuk summon.")
 		return
 
@@ -79,15 +89,13 @@ func perform_summon(parent: Node, position: Vector3, count: int = 1):
 		print("Scene goblin tidak tersedia.")
 		return
 
-	# Batas jumlah summon
-	if active_summons.size() >= max_summons:
+	if active_summons.size() >= MAX_SUMMONS:
 		print("Jumlah summon maksimal tercapai.")
 		return
 
-	var summonable_count = min(count, max_summons - active_summons.size())
+	var summonable_count = min(count, MAX_SUMMONS - active_summons.size())
 
-	# Kurangi MP satu kali untuk seluruh batch
-	wraith_status.consume_mana(summon_cost)
+	wraith_status.consume_mana(SUMMON_COST)
 
 	for i in range(summonable_count):
 		var summon_instance = summon_scene.instantiate()
@@ -98,17 +106,24 @@ func perform_summon(parent: Node, position: Vector3, count: int = 1):
 
 			active_summons.append(summon_instance)
 
-			# Hapus dari list jika keluar dari tree (mati)
 			summon_instance.tree_exited.connect(func():
-				if summon_instance in active_summons:
-					active_summons.erase(summon_instance)
+				active_summons.erase(summon_instance)
 			)
 
-# cooldown config
-func start_tornado_cooldown():
-	tornado_on_cooldown = true
+	# Cooldown
+	start_cooldown("summon")
 
-	await get_tree().create_timer(tornado_cooldown).timeout
 
-	tornado_on_cooldown = false
-	print("Tornado skill siap digunakan lagi.")
+# ================== GENERIC COOLDOWN HANDLER ==================
+func start_cooldown(skill_name: String):
+	match skill_name:
+		"tornado":
+			tornado_on_cooldown = true
+			await get_tree().create_timer(TORNADO_COOLDOWN).timeout
+			tornado_on_cooldown = false
+			print("Tornado skill siap digunakan lagi.")
+		"summon":
+			summon_on_cooldown = true
+			await get_tree().create_timer(SUMMON_COOLDOWN).timeout
+			summon_on_cooldown = false
+			print("Summon skill siap digunakan lagi.")

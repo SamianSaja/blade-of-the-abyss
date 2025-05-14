@@ -1,50 +1,52 @@
 extends Node
 
-# Status Boss
+# === STATUS DASAR ===
 var max_hp: int = 500
-var hp: int = 500
+var hp: int = max_hp
 
 var max_mp: int = 200
-var mp: int = 200
+var mp: int = max_mp
 
 var max_tp: int = 100
 var tp: int = 0
 
-# Untuk referensi ke healthbar atau UI boss (optional)
-var wraith_status = Control
+# === OPSIONAL: Referensi ke UI bar / status bar boss ===
+var wraith_status_ui: Control = null
 
-func set_wraith_status(status):
-	wraith_status = status
+# === SETTER UNTUK UI STATUS BAR ===
+func set_wraith_status(ui_status_node: Control) -> void:
+	wraith_status_ui = ui_status_node
 	update_status()
 
-func take_damage(amount: int):
+# === FUNGSI UTAMA ===
+func take_damage(amount: int) -> void:
 	hp = clamp(hp - amount, 0, max_hp)
 	update_status()
 
-func heal(amount: int):
+func heal(amount: int) -> void:
 	hp = clamp(hp + amount, 0, max_hp)
 	update_status()
 
-func consume_mana(amount: int):
+func consume_mana(amount: int) -> void:
 	mp = clamp(mp - amount, 0, max_mp)
 	update_status()
 
-func gain_mana(amount: int):
+func gain_mana(amount: int) -> void:
 	mp = clamp(mp + amount, 0, max_mp)
 	update_status()
 
-func consume_tp(amount: int):
+func consume_tp(amount: int) -> void:
 	tp = clamp(tp - amount, 0, max_tp)
 	update_status()
 
-func gain_tp(amount: int):
+func gain_tp(amount: int) -> void:
 	tp = clamp(tp + amount, 0, max_tp)
 	update_status()
 
 func is_dead() -> bool:
 	return hp <= 0
 
-func update_status():
-	if wraith_status and wraith_status.has_method("set_status"):
-		wraith_status.set_status(hp, max_hp, mp, max_mp)
-		#print(wraith_status, "status")
+# === UPDATE UI STATUS BAR JIKA TERSEDIA ===
+func update_status() -> void:
+	if wraith_status_ui and wraith_status_ui.has_method("set_status"):
+		wraith_status_ui.set_status(hp, max_hp, mp, max_mp, tp, max_tp)
