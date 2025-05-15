@@ -44,3 +44,7 @@ shape = SubResource("CapsuleShape3D_a0s6h")
 [node name="SummonPoints" type="Node3D" parent="."]
 
 [node name="Marker3D" type="Marker3D" parent="SummonPoints"]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

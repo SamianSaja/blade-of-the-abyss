@@ -2,3 +2,5 @@
 .godot/
 /android/
 .vscode/
+venv/
+ML/__pycache__/

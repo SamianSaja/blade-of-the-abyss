@@ -24,6 +24,11 @@ var current_attack_anim := ""
 
 var player: Node3D = null
 
+var drl_action = {}
+var drl_interval := 0.5 # seconds between DRL queries
+var drl_time_accum := 0.0
+
+@onready var http_request := $HTTPRequest
 
 func _ready():
 	camera = get_viewport().get_camera_3d()
@@ -34,22 +39,60 @@ func _ready():
 	add_child(wraith_damage_system)
 	wraith_damage_system.set_wraith_status(wraith_status)
 	add_to_group("wraith")
+	http_request.request_completed.connect(_on_HTTPRequest_request_completed)
 
 func _process(delta):
 	if health_bar and camera:
-		var head_offset = Vector3(-1.5, 2.5, 0) # Tinggi di atas model
+		var head_offset = Vector3(-1.5, 2.5, 0)
 		var world_pos = global_transform.origin + head_offset
 		var screen_pos = camera.unproject_position(world_pos)
 		health_bar.global_position = screen_pos
 		wraith_status.set_wraith_status(health_bar)
-		#wraith_damage_system.set_enemy_status(health_bar)
-		
 
 func _physics_process(delta):
+	drl_time_accum += delta
+	if drl_time_accum >= drl_interval:
+		send_drl_request()
+		drl_time_accum = 0.0
+
 	handle_ai()
 	move_enemy(delta)
 	play_animation()
 	rotate_model()
+
+func send_drl_request():
+	var state = build_state_dict()
+	var json = JSON.new()
+	var json_state = json.stringify(state)
+	http_request.request(
+		"http://127.0.0.1:8000/predict",
+		["Content-Type: application/json"],
+		HTTPClient.METHOD_POST,
+		json_state
+	)
+
+func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+	if response_code == 200:
+		var json = JSON.new()
+		if json.parse(body.get_string_from_utf8()) == OK:
+			drl_action = json.get_data()
+		else:
+			drl_action = {}
+	else:
+		drl_action = {}
+
+func build_state_dict() -> Dictionary:
+	var to_player = player.global_transform.origin - global_transform.origin
+	var distance = to_player.length()
+	return {
+		"enemy_pos": [global_transform.origin.x, global_transform.origin.y, global_transform.origin.z],
+		"player_pos": [player.global_transform.origin.x, player.global_transform.origin.y, player.global_transform.origin.z],
+		"hp": wraith_status.hp if wraith_status else 0,
+		"mp": wraith_status.mp if wraith_status else 0,
+		"distance": distance,
+		"can_summon": wraith_status and wraith_damage_system and wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown,
+		"can_tornado": wraith_damage_system and not wraith_damage_system.tornado_on_cooldown and distance <= 10
+	}
 
 func handle_ai():
 	if not is_instance_valid(player) or is_attacking:
@@ -58,32 +101,38 @@ func handle_ai():
 
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
+	print(drl_action, " drll")
 
-	# --- Skill Decision ---
-	if wraith_status and wraith_damage_system:
-		# ✅ Prioritaskan Summon jika MP cukup dan belum max summon
-		if wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown:
-			start_summon()
-
-		# ✅ Gunakan ultimate jika player hampir mati
-		#if player.has_method("get_hp") and player.get_hp() <= 30:
-			#start_attack("wraith-ultimate")
-			#return
-
-		# ✅ Gunakan tornado jika cukup dekat
-		if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
-			print("tornadoo")
-			start_tornado()
-
-	# --- Basic Attack atau Movement ---
-	if distance <= attack_range and distance >= stop_distance:
-		direction = Vector3.ZERO
-		start_attack("wraith-magic-attack")
-	elif distance < stop_distance:
-		direction = -to_player.normalized()  # Mundur
+	if drl_action.has("action"):
+		match drl_action["action"]:
+			"summon":
+				start_summon()
+			"tornado":
+				start_tornado()
+			"attack":
+				direction = Vector3.ZERO
+				start_attack("wraith-magic-attack")
+			"retreat":
+				direction = -to_player.normalized()
+			"chase":
+				direction = to_player.normalized()
+			_:
+				pass
 	else:
-		direction = to_player.normalized()   # Kejar
-
+		# Fallback logic
+		print("konvensional")
+		if wraith_status and wraith_damage_system:
+			if wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown:
+				start_summon()
+			if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
+				start_tornado()
+		if distance <= attack_range and distance >= stop_distance:
+			direction = Vector3.ZERO
+			start_attack("wraith-magic-attack")
+		elif distance < stop_distance:
+			direction = -to_player.normalized()
+		else:
+			direction = to_player.normalized()
 
 func move_enemy(delta):
 	if is_attacking:
