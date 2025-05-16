@@ -18,12 +18,12 @@ transform = Transform3D(1.8277, 0, 0, 0, 1.8277, 0, 0, 0, 1.8277, 0, 0, 0)
 script = ExtResource("1_fovww")
 
 [node name="TornadoEffect" parent="." instance=ExtResource("1_re1cq")]
-transform = Transform3D(0.197461, 0, 0, 0, 0.197461, 0, 0, 0, 0.197461, 0, 0, 0)
+transform = Transform3D(0.305203, 0, 0, 0, 0.305203, 0, 0, 0, 0.305203, 0, 0, 0)
 
 [node name="HitArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea"]
-transform = Transform3D(2.17703, 0, 0, 0, 2.17703, 0, 0, 0, 2.17703, 0, 0, 0)
+transform = Transform3D(2.97774, 0, 0, 0, 2.97774, 0, 0, 0, 2.97774, 0, 0, 0)
 shape = SubResource("SphereShape3D_re1cq")
 
 [node name="TelegraphDecal" type="MeshInstance3D" parent="."]

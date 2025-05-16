@@ -40,6 +40,8 @@ func _ready():
 	wraith_damage_system.set_wraith_status(wraith_status)
 	add_to_group("wraith")
 	http_request.request_completed.connect(_on_HTTPRequest_request_completed)
+	
+	wraith_damage_system.owner = self
 
 func _process(delta):
 	if health_bar and camera:
@@ -130,6 +132,8 @@ func handle_ai():
 		if wraith_status and wraith_damage_system:
 			if wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown:
 				start_summon()
+			if not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
+				start_full_tornado()
 			if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
 				start_tornado()
 		if distance <= attack_range and distance >= stop_distance:
@@ -193,6 +197,13 @@ func start_tornado():
 	wraith_damage_system.perform_tornado_skill()
 	is_attacking = false
 
+func start_full_tornado():
+	is_attacking = true
+	anim_player.play("wraith-magic-attack")
+	await anim_player.animation_finished
+	wraith_damage_system.perform_full_tornado_skill(10, 0.5)
+	is_attacking = false
+
 func start_summon():
 	is_attacking = true
 	current_attack_anim = "wraith-magic-attack" # Pastikan kamu punya animasi summon
@@ -200,7 +211,7 @@ func start_summon():
 	anim_player.play(current_attack_anim)
 
 	# Jalankan summon setelah delay kecil supaya animasi jalan
-	await get_tree().create_timer(0.8).timeout
+	await get_tree().create_timer(1).timeout
 
 	if wraith_damage_system:
 		wraith_damage_system.perform_summon(get_parent(), global_transform.origin)

@@ -15,7 +15,9 @@ var summon_scene: PackedScene = preload("res://scenes/characters/EnemyGoblin.tsc
 # ================== TORNADO CONFIG ==================
 const TORNADO_COST: float = 5.0
 const TORNADO_COOLDOWN: float = 8.0
+const FULL_TORNADO_COOLDOWN: float = 16.0
 var tornado_on_cooldown: bool = false
+var full_tornado_on_cooldown: bool = false
 var tornado_scene: PackedScene = preload("res://scenes/characters/Effects/WraithTornadoSkill.tscn")
 
 # ================== REFERENCES ==================
@@ -76,7 +78,41 @@ func perform_tornado_skill():
 	# Cooldown
 	start_cooldown("tornado")
 
+# ================== SKILL: FULL AREA TORNADO (ULTIMATE) ==================
+func perform_full_tornado_skill(count: int = 5, radius: float = 10.0):
+	if full_tornado_on_cooldown:
+		print("Tornado masih cooldown.")
+		return
 
+	if not tornado_scene:
+		print("Scene tornado tidak tersedia.")
+		return
+	
+	if wraith_status.mp < TORNADO_COST * count:
+		print("MP tidak cukup untuk full tornado.")
+		return
+
+	wraith_status.consume_mana(TORNADO_COST * count)
+
+	var origin = owner.global_transform.origin # Posisi Wraith
+
+	for i in range(count):
+		var random_offset = Vector3(
+			randf_range(-radius, radius),
+			0,
+			randf_range(-radius, radius)
+		)
+		var spawn_position = origin + random_offset
+
+		var tornado_instance = tornado_scene.instantiate()
+		get_tree().current_scene.add_child(tornado_instance)
+		tornado_instance.start_skill_2(spawn_position)
+
+		# Set pergerakan berkeliling (acak)
+		if tornado_instance.has_method("set_random_movement"):
+			tornado_instance.set_random_movement()
+	
+	start_cooldown("full_tornado")
 
 # ================== SKILL: SUMMON ==================
 func perform_summon(parent: Node, position: Vector3, count: int = 1):
@@ -128,6 +164,11 @@ func start_cooldown(skill_name: String):
 			tornado_on_cooldown = true
 			await get_tree().create_timer(TORNADO_COOLDOWN).timeout
 			tornado_on_cooldown = false
+			print("Tornado skill siap digunakan lagi.")
+		"full_tornado":
+			full_tornado_on_cooldown = true
+			await get_tree().create_timer(FULL_TORNADO_COOLDOWN).timeout
+			full_tornado_on_cooldown = false
 			print("Tornado skill siap digunakan lagi.")
 		"summon":
 			summon_on_cooldown = true
