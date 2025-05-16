@@ -24,6 +24,8 @@ var exp_to_next_level: int = 100
 # ==================== UI Reference ====================
 var player_status_bar: CanvasLayer
 
+var self_damage: int = 0
+
 
 # ==================== Setter ====================
 func set_player_status(player_status):
@@ -34,6 +36,7 @@ func set_player_status(player_status):
 # ==================== Combat Mechanics ====================
 func take_damage(amount: int):
 	var reduced_damage = max(amount - defense, 1)
+	self_damage = reduced_damage
 	hp = clamp(hp - reduced_damage, 0, max_hp)
 	update_status_player()
 

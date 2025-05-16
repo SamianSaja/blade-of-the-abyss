@@ -65,7 +65,7 @@ func send_drl_request():
 	var json = JSON.new()
 	var json_state = json.stringify(state)
 	http_request.request(
-		"http://127.0.0.1:8000/predict",
+		"http://192.168.0.106:8000/predict",
 		["Content-Type: application/json"],
 		HTTPClient.METHOD_POST,
 		json_state
@@ -85,13 +85,18 @@ func build_state_dict() -> Dictionary:
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
 	return {
-		"enemy_pos": [global_transform.origin.x, global_transform.origin.y, global_transform.origin.z],
-		"player_pos": [player.global_transform.origin.x, player.global_transform.origin.y, player.global_transform.origin.z],
-		"hp": wraith_status.hp if wraith_status else 0,
-		"mp": wraith_status.mp if wraith_status else 0,
+		"enemy_hp": wraith_status.hp if wraith_status else 0,
+		"enemy_mp": wraith_status.mp if wraith_status else 0,
+		"player_hp": player.kyle_status.hp if player.kyle_status.hp else 100, # Adjust as needed
+		"player_mp": player.kyle_status.mp if player.kyle_status.mp else 100, # Adjust as needed
 		"distance": distance,
-		"can_summon": wraith_status and wraith_damage_system and wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown,
-		"can_tornado": wraith_damage_system and not wraith_damage_system.tornado_on_cooldown and distance <= 10
+		"player_dps": player.kyle_status.self_damage if player.kyle_status.self_damage else 10, # Adjust as needed
+		"damage_taken": wraith_status.self_damage if wraith_status and wraith_status.self_damage else 0,
+		"can_summon": wraith_status and wraith_damage_system and wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and wraith_damage_system.SUMMON_COOLDOWN == 0,
+		"can_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and wraith_damage_system.TORNADO_COOLDOWN == 0 and distance <= 10,
+		"summon_count": wraith_damage_system.active_summons.size() if wraith_damage_system else 0,
+		"tornado_cd": wraith_damage_system.TORNADO_COOLDOWN if wraith_damage_system else 0,
+		"summon_cd": wraith_damage_system.SUMMON_COOLDOWN if wraith_damage_system else 0
 	}
 
 func handle_ai():
@@ -102,6 +107,7 @@ func handle_ai():
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
 	print(drl_action, " drll")
+	print(player.kyle_status.self_damage, "player")
 
 	if drl_action.has("action"):
 		match drl_action["action"]:

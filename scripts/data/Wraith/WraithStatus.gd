@@ -10,6 +10,8 @@ var mp: int = max_mp
 var max_tp: int = 100
 var tp: int = 0
 
+var self_damage: int = 0
+
 # === OPSIONAL: Referensi ke UI bar / status bar boss ===
 var wraith_status_ui: Control = null
 
@@ -20,6 +22,7 @@ func set_wraith_status(ui_status_node: Control) -> void:
 
 # === FUNGSI UTAMA ===
 func take_damage(amount: int) -> void:
+	self_damage = amount
 	hp = clamp(hp - amount, 0, max_hp)
 	update_status()
 

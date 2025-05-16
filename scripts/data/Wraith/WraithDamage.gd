@@ -13,6 +13,7 @@ var summon_on_cooldown: bool = false
 var summon_scene: PackedScene = preload("res://scenes/characters/EnemyGoblin.tscn")
 
 # ================== TORNADO CONFIG ==================
+const TORNADO_COST: float = 5.0
 const TORNADO_COOLDOWN: float = 8.0
 var tornado_on_cooldown: bool = false
 var tornado_scene: PackedScene = preload("res://scenes/characters/Effects/WraithTornadoSkill.tscn")
@@ -61,6 +62,12 @@ func perform_tornado_skill():
 	if not tornado_scene:
 		print("Scene tornado tidak tersedia.")
 		return
+	
+	if wraith_status.mp < TORNADO_COST:
+		print("MP tidak cukup untuk tornado.")
+		return
+	
+	wraith_status.consume_mana(TORNADO_COST)
 
 	var tornado_instance = tornado_scene.instantiate()
 	get_tree().current_scene.add_child(tornado_instance)
