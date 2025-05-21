@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cddf6bafa3h7m"]
+
+[ext_resource type="PackedScene" uid="uid://b1bs5vi3i4c2k" path="res://scenes/characters/HumanModificationModel.tscn" id="1_de1f2"]
+
+[node name="EnemyHumanModification" type="CharacterBody3D"]
+
+[node name="HumanModificationModel" parent="." instance=ExtResource("1_de1f2")]

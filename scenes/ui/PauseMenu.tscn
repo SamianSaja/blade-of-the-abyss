@@ -107,9 +107,18 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 [node name="lines2" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 1346.59
-offset_top = 199.195
+offset_top = 209.155
 offset_right = 1371.59
-offset_bottom = 240.195
+offset_bottom = 250.155
+scale = Vector2(20.1814, 0.0439313)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
+[node name="lines3" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 1346.59
+offset_top = 501.972
+offset_right = 1371.59
+offset_bottom = 542.972
 scale = Vector2(20.1814, 0.0439313)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 

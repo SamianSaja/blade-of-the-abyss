@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://da3ndligcfr6y"]
+
+[ext_resource type="PackedScene" uid="uid://dpjlvlpd0jco7" path="res://scenes/characters/CaveGuardModel.tscn" id="1_b3chu"]
+
+[node name="EnemyCaveGuard" type="CharacterBody3D"]
+
+[node name="CaveGuardModel" parent="." instance=ExtResource("1_b3chu")]

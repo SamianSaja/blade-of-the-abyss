@@ -19,8 +19,6 @@ var is_attacking := false
 var player: Node3D = null
 
 func _ready():
-	camera = get_viewport().get_camera_3d()
-	
 	detection_area.body_entered.connect(_on_body_entered)
 	detection_area.body_exited.connect(_on_body_exited)
 	current_health = max_health
@@ -28,6 +26,7 @@ func _ready():
 	add_to_group("goblin")
 
 func _process(delta):
+	camera = get_viewport().get_camera_3d()
 	if health_bar and camera:
 		var head_offset = Vector3(-1.5, 2.5, 0) # Tinggi di atas model
 		var world_pos = global_transform.origin + head_offset

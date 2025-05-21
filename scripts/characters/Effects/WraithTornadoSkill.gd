@@ -12,7 +12,7 @@ extends Node3D
 var player: Node3D
 var is_moving = false
 var move_direction = Vector3.ZERO
-@export var move_speed := 4.0
+@export var move_speed := 10.0
 
 func _ready():
 	hit_area.body_entered.connect(_on_HitArea_body_entered)
@@ -40,7 +40,7 @@ func start_skill(target_position: Vector3):
 
 	# 🔥 Mainkan animasi muncul
 	if anim_player.has_animation("Animation"):
-		anim_player.speed_scale = 5
+		anim_player.speed_scale = 10
 		var anim = anim_player.get_animation("Animation")
 		anim.loop = true  # ✅ This is correct
 		anim_player.play("Animation")

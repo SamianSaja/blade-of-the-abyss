@@ -31,8 +31,6 @@ var drl_time_accum := 0.0
 @onready var http_request := $HTTPRequest
 
 func _ready():
-	camera = get_viewport().get_camera_3d()
-
 	detection_area.body_entered.connect(_on_body_entered)
 	detection_area.body_exited.connect(_on_body_exited)
 	anim_player.animation_finished.connect(_on_animation_finished)
@@ -44,6 +42,7 @@ func _ready():
 	wraith_damage_system.owner = self
 
 func _process(delta):
+	var camera = get_viewport().get_camera_3d()
 	if health_bar and camera:
 		var head_offset = Vector3(-1.5, 2.5, 0)
 		var world_pos = global_transform.origin + head_offset
@@ -67,7 +66,7 @@ func send_drl_request():
 	var json = JSON.new()
 	var json_state = json.stringify(state)
 	http_request.request(
-		"http://192.168.0.106:8000/predict",
+		"http://192.168.71.61:8000/predict",
 		["Content-Type: application/json"],
 		HTTPClient.METHOD_POST,
 		json_state

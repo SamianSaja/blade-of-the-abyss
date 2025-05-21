@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb8mfeqce7a3w"]
+
+[ext_resource type="PackedScene" uid="uid://bg2fu0bm2kqsj" path="res://scenes/world/WorldPortal.tscn" id="1_372j3"]
+[ext_resource type="Texture2D" uid="uid://bhc03vhpl480h" path="res://assets/environments/world-1/world-1.png" id="1_a42xn"]
+
+[node name="World1" type="Node3D"]
+
+[node name="WorldPortal" parent="." instance=ExtResource("1_372j3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.6054, 0.450794, -33.5971)
+target_world_name = "altar_room"
+
+[node name="Background" type="Sprite3D" parent="."]
+transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
+texture = ExtResource("1_a42xn")

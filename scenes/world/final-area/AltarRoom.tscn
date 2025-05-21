@@ -83,3 +83,5 @@ spot_angle = 74.09
 spot_angle_attenuation = 0.0853775
 
 [node name="EnemyWraithSpawn" type="Marker3D" parent="."]
+
+[node name="SupportSpawn" type="Marker3D" parent="."]

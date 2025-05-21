@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1bs5vi3i4c2k"]
+
+[ext_resource type="PackedScene" uid="uid://ymshwkqtmpi1" path="res://assets/characters/human-modification/human-modification-karakter.glb" id="1_gg8nd"]
+
+[node name="HumanModificationModel" instance=ExtResource("1_gg8nd")]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, -0.0101052, 0.999949, 0, -0.999949, -0.0101052, 0.0704639, 11.7092, -0.0603476)
+light_energy = 16.0
+light_indirect_energy = 0.0
+spot_range = 17.0

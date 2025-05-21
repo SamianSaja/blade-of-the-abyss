@@ -1,10 +1,17 @@
 extends Control
 
 @export var target_scene_path: String
+@onready var blank: ColorRect = $FadeRect
+
 
 func _ready():
-	$FadeRect.visible = true
-	$FadeRect.modulate.a = 1.0
+	set_process_mode(Node.PROCESS_MODE_ALWAYS)
+	blank.set_process_mode(Node.PROCESS_MODE_ALWAYS)
+	$HBoxContainer.set_process_mode(Node.PROCESS_MODE_ALWAYS)
+	$HBoxContainer/AnimatedSprite2D.set_process_mode(Node.PROCESS_MODE_ALWAYS)
+
+	blank.visible = true
+	blank.modulate.a = 1.0
 
 	await fade_in()  # Fade masuk dari hitam ke transparan
 
