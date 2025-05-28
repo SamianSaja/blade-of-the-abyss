@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca0jpfh8tm8f6"]
+
+[ext_resource type="PackedScene" uid="uid://bg2fu0bm2kqsj" path="res://scenes/world/WorldPortal.tscn" id="1_ad7mt"]
+[ext_resource type="Texture2D" uid="uid://d3fmb0u3fipqi" path="res://assets/environments/world-3/world-3-final.png" id="2_wii1r"]
+
+[node name="World3-final" type="Node3D"]
+
+[node name="WorldPortal" parent="." instance=ExtResource("1_ad7mt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.93052, 0.450794, -2.8163)
+target_world_name = "altar_room"
+
+[node name="Background" type="Sprite3D" parent="."]
+transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
+texture = ExtResource("2_wii1r")
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5949, 1, 44.7435)

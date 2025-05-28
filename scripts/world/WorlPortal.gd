@@ -8,8 +8,8 @@ func _ready():
 	connect("body_entered", _on_body_entered)
 
 func _on_body_entered(body):
-	if body.name == "Player":
+	if body is CharacterBody3D and body.is_in_group("player"):
 		var root = get_tree().get_root()
-		var game_node = root.get_node("Main")  # Ganti "Main" dengan nama node utama kamu
+		var game_node = root.get_node("Main")
 		if game_node and game_node.has_method("change_world"):
 			game_node.change_world(target_world_name, target_spawn_point_name)

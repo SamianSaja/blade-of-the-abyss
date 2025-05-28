@@ -44,6 +44,9 @@ func start_skill(target_position: Vector3):
 		var anim = anim_player.get_animation("Animation")
 		anim.loop = true  # ✅ This is correct
 		anim_player.play("Animation")
+		await get_tree().create_timer(0.3).timeout
+		$TornadoSound.pitch_scale = 10
+		$TornadoSound.play()
 
 
 	await get_tree().create_timer(duration).timeout

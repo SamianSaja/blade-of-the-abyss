@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7ecrjirmrhpt"]
+[gd_scene load_steps=9 format=3 uid="uid://b7ecrjirmrhpt"]
 
 [ext_resource type="PackedScene" uid="uid://3ivy46fbekri" path="res://scenes/characters/GoblinModel.tscn" id="1_nr2s4"]
 [ext_resource type="Script" uid="uid://cofhren3rwiih" path="res://scripts/characters/EnemyGoblin.gd" id="1_wnvpg"]
 [ext_resource type="Script" uid="uid://cijy73s3k7vdl" path="res://scripts/ui/GoblinStatusBar.gd" id="2_yrscn"]
 [ext_resource type="Texture2D" uid="uid://cgkj434ydjs15" path="res://assets/ui/bar-empty.png" id="3_wnvpg"]
 [ext_resource type="Texture2D" uid="uid://dqkk48ro04n2" path="res://assets/ui/bar-hp.png" id="4_xff75"]
+[ext_resource type="AudioStream" uid="uid://buvhef7j23xkf" path="res://assets/sounds/effects/zombie-attack.mp3" id="6_xff75"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_02rm2"]
 
@@ -42,3 +43,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.899113, 0)
 shape = SubResource("CapsuleShape3D_wnvpg")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="AttackSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_xff75")

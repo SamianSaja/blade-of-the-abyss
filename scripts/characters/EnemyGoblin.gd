@@ -75,6 +75,8 @@ func start_attack():
 	is_attacking = true
 	anim_player.speed_scale = 0.5	
 	anim_player.play("monster-attack")
+	await get_tree().create_timer(0.3).timeout
+	$AttackSound.play()
 
 func _on_animation_finished(anim_name: String):
 	if anim_name == "monster-attack":

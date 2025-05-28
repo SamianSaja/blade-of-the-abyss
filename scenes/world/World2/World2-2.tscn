@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvo38g1crwpba"]
+
+[ext_resource type="PackedScene" uid="uid://bg2fu0bm2kqsj" path="res://scenes/world/WorldPortal.tscn" id="1_17tdl"]
+[ext_resource type="Texture2D" uid="uid://e13x15emmaal" path="res://assets/environments/world-2/world-2-2.png" id="2_15bf3"]
+
+[node name="World2-2" type="Node3D"]
+
+[node name="WorldPortal" parent="." instance=ExtResource("1_17tdl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 61.4154, 0.450794, -46.3569)
+target_world_name = "world_3"
+
+[node name="Background" type="Sprite3D" parent="."]
+transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
+texture = ExtResource("2_15bf3")
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.7822, 1, 39.412)

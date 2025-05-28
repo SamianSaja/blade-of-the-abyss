@@ -191,6 +191,8 @@ func _on_attack_pressed():
 		current_attack_anim = "kyle-basic-attack"
 		anim_player.speed_scale = 1.5
 		anim_player.play(current_attack_anim)
+		await get_tree().create_timer(0.1).timeout
+		$AttackEffectSound.play()
 		velocity = Vector3.ZERO
 
 func _on_defend_pressed():
@@ -208,6 +210,8 @@ func _on_skill_one_pressed():
 		current_attack_anim = "kyle-slash-attack"
 		anim_player.speed_scale = 1.5
 		anim_player.play(current_attack_anim)
+		await get_tree().create_timer(0.5).timeout
+		$SkillOneEffectSound.play()
 		velocity = Vector3.ZERO
 
 func _on_skill_two_pressed():
@@ -216,6 +220,8 @@ func _on_skill_two_pressed():
 		current_attack_type = "skill-two"
 		current_attack_anim = "kyle-broken-slash"
 		anim_player.play(current_attack_anim)
+		await get_tree().create_timer(1.5).timeout
+		$SkillTwoEffectSound.play()
 		velocity = Vector3.ZERO
 
 func _on_skill_three_pressed():

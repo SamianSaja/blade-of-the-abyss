@@ -11,8 +11,59 @@ extends Node
 # World registry
 var worlds := {
 	"altar_room": "res://scenes/world/final-area/AltarRoom.tscn",
-	"world_1": "res://scenes/world/World1/World1.tscn"
+	"world_1": "res://scenes/world/World1/World1.tscn",
+	"world_2": "res://scenes/world/World2/World2.tscn",
+	"world_2_2": "res://scenes/world/World2/World2-2.tscn",
+	"world_3": "res://scenes/world/World3/World3.tscn",
+	"world_3_2": "res://scenes/world/World3/World3-2.tscn",
+	"world_3_3": "res://scenes/world/World3/World3-3.tscn",
+	"world_3_final": "res://scenes/world/World3/World3-final.tscn",
 }
+
+var camera_limits_by_world = {
+	# max_z = batas bawah, min_x = batas kiri, min_z = batas atas, max_x = batas kanan
+	"world_1": {
+		"min_x": -15.0, "max_x": 50.0,
+		"min_z": -15.0, "max_z": 40.0,
+		"fixed_y": 15.0
+	},
+	"world_2": {
+		"min_x": -15.0, "max_x": 45.0,
+		"min_z": -13.0, "max_z": 40.0,
+		"fixed_y": 18.0
+	},
+	"world_2_2": {
+		"min_x": -65.0, "max_x": 60.0,
+		"min_z": -50.0, "max_z": 120.0,
+		"fixed_y": 28.0
+	},
+	"world_3": {
+		"min_x": -45.0, "max_x": 50.0,
+		"min_z": -15.0, "max_z": 43.0,
+		"fixed_y": 15.0
+	},
+	"world_3_2": {
+		"min_x": -15.0, "max_x": 50.0,
+		"min_z": -15.0, "max_z": 45.0,
+		"fixed_y": 15.0
+	},
+	"world_3_3": {
+		"min_x": -15.0, "max_x": 50.0,
+		"min_z": -15.0, "max_z": 45.0,
+		"fixed_y": 15.0
+	},
+	"world_3_final": {
+		"min_x": -15.0, "max_x": 50.0,
+		"min_z": -15.0, "max_z": 45.0,
+		"fixed_y": 15.0
+	},
+	"altar_room": {
+		"min_x": -15.0, "max_x": 50.0,
+		"min_z": -15.0, "max_z": 45.0,
+		"fixed_y": 15.0
+	}
+}
+
 
 # Scene instances
 var player_instance: Node3D
@@ -33,7 +84,7 @@ func _ready():
 	pause_menu_button.connect("pause_menu_button_pressed", Callable(self, "toggle_pause"))
 
 	setup_pause_menu()
-	load_world("world_1")  # Default world
+	load_world("world_3")  # Default world
 
 func load_world(world_name: String):
 	if world_instance:
@@ -89,8 +140,6 @@ func change_world(world_name: String, spawn_point_name: String = "PlayerSpawn"):
 	get_tree().paused = false
 	await loading.fade_out()
 	loading.queue_free()
-
-
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -230,7 +279,7 @@ func spawn_player(world_name: String):
 		player_instance.global_transform.origin = Vector3.ZERO
 	add_child(player_instance)
 
-	spawn_camera()
+	spawn_camera(world_name)
 	spawn_world_enemy(world_name)
 
 	if player_instance.kyle_status.has_method("set_player_status") and player_status_bar:
@@ -250,11 +299,12 @@ func spawn_player_with_custom_spawn(world_name: String, spawn_point_name: String
 		player_instance.global_transform.origin = Vector3.ZERO
 
 	add_child(player_instance)
-	spawn_camera()
+	spawn_camera(world_name)
 	spawn_world_enemy(world_name)
 
 	if player_instance.kyle_status.has_method("set_player_status") and player_status_bar:
 		player_instance.kyle_status.set_player_status(player_status_bar)
+	
 	spawn_support(world_name)
 
 func spawn_support(world_name: String):
@@ -276,13 +326,20 @@ func spawn_support(world_name: String):
 		support_instance.nora_status.set_support_status(support_status_bar)
 
 
-func spawn_camera():
+func spawn_camera(world_name: String):
 	if camera_instance:
 		camera_instance.queue_free()
 
 	camera_instance = camera_scene.instantiate()
 	camera_instance.set_script(load("res://scripts/CameraFollow.gd"))
 	camera_instance.player_path = player_instance.get_path()
+	if camera_limits_by_world.has(world_name):
+		var limits = camera_limits_by_world[world_name]
+		camera_instance.min_x = limits["min_x"]
+		camera_instance.max_x = limits["max_x"]
+		camera_instance.min_z = limits["min_z"]
+		camera_instance.max_z = limits["max_z"]
+		camera_instance.fixed_y = limits["fixed_y"]
 	add_child(camera_instance)
 
 func spawn_world_enemy(world_name: String):

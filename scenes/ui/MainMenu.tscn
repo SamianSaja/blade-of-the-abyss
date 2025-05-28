@@ -1,15 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://dcpwwff758u2c"]
+[gd_scene load_steps=8 format=3 uid="uid://dcpwwff758u2c"]
 
 [ext_resource type="Script" uid="uid://dqk3d6u7psx0p" path="res://scripts/ui/MainMenu.gd" id="1_2ysvc"]
 [ext_resource type="Texture2D" uid="uid://gr5eclx1im10" path="res://assets/ui/bg-main-menu.png" id="2_2ysvc"]
 [ext_resource type="Texture2D" uid="uid://bk254j5url6ej" path="res://assets/ui/sword-icon.png" id="2_iwbf0"]
+[ext_resource type="VideoStream" uid="uid://dtc5lr4utfm2c" path="res://assets/ui/main-menu.ogv" id="2_xpiny"]
 [ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="3_2ysvc"]
+[ext_resource type="AudioStream" uid="uid://dtxn72gx4xio0" path="res://assets/sounds/backsong/main-menu.mp3" id="6_bhu4a"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6jbdy"]
 texture = ExtResource("2_2ysvc")
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_2ysvc")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.87594, 1.39931)
+stream = ExtResource("2_xpiny")
+autoplay = true
+loop = true
 
 [node name="Background" type="Label" parent="."]
 offset_right = 1920.0
@@ -130,3 +141,7 @@ theme_override_fonts/font = ExtResource("3_2ysvc")
 theme_override_font_sizes/font_size = 48
 text = "Exit Game"
 flat = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_bhu4a")
+autoplay = true
