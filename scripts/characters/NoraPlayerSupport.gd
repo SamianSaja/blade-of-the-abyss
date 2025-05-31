@@ -23,6 +23,7 @@ var target_enemy: Node3D = null
 
 
 func _ready():
+	add_to_group("support")
 	# status and damage
 	add_child(nora_status)
 	add_child(nora_damage_system)

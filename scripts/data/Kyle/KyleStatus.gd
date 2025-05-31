@@ -1,12 +1,12 @@
 extends Node
 
 # ==================== Basic Resources ====================
-var hp: int = 200
-var mp: int = 100
+var hp: int = 500
+var mp: int = 200
 var tp: int = 100
 
-var max_hp: int = 200
-var max_mp: int = 100
+var max_hp: int = 500
+var max_mp: int = 200
 var max_tp: int = 100
 
 # ==================== Core Stats ====================
@@ -80,7 +80,6 @@ func level_up():
 	power += 2
 	magic += 2
 	defense += 1
-	speed += 1
 
 	# Pulihkan
 	hp = max_hp

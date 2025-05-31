@@ -1,12 +1,16 @@
 extends CanvasLayer
 
-@onready var hp_bar = $MarginContainer/VBoxContainer/HpBar
-@onready var mp_bar = $MarginContainer/VBoxContainer/MpBar
-@onready var tp_bar = $MarginContainer/VBoxContainer/TpBar
+@onready var hp_bar = $MarginContainer/HBoxContainer/VBoxContainer/HpBar
+@onready var mp_bar = $MarginContainer/HBoxContainer/VBoxContainer/MpBar
+@onready var tp_bar = $MarginContainer/HBoxContainer/VBoxContainer/TpBar
+@onready var exp_bar = $MarginContainer/HBoxContainer/VBoxContainer/ExpBar
 
 # Komentar dulu sampai node tersedia di scene
-# @onready var level_label = $MarginContainer/VBoxContainer/LevelLabel
-# @onready var exp_bar = $MarginContainer/VBoxContainer/ExpBar
+@onready var level_label = $MarginContainer/HBoxContainer/VBoxContainerLabel/LevelLabel
+@onready var hp_label = $MarginContainer/HBoxContainer/VBoxContainerLabel/HpLabel
+@onready var mp_label = $MarginContainer/HBoxContainer/VBoxContainerLabel/MpLabel
+@onready var tp_label = $MarginContainer/HBoxContainer/VBoxContainerLabel/TpLabel
+@onready var exp_label = $MarginContainer/HBoxContainer/VBoxContainerLabel/ExpLabel
 # @onready var power_label = $MarginContainer/VBoxContainer/PowerLabel
 # @onready var magic_label = $MarginContainer/VBoxContainer/MagicLabel
 # @onready var defense_label = $MarginContainer/VBoxContainer/DefenseLabel
@@ -37,13 +41,25 @@ func set_status(
 	tp_bar.max_value = max_tp
 	tp_bar.value = tp
 
-	# Komentar karena belum tersedia di scene
-	# if exp_bar:
-	# 	exp_bar.max_value = exp_to_next_level
-	# 	exp_bar.value = exp
+	if exp_bar:
+		exp_bar.max_value = exp_to_next_level
+		exp_bar.value = exp
 
-	# if level_label:
-	# 	level_label.text = "Lv. %d" % level
+	if level_label:
+		level_label.text = "Lv. %d" % level
+	
+	if hp_label:
+		hp_label.text = "%d / %d" % [hp, max_hp]
+
+	if mp_label:
+		mp_label.text = "%d / %d" % [mp, max_mp]
+
+	if tp_label:
+		tp_label.text = "%d / %d" % [tp, max_tp]
+	
+	if exp_label:
+		exp_label.text = "%d / %d" % [exp, exp_to_next_level]
+
 
 	# if power_label:
 	# 	power_label.text = "Power: %d" % power

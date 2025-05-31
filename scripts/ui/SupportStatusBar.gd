@@ -6,7 +6,7 @@ extends CanvasLayer
 
 # Komentar dulu sampai node tersedia di scene
 # @onready var level_label = $MarginContainer/VBoxContainer/LevelLabel
-# @onready var exp_bar = $MarginContainer/VBoxContainer/ExpBar
+@onready var exp_bar = $MarginContainer/VBoxContainer/ExpBar
 # @onready var power_label = $MarginContainer/VBoxContainer/PowerLabel
 # @onready var magic_label = $MarginContainer/VBoxContainer/MagicLabel
 # @onready var defense_label = $MarginContainer/VBoxContainer/DefenseLabel
@@ -38,9 +38,9 @@ func set_status(
 	tp_bar.value = tp
 
 	# Komentar karena belum tersedia di scene
-	# if exp_bar:
-	# 	exp_bar.max_value = exp_to_next_level
-	# 	exp_bar.value = exp
+	if exp_bar:
+		exp_bar.max_value = exp_to_next_level
+		exp_bar.value = exp
 
 	# if level_label:
 	# 	level_label.text = "Lv. %d" % level

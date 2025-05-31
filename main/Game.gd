@@ -84,7 +84,7 @@ func _ready():
 	pause_menu_button.connect("pause_menu_button_pressed", Callable(self, "toggle_pause"))
 
 	setup_pause_menu()
-	load_world("world_3")  # Default world
+	load_world("altar_room")  # Default world
 
 func load_world(world_name: String):
 	if world_instance:
@@ -189,9 +189,14 @@ func _restore_player_status_bar():
 			container.offset_left = 0
 			container.offset_top = 0
 
-			var vbox = container.get_node_or_null("VBoxContainer")
+			var container_child = container.get_node_or_null("HBoxContainer")
+
+			var vbox = container_child.get_node_or_null("VBoxContainer")
+			var vbox_label = container_child.get_node_or_null("VBoxContainerLabel")
 			if vbox:
 				vbox.add_theme_constant_override("separation", 27)
+			if vbox_label:
+				vbox_label.visible = false
 
 func _move_player_status_bar_to_pause():
 	if player_status_bar and pause_menu_instance:
@@ -199,6 +204,7 @@ func _move_player_status_bar_to_pause():
 		pause_menu_instance.add_child(player_status_bar)
 
 		var container = player_status_bar.get_node_or_null("MarginContainer")
+		
 		if container:
 			container.anchor_left = 0.7
 			container.anchor_top = 0.2
@@ -206,10 +212,19 @@ func _move_player_status_bar_to_pause():
 			container.anchor_bottom = 0.2
 			container.offset_left = 20
 			container.offset_top = -40
+			
+			var container_child = container.get_node_or_null("HBoxContainer")
+			if container_child:
+				container_child.add_theme_constant_override("separation", -220)
+				container_child.offset_top = -40
 
-			var vbox = container.get_node_or_null("VBoxContainer")
+			var vbox = container_child.get_node_or_null("VBoxContainer")
+			var vbox_label = container_child.get_node_or_null("VBoxContainerLabel")
 			if vbox:
 				vbox.add_theme_constant_override("separation", 140)
+			if vbox_label:
+				vbox_label.visible = true
+				vbox_label.add_theme_constant_override("separation", 103)
 
 func _restore_support_status_bar():
 	if support_status_bar and support_status_bar_original_parent:
@@ -219,9 +234,9 @@ func _restore_support_status_bar():
 		var container = support_status_bar.get_node_or_null("MarginContainer")
 		if container:
 			container.anchor_left = 0.02
-			container.anchor_top = 0.02
+			container.anchor_top = 0.04
 			container.anchor_right = 0.02
-			container.anchor_bottom = 0.02
+			container.anchor_bottom = 0.04
 			container.offset_left = 0
 			container.offset_top = 118
 
@@ -241,7 +256,7 @@ func _move_support_status_bar_to_pause():
 			container.anchor_right = 0.7
 			container.anchor_bottom = 0.4
 			container.offset_left = 20
-			container.offset_top = 40
+			container.offset_top = 70
 
 			var vbox = container.get_node_or_null("VBoxContainer")
 			if vbox:

@@ -1,10 +1,10 @@
 extends Node
 
 # === STATUS DASAR ===
-var max_hp: int = 500
+var max_hp: int = 300
 var hp: int = max_hp
 
-var max_mp: int = 200
+var max_mp: int = 500
 var mp: int = max_mp
 
 var max_tp: int = 100

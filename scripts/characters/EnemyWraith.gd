@@ -66,7 +66,7 @@ func send_drl_request():
 	var json = JSON.new()
 	var json_state = json.stringify(state)
 	http_request.request(
-		"http://192.168.71.61:8000/predict",
+		"http://0.0.0.0:8000/predict",
 		["Content-Type: application/json"],
 		HTTPClient.METHOD_POST,
 		json_state
@@ -95,6 +95,7 @@ func build_state_dict() -> Dictionary:
 		"damage_taken": wraith_status.self_damage if wraith_status and wraith_status.self_damage else 0,
 		"can_summon": wraith_status and wraith_damage_system and wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and wraith_damage_system.SUMMON_COOLDOWN == 0,
 		"can_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and wraith_damage_system.TORNADO_COOLDOWN == 0 and distance <= 10,
+		"can_full_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and wraith_damage_system.FULL_TORNADO_COOLDOWN == 0 and distance < 5,
 		"summon_count": wraith_damage_system.active_summons.size() if wraith_damage_system else 0,
 		"tornado_cd": wraith_damage_system.TORNADO_COOLDOWN if wraith_damage_system else 0,
 		"summon_cd": wraith_damage_system.SUMMON_COOLDOWN if wraith_damage_system else 0
@@ -116,6 +117,8 @@ func handle_ai():
 				start_summon()
 			"tornado":
 				start_tornado()
+			"full_tornado":
+				start_full_tornado()
 			"attack":
 				direction = Vector3.ZERO
 				start_attack("wraith-magic-attack")

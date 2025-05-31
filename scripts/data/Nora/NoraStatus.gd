@@ -80,7 +80,6 @@ func level_up():
 	power += 2
 	magic += 2
 	defense += 1
-	speed += 1
 
 	# Pulihkan
 	hp = max_hp

@@ -11,12 +11,13 @@ extends CharacterBody3D
 @onready var health_bar: Control = $HealthBar
 @onready var camera: Camera3D = null
 
-# status and damage
 @onready var status = preload("res://scripts/data/goblin/GoblinStatus.gd").new()
 
 var current_health := 100
 var is_attacking := false
 var player: Node3D = null
+var support: Node3D = null
+var target: Node3D = null
 
 func _ready():
 	detection_area.body_entered.connect(_on_body_entered)
@@ -28,38 +29,51 @@ func _ready():
 func _process(delta):
 	camera = get_viewport().get_camera_3d()
 	if health_bar and camera:
-		var head_offset = Vector3(-1.5, 2.5, 0) # Tinggi di atas model
+		var head_offset = Vector3(-1.5, 2.5, 0)
 		var world_pos = global_transform.origin + head_offset
 		var screen_pos = camera.unproject_position(world_pos)
 		health_bar.global_position = screen_pos
 		status.set_status(health_bar)
-		#wraith_damage_system.set_enemy_status(health_bar)
 
 func _physics_process(delta):
 	if status.hp <= 0:
 		return
 
-	if is_instance_valid(player):
-		var to_player = player.global_transform.origin - global_transform.origin
-		var distance = to_player.length()
+	update_target()
+
+	if is_instance_valid(target):
+		var to_target = target.global_transform.origin - global_transform.origin
+		var distance = to_target.length()
 
 		if distance <= attack_range:
 			velocity = Vector3.ZERO
 			if not is_attacking:
 				start_attack()
 		else:
-			move_towards_player(delta, to_player)
+			move_towards_player(delta, to_target)
 	else:
 		velocity = Vector3.ZERO
 		anim_player.play("monster-walk")
 
 	move_and_slide()
 
-func move_towards_player(delta, to_player: Vector3):
+func update_target():
+	if is_instance_valid(player) and is_instance_valid(support):
+		var dist_player = global_transform.origin.distance_to(player.global_transform.origin)
+		var dist_support = global_transform.origin.distance_to(support.global_transform.origin)
+		target = player if dist_player <= dist_support else support
+	elif is_instance_valid(player):
+		target = player
+	elif is_instance_valid(support):
+		target = support
+	else:
+		target = null
+
+func move_towards_player(delta, to_target: Vector3):
 	if is_attacking:
 		return
 
-	var dir = to_player.normalized()
+	var dir = to_target.normalized()
 	velocity = velocity.lerp(dir * speed, acceleration * delta)
 
 	if dir.length() > 0.1:
@@ -76,13 +90,15 @@ func start_attack():
 	anim_player.speed_scale = 0.5	
 	anim_player.play("monster-attack")
 	await get_tree().create_timer(0.3).timeout
+	if is_instance_valid(target):
+			if target == support:
+				target.nora_status.call_deferred("take_damage", damage)
+			else:
+				target.call_deferred("take_damage", damage)
 	$AttackSound.play()
 
 func _on_animation_finished(anim_name: String):
-	if anim_name == "monster-attack":
-		if is_instance_valid(player):
-			player.call_deferred("take_damage", damage)
-		is_attacking = false
+	is_attacking = false
 
 func take_damage(amount: int):
 	status.take_damage(amount)
@@ -92,12 +108,20 @@ func take_damage(amount: int):
 func _on_body_entered(body: Node):
 	if body.is_in_group("player"):
 		player = body
+	elif body.is_in_group("support"):
+		support = body
 
 func _on_body_exited(body: Node):
 	if body == player:
 		player = null
+	elif body == support:
+		support = null
 
 func die():
 	anim_player.play("monster-die")
 	await get_tree().create_timer(5).timeout
 	queue_free()
+	if is_instance_valid(player):
+		player.kyle_status.call_deferred("gain_exp", 10)
+	if is_instance_valid(support):
+		support.nora_status.call_deferred("gain_exp", 10)

@@ -19,7 +19,7 @@ offset_left = 115.0
 offset_top = 16.0
 offset_right = 357.0
 offset_bottom = 114.0
-theme_override_colors/font_color = Color(0.683077, 0.683077, 0.683077, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("1_7ida2")
 theme_override_font_sizes/font_size = 52
 text = "PAUSE MENU"
@@ -101,7 +101,7 @@ offset_left = 1347.0
 offset_top = 163.0
 offset_right = 1374.0
 offset_bottom = 335.0
-scale = Vector2(18.6751, 1.52547)
+scale = Vector2(18.6751, 1.68483)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="lines2" type="Panel" parent="Panel"]
@@ -115,20 +115,20 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="lines3" type="Panel" parent="Panel"]
 layout_mode = 0
-offset_left = 1346.59
-offset_top = 501.972
-offset_right = 1371.59
-offset_bottom = 542.972
+offset_left = 1348.63
+offset_top = 533.843
+offset_right = 1373.63
+offset_bottom = 574.843
 scale = Vector2(20.1814, 0.0439313)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="BgNoraBar" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 1347.03
-offset_top = 451.0
+offset_top = 489.843
 offset_right = 1374.03
-offset_bottom = 623.0
-scale = Vector2(18.6751, 1.52547)
+offset_bottom = 661.843
+scale = Vector2(18.6751, 1.72466)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="BgGold" type="Panel" parent="Panel"]
