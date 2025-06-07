@@ -108,10 +108,9 @@ func handle_ai():
 
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
-	print(drl_action, " drll")
-	print(player.kyle_status.self_damage, "player")
 
 	if drl_action.has("action"):
+		print("AI: Using DRL action: %s" % drl_action["action"])
 		match drl_action["action"]:
 			"summon":
 				start_summon()
@@ -127,23 +126,29 @@ func handle_ai():
 			"chase":
 				direction = to_player.normalized()
 			_:
-				pass
+				print("AI: Unknown DRL action: %s" % drl_action["action"])
 	else:
+		print("AI: DRL action not available, using fallback logic.")
 		# Fallback logic
-		print("konvensional")
 		if wraith_status and wraith_damage_system:
 			if wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown:
+				print("AI Konvensional: Summoning minion.")
 				start_summon()
 			if not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
+				print("AI Konvensional: Using full tornado.")
 				start_full_tornado()
 			if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
+				print("AI Konvensional: Using tornado.")
 				start_tornado()
 		if distance <= attack_range and distance >= stop_distance:
+			print("AI Konvensional: Attacking player.")
 			direction = Vector3.ZERO
 			start_attack("wraith-magic-attack")
 		elif distance < stop_distance:
+			print("AI Konvensional: Retreating from player.")
 			direction = -to_player.normalized()
 		else:
+			print("AI Konvensional: Chasing player.")
 			direction = to_player.normalized()
 
 func move_enemy(delta):

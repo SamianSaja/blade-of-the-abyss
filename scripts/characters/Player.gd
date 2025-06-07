@@ -288,11 +288,8 @@ func _basic_attack_hit_entered(body: Node):
 	if body.is_in_group("wraith") or body.is_in_group("goblin"):
 		match current_attack_type:
 			"basic-attack":
-				print("basic attack")
 				kyle_damage_system.perform_basic_attack(body)
 			"skill-one":
-				print("skill one")
 				kyle_damage_system.perform_skill_one(body)
 				#kyle_status.consume_mana(30)
-			_:
-				print("No attack type matched or idle")
+				# print("No attack type matched or idle")

@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3 uid="uid://b581rrkkosqq5"]
+
+[ext_resource type="Texture2D" uid="uid://neru8ofjk64s" path="res://assets/ui/border-karakter.png" id="1_xrudr"]
+[ext_resource type="Script" uid="uid://daig4pidayr43" path="res://scripts/ui/DialogBox.gd" id="1_y63tx"]
+[ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="2_rfax6"]
+[ext_resource type="Texture2D" uid="uid://bfim3am6q2tpy" path="res://assets/ui/bg-next.png" id="4_tsmfh"]
+[ext_resource type="Texture2D" uid="uid://cnr0n0u8rn7rc" path="res://assets/ui/bg-next-pressed.png" id="5_kgmwf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_facwo"]
+bg_color = Color(0.219608, 0.713726, 1, 0.215686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xrudr"]
+bg_color = Color(1, 1, 1, 0.705882)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rfax6"]
+texture = ExtResource("1_xrudr")
+
+[node name="DialogBox" type="CanvasLayer"]
+script = ExtResource("1_y63tx")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 3.0
+offset_top = 672.0
+offset_right = 1920.0
+offset_bottom = 1079.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_facwo")
+
+[node name="lines2" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 51.0
+offset_right = 388.0
+offset_bottom = 92.0
+scale = Vector2(18.3878, -0.110539)
+theme_override_styles/panel = SubResource("StyleBoxFlat_xrudr")
+
+[node name="lines3" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 5.0
+offset_right = 388.0
+offset_bottom = 46.0
+scale = Vector2(18.3878, -0.110539)
+theme_override_styles/panel = SubResource("StyleBoxFlat_xrudr")
+
+[node name="BorderChara" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = -26.0
+offset_right = 324.0
+offset_bottom = 408.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_rfax6")
+
+[node name="Character" type="TextureRect" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SpeakerLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 8.0
+offset_right = 398.0
+offset_bottom = 42.0
+theme_override_fonts/font = ExtResource("2_rfax6")
+theme_override_font_sizes/font_size = 24
+text = "kyle"
+uppercase = true
+
+[node name="DialogText" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 83.0
+offset_right = 1879.0
+offset_bottom = 378.0
+theme_override_fonts/normal_font = ExtResource("2_rfax6")
+theme_override_font_sizes/normal_font_size = 20
+text = "Damn.. 
+wait for my revenge... I will be back..."
+
+[node name="NextButton" type="TouchScreenButton" parent="Panel"]
+position = Vector2(1746, 306)
+scale = Vector2(0.21021, 0.301333)
+texture_normal = ExtResource("4_tsmfh")
+texture_pressed = ExtResource("5_kgmwf")
+
+[node name="NextLabel" type="Label" parent="Panel/NextButton"]
+offset_left = 180.771
+offset_top = 132.743
+offset_right = 244.771
+offset_bottom = 166.743
+scale = Vector2(5.37657, 3.12388)
+theme_override_fonts/font = ExtResource("2_rfax6")
+theme_override_font_sizes/font_size = 24
+text = "NEXT"
+uppercase = true
+
+[connection signal="pressed" from="Panel/NextButton" to="." method="_on_next_button_pressed"]

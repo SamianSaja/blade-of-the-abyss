@@ -125,7 +125,6 @@ func _on_animation_finished(anim_name: String):
 
 func _on_body_entered(body: Node):
 	if body.is_in_group("wraith") or body.is_in_group("goblin"):
-		print("enemy terdeteksi")
 		target_enemy = body
 	elif body.is_in_group("player"):
 		player = body

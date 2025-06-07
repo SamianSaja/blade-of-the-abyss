@@ -7,6 +7,7 @@ extends Node
 @onready var pause_menu_button_scene = preload("res://scenes/ui/PauseMenuButton.tscn")
 @onready var player_status_bar_scene = preload("res://scenes/ui/PlayerStatusBar.tscn")
 @onready var support_status_bar_scene = preload("res://scenes/ui/SupportStatusBar.tscn")
+@onready var dialog_box_scene = preload("res://scenes/ui/DialogBox.tscn")
 
 # World registry
 var worlds := {
@@ -77,14 +78,24 @@ var player_status_bar: CanvasLayer
 var player_status_bar_original_parent: Node
 var support_status_bar: CanvasLayer
 var support_status_bar_original_parent: Node
+var dialog_box: CanvasLayer
 
 func _ready():
 	pause_menu_button = pause_menu_button_scene.instantiate()
 	add_child(pause_menu_button)
 	pause_menu_button.connect("pause_menu_button_pressed", Callable(self, "toggle_pause"))
 
+	# load dialog box
+	dialog_box = dialog_box_scene.instantiate()
+	add_child(dialog_box)
+	dialog_box.hide()
+	dialog_box.connect("dialog_finished", Callable(self, "_on_dialog_finished"))
+
 	setup_pause_menu()
-	load_world("altar_room")  # Default world
+	load_world("world_1")  # Default world
+	
+
+
 
 func load_world(world_name: String):
 	if world_instance:
@@ -102,6 +113,7 @@ func load_world(world_name: String):
 	load_player_status_bar()
 	load_support_status_bar()
 	spawn_player(world_name)
+	play_story_if_any(world_name) 
 
 func change_world(world_name: String, spawn_point_name: String = "PlayerSpawn"):
 	# Buat dan tampilkan loading screen
@@ -389,3 +401,50 @@ func load_support_status_bar():
 	support_status_bar = support_status_bar_scene.instantiate()
 	add_child(support_status_bar)
 	support_status_bar_original_parent = support_status_bar.get_parent()
+
+# dialog box function
+func play_story_if_any(world_name: String):
+	var story_path = "res://scripts/data/story/%s_intro.json" % world_name
+	if FileAccess.file_exists(story_path):
+		var file = FileAccess.open(story_path, FileAccess.READ)
+		var json = JSON.parse_string(file.get_as_text())
+		if json and json is Array:
+			dialog_box.visible = true
+			dialog_box.start_dialog(json)
+
+			# Sembunyikan semua UI player
+			if player_instance:
+				var ui_nodes := [
+					player_instance.get_node_or_null("Joystick"),
+					player_instance.get_node_or_null("AttackController"),
+					player_instance.get_node_or_null("SkillOneButton"),
+					player_instance.get_node_or_null("SkillTwoButton"),
+					player_instance.get_node_or_null("SkillThreeButton"),
+					player_instance.get_node_or_null("SkillFourButton"),
+					player_instance.get_node_or_null("SkillUltimateButton"),
+					player_instance.get_node_or_null("DefendButton")
+				]
+				for ui in ui_nodes:
+					if ui:
+						ui.visible = false
+
+			get_tree().paused = true  # Pause game saat dialog
+
+func _on_dialog_finished():
+	get_tree().paused = false
+	
+	# Tampilkan kembali semua UI player
+	if player_instance:
+		var ui_nodes := [
+			player_instance.get_node_or_null("Joystick"),
+			player_instance.get_node_or_null("AttackController"),
+			player_instance.get_node_or_null("SkillOneButton"),
+			player_instance.get_node_or_null("SkillTwoButton"),
+			player_instance.get_node_or_null("SkillThreeButton"),
+			player_instance.get_node_or_null("SkillFourButton"),
+			player_instance.get_node_or_null("SkillUltimateButton"),
+			player_instance.get_node_or_null("DefendButton")
+		]
+		for ui in ui_nodes:
+			if ui:
+				ui.visible = true
