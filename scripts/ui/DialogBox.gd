@@ -8,6 +8,7 @@ var current_index = 0
 @onready var speaker_label = $Panel/SpeakerLabel
 @onready var dialog_text = $Panel/DialogText
 @onready var next_button = $Panel/NextButton
+@onready var type_sound = $TypeSound
 
 var typing = false
 var full_text = ""
@@ -44,11 +45,16 @@ func animate_text():
 	if typing_index < full_text.length():
 		dialog_text.text += full_text[typing_index]
 		typing_index += 1
+		
+		if type_sound and not type_sound.playing:
+			type_sound.play()  # Putar suara ketik tiap huruf
+
 		await get_tree().create_timer(typing_speed).timeout
 		if typing:
 			animate_text()
 	else:
 		typing = false
+
 
 func _on_next_button_pressed() -> void:
 	if typing:

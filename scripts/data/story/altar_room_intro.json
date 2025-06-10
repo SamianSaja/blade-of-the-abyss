@@ -1,17 +1,45 @@
 [
-    {
-      "speaker": "Nora",
-      "text": "Tempat apa ini Kyle, sungguh Aura mencekam yang aku rasakan.",
-      "expression": "serious"
-    },
-    {
-      "speaker": "Kyle",
-      "text": "Kita harus berhati-hati. Sesuatu terasa aneh.",
-      "expression": "alert"
-    },
-    {
-      "speaker": "Narrator",
-      "text": "*Sebuah suara bergema di seluruh ruangan*"
-    }
-  ]
-  
+  {
+    "speaker": "Narrator",
+    "text": "*The chamber opens into a vast space lined with runes. In the center lies a shattered altar, glowing faintly with ancient magic.*"
+  },
+  {
+    "speaker": "Nora",
+    "text": "This energy... it's thick. I can feel it crawling over my skin.",
+    "expression": "concerned"
+  },
+  {
+    "speaker": "Kyle",
+    "text": "We're close. The Wraith's presence... it's everywhere.",
+    "expression": "cold"
+  },
+  {
+    "speaker": "Arcane Wraith",
+    "text": "Ah, the last child of the broken swords. And the little witch who betrayed her own blood. How... poetic.",
+    "expression": "sneer"
+  },
+  {
+    "speaker": "Nora",
+    "text": "You're the one behind the destruction... the blood... the screams. Your corruption ends here.",
+    "expression": "serious"
+  },
+  {
+    "speaker": "Arcane Wraith",
+    "text": "Oh, but your hands are not clean, girl. And you, boy... tell me, how does the Blade Edge feel pulsing in your grip? Tempting, isn’t it?",
+    "expression": "taunt"
+  },
+  {
+    "speaker": "Kyle",
+    "text": "I didn't come here to talk. I came to end you.",
+    "expression": "cold"
+  },
+  {
+    "speaker": "Arcane Wraith",
+    "text": "End me? No, no... I am the end, child. Come then. Let the abyss claim what's left of you.",
+    "expression": "menacing"
+  },
+  {
+    "speaker": "Narrator",
+    "text": "*The ground shakes as spectral flames swirl around the altar. The Wraith rises in an ethereal form, ready to strike.*"
+  }
+]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://eno5aku8jtqy"]
+
+[ext_resource type="PackedScene" uid="uid://c8n83i75e85f0" path="res://scenes/characters/KyleModel.tscn" id="1_eoagp"]
+[ext_resource type="Script" uid="uid://dht4fa1ojxkhp" path="res://scripts/story/DialogCinematicIntro.gd" id="1_oyh2x"]
+[ext_resource type="PackedScene" uid="uid://b581rrkkosqq5" path="res://scenes/ui/DialogBox.tscn" id="2_oyh2x"]
+[ext_resource type="PackedScene" uid="uid://btc0jslyo2hgx" path="res://scenes/ui/LoadingScreen.tscn" id="3_8vrfn"]
+[ext_resource type="PackedScene" uid="uid://bb8mfeqce7a3w" path="res://scenes/world/World1/World1.tscn" id="5_8vrfn"]
+
+[node name="DialogCinematicIntro" type="Node3D"]
+script = ExtResource("1_oyh2x")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.533983, 0.845495, 0, -0.845495, 0.533983, 17.5241, 27.6165, 25.6787)
+
+[node name="CharacterRoot" type="Node3D" parent="."]
+
+[node name="KyleModel" parent="CharacterRoot" instance=ExtResource("1_eoagp")]
+transform = Transform3D(-0.278455, 0, -0.960449, 0, 1, 0, 0.960449, 0, -0.278455, 31.3857, 0, 23.6478)
+
+[node name="DialogBox" parent="." instance=ExtResource("2_oyh2x")]
+
+[node name="LoadingScreen" parent="." instance=ExtResource("3_8vrfn")]
+
+[node name="World1" parent="." instance=ExtResource("5_8vrfn")]

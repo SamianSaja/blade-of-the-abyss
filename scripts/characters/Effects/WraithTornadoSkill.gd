@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var delay_before_spawn := 2.0
-@export var duration := 2.0
+@export var duration := 7.0
 @export var damage := 20
 
 @onready var tornado_effect = $TornadoEffect
@@ -44,8 +44,8 @@ func start_skill(target_position: Vector3):
 		var anim = anim_player.get_animation("Animation")
 		anim.loop = true  # ✅ This is correct
 		anim_player.play("Animation")
-		await get_tree().create_timer(0.3).timeout
-		$TornadoSound.pitch_scale = 10
+		await get_tree().create_timer(0.1).timeout
+		$TornadoSound.pitch_scale = 1
 		$TornadoSound.play()
 
 
@@ -64,8 +64,9 @@ func start_skill_2(target_position: Vector3):
 		var anim = anim_player.get_animation("Animation")
 		anim.loop = true  # ✅ This is correct
 		anim_player.play("Animation")
-
-
+		await get_tree().create_timer(0.1).timeout
+		$TornadoSound.pitch_scale = 1
+		$TornadoSound.play()
 	await get_tree().create_timer(duration).timeout
 	queue_free()
 
