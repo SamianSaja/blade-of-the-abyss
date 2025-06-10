@@ -10,7 +10,7 @@ size = Vector3(1.20813, 1, 1)
 
 [node name="WorldPortal" parent="." instance=ExtResource("1_vsnqc")]
 transform = Transform3D(0.816294, 0, 0, 0, 0.816294, 0, 0, 0, 0.816294, 40.5934, 0.450794, 46.5123)
-target_world_name = "world_2_2"
+target_world_name = "world_3"
 
 [node name="WorldPortalBack" parent="." instance=ExtResource("1_vsnqc")]
 transform = Transform3D(0.816294, 0, 0, 0, 0.816294, 0, 0, 0, 0.816294, 16.0624, 0.450794, -32.1509)

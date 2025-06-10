@@ -9,9 +9,13 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.3719, 0.450794, -8.96425)
 target_world_name = "world_3_3"
 
+[node name="WorldPortalBack" parent="." instance=ExtResource("1_jxlqp")]
+transform = Transform3D(0.423835, 0, 0, 0, 0.423835, 0, 0, 0, 0.423835, 28.4129, 0.450794, 45.7928)
+target_world_name = "world_3"
+
 [node name="Background" type="Sprite3D" parent="."]
 transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
 texture = ExtResource("2_1qe8m")
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.2004, 1, 44.8324)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.0176, 1, 43.2938)

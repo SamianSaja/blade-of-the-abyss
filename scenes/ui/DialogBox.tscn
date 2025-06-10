@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://b581rrkkosqq5"]
+[gd_scene load_steps=10 format=3 uid="uid://b581rrkkosqq5"]
 
 [ext_resource type="Texture2D" uid="uid://neru8ofjk64s" path="res://assets/ui/border-karakter.png" id="1_xrudr"]
 [ext_resource type="Script" uid="uid://daig4pidayr43" path="res://scripts/ui/DialogBox.gd" id="1_y63tx"]
 [ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="2_rfax6"]
 [ext_resource type="Texture2D" uid="uid://bfim3am6q2tpy" path="res://assets/ui/bg-next.png" id="4_tsmfh"]
 [ext_resource type="Texture2D" uid="uid://cnr0n0u8rn7rc" path="res://assets/ui/bg-next-pressed.png" id="5_kgmwf"]
+[ext_resource type="AudioStream" uid="uid://c3ivii0gw4tlo" path="res://assets/sounds/effects/dialog.mp3" id="6_kgmwf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_facwo"]
 bg_color = Color(0.219608, 0.713726, 1, 0.215686)
@@ -93,5 +94,9 @@ theme_override_fonts/font = ExtResource("2_rfax6")
 theme_override_font_sizes/font_size = 24
 text = "NEXT"
 uppercase = true
+
+[node name="TypeSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_kgmwf")
+volume_db = 20.0
 
 [connection signal="pressed" from="Panel/NextButton" to="." method="_on_next_button_pressed"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://jykbv7kx3i42"]
+[gd_scene load_steps=9 format=3 uid="uid://jykbv7kx3i42"]
 
 [ext_resource type="PackedScene" uid="uid://bg2fu0bm2kqsj" path="res://scenes/world/WorldPortal.tscn" id="1_g2ljg"]
+[ext_resource type="PackedScene" uid="uid://b7ecrjirmrhpt" path="res://scenes/characters/EnemyGoblin.tscn" id="1_ip3tl"]
 [ext_resource type="Texture2D" uid="uid://b47mik1rewn8l" path="res://assets/environments/world-3/world-3.png" id="2_ip3tl"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g2ljg"]
@@ -16,16 +17,26 @@ size = Vector3(1.06116, 1, 1)
 
 [node name="World3" type="Node3D"]
 
+[node name="EnemyGoblin" parent="." instance=ExtResource("1_ip3tl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.3518, 0, 2.98852)
+
 [node name="WorldPortal" parent="." instance=ExtResource("1_g2ljg")]
 transform = Transform3D(0.99828, 0, -0.0586269, 0, 1, 0, 0.0586269, 0, 0.99828, 51.611, 0.450794, -28.1589)
 target_world_name = "world_3_2"
+
+[node name="WorldPortalBack" parent="." instance=ExtResource("1_g2ljg")]
+transform = Transform3D(0.358424, 0, -0.0210495, 0, 0.359041, 0, 0.0210495, 0, 0.358424, -46.6945, 0.450794, 48.3649)
+target_world_name = "world_2"
 
 [node name="Background" type="Sprite3D" parent="."]
 transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
 texture = ExtResource("2_ip3tl")
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.6359, 1, 45.4798)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.332, 1, 45.1226)
+
+[node name="SupportSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0316, 1, 12.6882)
 
 [node name="FloorCollision" type="StaticBody3D" parent="."]
 

@@ -14,7 +14,7 @@ texture = ExtResource("1_et14e")
 transform = Transform3D(14.6171, 0, 0, 0, 7.6131, 0, 0, 0, 7.6131, 0, -0.5, 0)
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.9327, 1, -2.31141)
 
 [node name="BlueLight" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.00546303, -0.999985, 0, 0.999985, 0.00546303, 0, 0.446801, 0)
@@ -83,5 +83,7 @@ spot_angle = 74.09
 spot_angle_attenuation = 0.0853775
 
 [node name="EnemyWraithSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85184, 0, 9.67651)
 
 [node name="SupportSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4169, 0, -8.09416)
