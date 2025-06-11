@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://qh5q7o44icic"]
+
+[node name="ItemTemplate" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 17.0
+offset_right = 535.0
+offset_bottom = 517.0
+scale = Vector2(0.044526, 0.0498813)
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 18.0
+offset_right = 114.0
+offset_bottom = 41.0
+
+[node name="ExtraLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.698
+anchor_top = 0.256
+anchor_right = 2.698
+anchor_bottom = 0.256
+offset_left = 207.08
+offset_top = 6.76001
+offset_right = 247.08
+offset_bottom = 55.76
+text = "
+"

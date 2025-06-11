@@ -9,6 +9,8 @@ extends Node
 @onready var support_status_bar_scene = preload("res://scenes/ui/SupportStatusBar.tscn")
 @onready var dialog_box_scene = preload("res://scenes/ui/DialogBox.tscn")
 
+@export var item_template: PackedScene
+
 # World registry
 var worlds := {
 	"altar_room": "res://scenes/world/final-area/AltarRoom.tscn",
@@ -65,6 +67,23 @@ var camera_limits_by_world = {
 	}
 }
 
+# inventory
+var item_data = [
+	{"name": "Health Potion", "icon": preload("res://assets/inventory/items/potion.png")},
+	{"name": "Mana Potion", "icon": preload("res://assets/inventory/items/mana-potion.png")},
+	{"name": "Technical Potion", "icon": preload("res://assets/inventory/items/technical-potion.png")},
+	{"name": "Skill Scrolls", "icon": preload("res://assets/inventory/items/skill-scrolls.png")},
+]
+
+var armor_data = [
+	{"name": "Letter Armor", "icon": preload("res://assets/inventory/armor/letter-armor.png")},
+	{"name": "Plate Armor", "icon": preload("res://assets/inventory/armor/plate-armor.png")},
+	{"name": "Royal Armor", "icon": preload("res://assets/inventory/armor/royal-armor.png")},
+	{"name": "Mage Robe", "icon": preload("res://assets/inventory/armor/mage-robe.png")},
+	{"name": "Sorcerer Cloak", "icon": preload("res://assets/inventory/armor/sorcerer-cloak.png")},
+	{"name": "Royal Enchanter's Vestments", "icon": preload("res://assets/inventory/armor/royal-enchanter-vesments.png")},
+]
+
 
 # Scene instances
 var player_instance: Node3D
@@ -93,9 +112,6 @@ func _ready():
 
 	setup_pause_menu()
 	load_world("world_1")  # Default world
-	
-
-
 
 func load_world(world_name: String):
 	if world_instance:
@@ -152,11 +168,13 @@ func change_world(world_name: String, spawn_point_name: String = "PlayerSpawn"):
 	get_tree().paused = false
 	await loading.fade_out()
 	loading.queue_free()
+	play_story_if_any(world_name)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggle_pause()
 
+# BEGIN PAUSE MENU
 func toggle_pause():
 	var is_paused = get_tree().paused
 	get_tree().paused = !is_paused
@@ -184,8 +202,12 @@ func toggle_pause():
 	else:
 		if pause_menu_button and pause_menu_instance:
 			pause_menu_button.get_parent().remove_child(pause_menu_button)
+		
 		_move_player_status_bar_to_pause()
 		_move_support_status_bar_to_pause()
+	
+		# Set default pause menu to Status tab
+		show_pause_menu_section("Status")
 
 func _restore_player_status_bar():
 	if player_status_bar and player_status_bar_original_parent:
@@ -216,6 +238,7 @@ func _move_player_status_bar_to_pause():
 		pause_menu_instance.add_child(player_status_bar)
 
 		var container = player_status_bar.get_node_or_null("MarginContainer")
+		container.visible = false
 		
 		if container:
 			container.anchor_left = 0.7
@@ -237,6 +260,10 @@ func _move_player_status_bar_to_pause():
 			if vbox_label:
 				vbox_label.visible = true
 				vbox_label.add_theme_constant_override("separation", 103)
+		var status_button = pause_menu_instance.get_node_or_null("VBoxContainer/StatusContainer/StatusButton")
+		status_button.pressed.connect(func ():
+			container.visible = true
+		)
 
 func _restore_support_status_bar():
 	if support_status_bar and support_status_bar_original_parent:
@@ -262,6 +289,7 @@ func _move_support_status_bar_to_pause():
 		pause_menu_instance.add_child(support_status_bar)
 
 		var container = support_status_bar.get_node_or_null("MarginContainer")
+		container.visible = false
 		if container:
 			container.anchor_left = 0.7
 			container.anchor_top = 0.4
@@ -273,15 +301,129 @@ func _move_support_status_bar_to_pause():
 			var vbox = container.get_node_or_null("VBoxContainer")
 			if vbox:
 				vbox.add_theme_constant_override("separation", 140)
+		
+		var status_button = pause_menu_instance.get_node_or_null("VBoxContainer/StatusContainer/StatusButton")
+		status_button.pressed.connect(func ():
+			container.visible = true
+		)
+
+# inventory configuration
+func populate_item_list():
+	var item_tab = pause_menu_instance.get_node("InventoryTabs/ItemTab/ItemList")
+	_clear_container(item_tab)
+	
+	item_tab.add_theme_constant_override("separation", 40)
+
+	for data in item_data:
+		var item = item_template.instantiate()
+		item.get_node("Icon").texture = data["icon"]
+		item.get_node("NameLabel").text = data["name"]
+		item_tab.add_child(item)
+
+func populate_armor_list():
+	var armor_tab = pause_menu_instance.get_node("InventoryTabs/ArmorTab/ArmorList")
+	_clear_container(armor_tab)
+	
+	armor_tab.add_theme_constant_override("separation", 40) 
+
+	for data in armor_data:
+		var armor = item_template.instantiate()
+		armor.get_node("Icon").texture = data["icon"]
+		armor.get_node("NameLabel").text = data["name"]
+		armor_tab.add_child(armor)
+
+func _clear_container(container):
+	for child in container.get_children():
+		child.queue_free()
+
+func show_pause_menu_section(section: String):
+	var bg_status_bar = pause_menu_instance.get_node_or_null("Panel/StatusBarContainer")
+	var kyle_status_bar = pause_menu_instance.get_node_or_null("CharacterStatusKyle")
+	var nora_status_bar = pause_menu_instance.get_node_or_null("CharacterStatusNora")
+	var bg_inventory = pause_menu_instance.get_node_or_null("Panel/BgInventoryList")
+	var inventory_tabs = pause_menu_instance.get_node_or_null("InventoryTabs")
+
+	# Hide all by default
+	bg_status_bar.visible = false
+	kyle_status_bar.visible = false
+	nora_status_bar.visible = false
+	bg_inventory.visible = false
+	inventory_tabs.visible = false
+	
+	var player_container = null
+	var support_container = null
+	
+	# Hide status bar by default
+	if player_status_bar:
+		player_container = player_status_bar.get_node_or_null("MarginContainer")
+		if player_container:
+			player_container.visible = false
+	if support_status_bar:
+		support_container = support_status_bar.get_node_or_null("MarginContainer")
+		if support_container:
+			support_container.visible = false
+
+	# Show based on requested section
+	match section:
+		"Status":
+			bg_status_bar.visible = true
+			kyle_status_bar.visible = true
+			nora_status_bar.visible = true
+			# show status bars when Status tab active
+			if player_container:
+				player_container.visible = true
+			if support_container:
+				support_container.visible = true
+		"Inventory":
+			bg_inventory.visible = true
+			inventory_tabs.visible = true
+			populate_item_list()
+		"Equipments":
+			bg_inventory.visible = true
+			inventory_tabs.visible = true
+			# assuming Equipments is tab 1
+			populate_armor_list()
+			inventory_tabs.current_tab = 1
+		"Skills":
+			# You can create skill population logic here
+			print("Skills tab shown, implement logic if needed")
+
 
 func setup_pause_menu():
 	pause_menu_instance = pause_menu_scene.instantiate()
 	add_child(pause_menu_instance)
 	pause_menu_instance.visible = false
+	
+	# define for switch
+	var bg_status_bar = pause_menu_instance.get_node_or_null("Panel/StatusBarContainer")
+	var kyle_status_bar = pause_menu_instance.get_node_or_null("CharacterStatusKyle")
+	var nora_status_bar = pause_menu_instance.get_node_or_null("CharacterStatusNora")
+	var bg_inventory = pause_menu_instance.get_node_or_null("Panel/BgInventoryList")
+	var inventory_tabs = pause_menu_instance.get_node("InventoryTabs")
+	
+	# default pause menu
+	bg_status_bar.visible = true
+	kyle_status_bar.visible = true
+	nora_status_bar.visible = true
+	bg_inventory.visible = false
+	inventory_tabs.visible = false
 
+	# resume button
 	var resume_button = pause_menu_instance.get_node_or_null("VBoxContainer/ResumeContainer/ResumeButton")
 	if resume_button:
 		resume_button.pressed.connect(toggle_pause)
+	
+	var status_button = pause_menu_instance.get_node_or_null("VBoxContainer/StatusContainer/StatusButton")
+	if status_button:
+		status_button.pressed.connect(func ():
+			show_pause_menu_section("Status")
+		)
+
+	var inventory_button = pause_menu_instance.get_node_or_null("VBoxContainer/InventoryContainer/InventoryButton")
+	if inventory_button:
+		inventory_button.pressed.connect(func ():
+			show_pause_menu_section("Inventory")
+		)
 
 	var return_button = pause_menu_instance.get_node_or_null("ReturnMainMenu")
 	if return_button:
@@ -292,6 +434,8 @@ func setup_pause_menu():
 			get_tree().root.add_child(loading)
 			get_tree().current_scene.queue_free()
 		)
+
+# END PAUSE MENU
 
 func spawn_player(world_name: String):
 	if player_instance:
