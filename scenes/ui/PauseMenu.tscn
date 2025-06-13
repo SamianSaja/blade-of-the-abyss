@@ -87,6 +87,15 @@ offset_bottom = 586.791
 scale = Vector2(18.6751, 1.52547)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
+[node name="BgSave" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 643.401
+offset_right = 155.0
+offset_bottom = 683.401
+scale = Vector2(18.6751, 1.52547)
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
+
 [node name="BgReturn" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 115.0
@@ -238,6 +247,21 @@ theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_n5dsq")
 theme_override_font_sizes/font_size = 31
 text = "Skills"
+flat = true
+
+[node name="SaveContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SwordIcon" type="TextureRect" parent="VBoxContainer/SaveContainer"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/SaveContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.682353, 0.682353, 0.682353, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_n5dsq")
+theme_override_font_sizes/font_size = 31
+text = "Save"
 flat = true
 
 [node name="ReturnMainMenu" type="Button" parent="."]
