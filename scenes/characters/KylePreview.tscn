@@ -1,10 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8n83i75e85f0"]
+[gd_scene load_steps=3 format=3 uid="uid://3e0nn37m80p4"]
 
-[ext_resource type="PackedScene" uid="uid://3wgflh1y503a" path="res://assets/characters/kyle/Kyle.glb" id="1_q6p4i"]
+[ext_resource type="PackedScene" uid="uid://3wgflh1y503a" path="res://assets/characters/kyle/Kyle.glb" id="1_4keqi"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q6p4i"]
 
-[node name="KyleModel" instance=ExtResource("1_q6p4i")]
+[node name="KyleModel" instance=ExtResource("1_4keqi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.49548, 0.116358, 0, -0.116358, 1.49548, 1000, -0.25, 0)
 
 [node name="Skeleton3D" parent="Armature" index="0"]
 bones/0/position = Vector3(-0.203518, 3.85626, -118.722)
@@ -175,7 +176,13 @@ transform = Transform3D(19.5486, -4.95527, -1.02691, 5.55726, 17.117, -1.57587, 
 shape = SubResource("CapsuleShape3D_q6p4i")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." index="4"]
-transform = Transform3D(1, 0, 0, 0, -0.0101052, 0.999949, 0, -0.999949, -0.0101052, 0.0704639, 11.7092, -0.0603476)
+transform = Transform3D(0.666667, 0, 0, 0, -0.0067368, 0.666633, 0, -0.666633, -0.0067368, 0.0704956, 10.8245, -0.0603476)
+light_energy = 16.0
+light_indirect_energy = 0.0
+spot_range = 17.0
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="." index="5"]
+transform = Transform3D(0.666667, 0, 0, 0, 0.603471, 0.283316, 0, -0.283316, 0.603471, 0.0704346, 3.59041, 8.28447)
 light_energy = 16.0
 light_indirect_energy = 0.0
 spot_range = 17.0

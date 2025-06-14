@@ -125,6 +125,7 @@ scale = Vector2(18.6751, 1.52547)
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ida2")
 
 [node name="StatusBarContainer" type="Control" parent="Panel"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -368,3 +369,53 @@ offset_left = 943.0
 offset_top = 158.0
 offset_right = -100.0
 offset_bottom = -219.0
+
+[node name="EquipmentsPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 999.0
+offset_top = 143.0
+offset_right = 1826.0
+offset_bottom = 856.0
+
+[node name="CharacterTab" type="VBoxContainer" parent="EquipmentsPanel"]
+layout_mode = 2
+offset_right = 47.0
+offset_bottom = 713.0
+
+[node name="Kyle" type="Button" parent="EquipmentsPanel/CharacterTab"]
+layout_mode = 2
+text = "Kyle"
+
+[node name="Nora" type="Button" parent="EquipmentsPanel/CharacterTab"]
+layout_mode = 2
+text = "Nora"
+
+[node name="ArmorPanel" type="VBoxContainer" parent="EquipmentsPanel"]
+layout_mode = 2
+offset_left = 82.0
+offset_right = 90.0
+offset_bottom = 713.0
+
+[node name="Armor" type="VBoxContainer" parent="EquipmentsPanel/ArmorPanel"]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="EquipmentsPanel/ArmorPanel/Armor"]
+layout_mode = 2
+
+[node name="ArmorName" type="Label" parent="EquipmentsPanel/ArmorPanel/Armor"]
+layout_mode = 2
+
+[node name="EquipUnequip" type="Button" parent="EquipmentsPanel/ArmorPanel/Armor"]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="EquipmentsPanel/ArmorPanel/Armor"]
+layout_mode = 2
+
+[node name="CharacterViewport" type="SubViewportContainer" parent="EquipmentsPanel"]
+layout_mode = 2
+offset_left = 328.0
+offset_top = -22.0
+offset_right = 809.0
+offset_bottom = 727.0
+stretch = true

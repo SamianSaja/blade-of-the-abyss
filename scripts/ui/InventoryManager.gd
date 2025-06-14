@@ -35,8 +35,6 @@ func populate_armor_list():
 	var armor_tab = get_parent().pause_menu_manager.pause_menu_instance.get_node("InventoryTabs/ArmorTab/ArmorList")
 	_clear_container(armor_tab)
 	
-	print("armor", armor_tab)
-	
 	armor_tab.add_theme_constant_override("separation", 40) 
 
 	for data in armor_data:

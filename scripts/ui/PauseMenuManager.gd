@@ -13,6 +13,11 @@ var player_status_bar_original_parent: Node
 var support_status_bar: CanvasLayer
 var support_status_bar_original_parent: Node
 
+# Tambahkan variabel untuk rotasi
+enum DragState { NONE, ROTATING }
+var drag_state := DragState.NONE
+var last_mouse_pos := Vector2.ZERO
+
 signal pause_toggled(is_paused: bool)
 
 func _ready():
@@ -20,6 +25,11 @@ func _ready():
 	add_child(pause_menu_button)
 	pause_menu_button.connect("pause_menu_button_pressed", Callable(self, "toggle_pause"))
 	setup_pause_menu()
+
+	# Tambahkan koneksi input pada CharacterViewport
+	var equipments_panel = pause_menu_instance.get_node("EquipmentsPanel")
+	var viewport_container = equipments_panel.get_node("CharacterViewport")
+	viewport_container.gui_input.connect(_on_viewport_gui_input)
 
 func toggle_pause():
 	var is_paused = get_tree().paused
@@ -161,6 +171,7 @@ func show_pause_menu_section(section: String):
 	var nora_status_bar = pause_menu_instance.get_node_or_null("CharacterStatusNora")
 	var bg_inventory = pause_menu_instance.get_node_or_null("Panel/BgInventoryList")
 	var inventory_tabs = pause_menu_instance.get_node_or_null("InventoryTabs")
+	var equipments_panel = pause_menu_instance.get_node_or_null("EquipmentsPanel")
 
 	# Hide all by default
 	bg_status_bar.visible = false
@@ -168,6 +179,8 @@ func show_pause_menu_section(section: String):
 	nora_status_bar.visible = false
 	bg_inventory.visible = false
 	inventory_tabs.visible = false
+	if equipments_panel:
+		equipments_panel.visible = false
 	
 	var player_container = null
 	var support_container = null
@@ -199,13 +212,130 @@ func show_pause_menu_section(section: String):
 			get_parent().inventory_manager.populate_item_list()
 			get_parent().inventory_manager.populate_armor_list()
 		"Equipments":
-			bg_inventory.visible = true
-			inventory_tabs.visible = true
-			# assuming Equipments is tab 1
-			inventory_tabs.current_tab = 1
+			print("Equipments tab shown")
+			if equipments_panel:
+				print("Equipments panel shown")
+				equipments_panel.visible = true
+				show_equipments_panel()
 		"Skills":
 			# You can create skill population logic here
 			print("Skills tab shown, implement logic if needed")
+
+# --- EQUIPMENTS PANEL LOGIC ---
+var current_equipment_character := "Kyle"
+var current_equipment_model: Node = null
+
+func show_equipments_panel():
+	print("pause menu", pause_menu_instance)
+	var equipments_panel = pause_menu_instance.get_node("EquipmentsPanel")
+	var kyle_btn = equipments_panel.get_node("CharacterTab/Kyle")
+	var nora_btn = equipments_panel.get_node("CharacterTab/Nora")
+
+	# Default: Kyle
+	update_character_model(current_equipment_character)
+	update_armor_list(current_equipment_character)
+
+	kyle_btn.pressed.connect(func():
+		current_equipment_character = "Kyle"
+		update_character_model("Kyle")
+		update_armor_list("Kyle")
+	)
+	nora_btn.pressed.connect(func():
+		current_equipment_character = "Nora"
+		update_character_model("Nora")
+		update_armor_list("Nora")
+	)
+
+func update_character_model(character):
+	var equipments_panel = pause_menu_instance.get_node("EquipmentsPanel")
+	var viewport_container = equipments_panel.get_node("CharacterViewport")
+	var viewport = null
+	for child in viewport_container.get_children():
+		if child is Viewport:
+			viewport = child
+			break
+	if viewport == null:
+		viewport = Viewport.new.call()
+		viewport.size = Vector2(100, 200)
+		viewport.disable_3d = false
+		viewport.transparent_bg = true
+		viewport_container.add_child(viewport)
+
+	# Clear previous model
+	for c in viewport.get_children():
+		viewport.remove_child(c)
+		c.queue_free()
+
+	# Add camera to viewport
+	var camera = Camera3D.new()
+	camera.transform.origin = Vector3(1000, 1, 3)  # Position camera to view character
+	camera.look_at(Vector3(0, 1, 0))  # Look at character's center
+	viewport.add_child(camera)
+
+	# Use preview scene for UI
+	var model_scene = load("res://scenes/characters/KylePreview.tscn" if character == "Kyle" else "res://scenes/characters/NoraPreview.tscn")
+	current_equipment_model = model_scene.instantiate()
+	#current_equipment_model.transform.origin = Vector3(1000, 0, 0)  # Center in viewport
+	viewport.add_child(current_equipment_model)
+
+	# Play idle animation jika ada
+	if current_equipment_model.has_node("AnimationPlayer"):
+		var anim = current_equipment_model.get_node("AnimationPlayer")
+		if anim.has_animation("idle"):
+			anim.get_animation("idle").loop = true
+			anim.play("idle")
+		else:
+			anim.get_animation("nora-idle").loop = true
+			anim.play("nora-idle")
+
+func update_armor_list(character):
+	print("pause menu update ", pause_menu_instance)
+	var equipments_panel = pause_menu_instance.get_node("EquipmentsPanel")
+	var armor_panel = equipments_panel.get_node("ArmorPanel")
+	var armor_list = armor_panel.get_node("Armor")
+	# Clear list
+	for c in armor_list.get_children():
+		c.queue_free()
+
+	var equipment_manager = get_parent().equipment_manager
+	var equipped_armor = equipment_manager.get_equipped_armor(character)
+	var kyle_armors = ["Letter Armor", "Plate Armor", "Royal Armor"]
+
+	for armor in equipment_manager.get_all_armors():
+		var is_kyle_armor = kyle_armors.has(armor["name"])
+		if character == "Kyle" and not is_kyle_armor:
+			continue
+		if character == "Nora" and is_kyle_armor:
+			continue
+		var btn = Button.new()
+		btn.text = armor["name"]
+		if armor["name"] == equipped_armor:
+			btn.text += " (Equipped)"
+		btn.connect("pressed", func():
+			if equipped_armor == armor["name"]:
+				equipment_manager.unequip_armor(character)
+			else:
+				equipment_manager.equip_armor(character, armor["name"])
+			update_armor_list(character)
+			update_armor_status(armor["name"], character)
+		)
+		armor_list.add_child(btn)
+		# Show status on first or equipped
+		if armor["name"] == equipped_armor or equipped_armor == null:
+			update_armor_status(armor["name"], character)
+
+func update_armor_status(armor_name, character):
+	var equipments_panel = pause_menu_instance.get_node("EquipmentsPanel")
+	var armor_panel = equipments_panel.get_node("ArmorPanel")
+	var armor_status = armor_panel.get_node_or_null("ArmorStatus")
+	if armor_status:
+		armor_status.get_children().map(func(c): c.queue_free())
+		var equipment_manager = get_parent().equipment_manager
+		var status = equipment_manager.get_armor_status(armor_name)
+		if status:
+			var label = Label.new()
+			label.text = "%s\nLevel: %d\nBonus: %s" % [armor_name, status["level"], str(status["bonus"])]
+			armor_status.add_child(label)
 
 func setup_pause_menu():
 	pause_menu_instance = pause_menu_scene.instantiate()
@@ -242,6 +372,12 @@ func setup_pause_menu():
 		inventory_button.pressed.connect(func ():
 			show_pause_menu_section("Inventory")
 		)
+	
+	var equipments_button = pause_menu_instance.get_node_or_null("VBoxContainer/EquipmentsContainer/EquipmentsButton")
+	if equipments_button:
+		equipments_button.pressed.connect(func ():
+			show_pause_menu_section("Equipments")
+		)
 
 	var return_button = pause_menu_instance.get_node_or_null("ReturnMainMenu")
 	if return_button:
@@ -267,4 +403,18 @@ func load_support_status_bar():
 
 	support_status_bar = support_status_bar_scene.instantiate()
 	add_child(support_status_bar)
-	support_status_bar_original_parent = support_status_bar.get_parent() 
+	support_status_bar_original_parent = support_status_bar.get_parent()
+
+
+func _on_viewport_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				drag_state = DragState.ROTATING
+				last_mouse_pos = event.position
+			else:
+				drag_state = DragState.NONE
+	elif event is InputEventMouseMotion and drag_state == DragState.ROTATING and current_equipment_model:
+		var delta = event.position.x - last_mouse_pos.x
+		current_equipment_model.rotate_y(-delta * 0.01) # Sesuaikan sensitivitas jika perlu
+		last_mouse_pos = event.position

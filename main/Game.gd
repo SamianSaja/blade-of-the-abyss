@@ -104,6 +104,7 @@ var pause_menu_manager: Node
 var world_manager: Node
 var dialog_manager: Node
 var inventory_manager: Node
+var equipment_manager: Node
 
 func _ready():
 	# Initialize managers
@@ -119,7 +120,10 @@ func _ready():
 	inventory_manager = load("res://scripts/ui/InventoryManager.gd").new()
 	inventory_manager.item_template = item_template
 	add_child(inventory_manager)
-	
+
+	equipment_manager = load("res://scripts/ui/EquipmentManager.gd").new()
+	add_child(equipment_manager)
+
 	# Load default world
 	world_manager.load_world("altar_room")
 
@@ -182,7 +186,7 @@ func spawn_support(world_name: String):
 		else:
 			support_instance.global_transform.origin = Vector3.ZERO
 	add_child(support_instance)
-	
+
 	if support_instance.nora_status.has_method("set_support_status") and pause_menu_manager.support_status_bar:
 		support_instance.nora_status.set_support_status(pause_menu_manager.support_status_bar)
 
