@@ -21,7 +21,7 @@ def main():
     )
 
     model.learn(total_timesteps=100_000)
-    model.save("ppo_wraith_adaptive_v7")
+    model.save("ppo_wraith_adaptive_v8")
     print(f"Total Episodes Completed: {env.episode_count}")
 
 if __name__ == "__main__":

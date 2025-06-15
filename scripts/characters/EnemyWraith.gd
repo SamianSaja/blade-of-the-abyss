@@ -28,6 +28,12 @@ var drl_action = {}
 var drl_interval := 0.5 # seconds between DRL queries
 var drl_time_accum := 0.0
 
+# Combo tracking
+var combo_history = []
+var last_damage_dealt = 0
+var last_action_time = 0
+var combo_timeout = 2.0  # seconds before combo resets
+
 @onready var http_request := $HTTPRequest
 
 func _ready():
@@ -42,6 +48,10 @@ func _ready():
 	wraith_damage_system.owner = self
 
 func _process(delta):
+	# Update combo timeout
+	if Time.get_ticks_msec() - last_action_time > combo_timeout * 1000:
+		combo_history.clear()
+	
 	var camera = get_viewport().get_camera_3d()
 	if health_bar and camera:
 		var head_offset = Vector3(-1.5, 2.5, 0)
@@ -67,10 +77,16 @@ func send_drl_train(state: Dictionary, action: int, next_state: Dictionary):
 	if action > 3: 
 		action = 0  # fallback jadi attack/idle di PPO
 
+	# Calculate damage dealt in this action
+	var damage_dealt = last_damage_dealt
+	last_damage_dealt = 0  # Reset for next action
+
 	var train_data = {
 		"state": state.values(),
 		"action": action,
-		"next_state": next_state.values()
+		"next_state": next_state.values(),
+		"damage_dealt": damage_dealt,
+		"combo_history": combo_history
 	}
 	var json = JSON.new()
 	var json_train = json.stringify(train_data)
@@ -148,32 +164,18 @@ func handle_ai():
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
 	var state = build_state_dict()
-	var action_taken = 0  # Default to summon (0) instead of -1
-
-	# Add action history tracking
-	if not has_node("ActionHistory"):
-		var action_history = Node.new()
-		action_history.name = "ActionHistory"
-		action_history.set_meta("last_actions", [])
-		add_child(action_history)
-
-	var action_history = get_node("ActionHistory")
-	var last_actions = action_history.get_meta("last_actions", [])
-	
-	# Force action diversity if too many repeated actions
-	var action_counts = {}
-	for action in last_actions:
-		action_counts[action] = action_counts.get(action, 0) + 1
-	
-	var force_different_action = false
-	for action in action_counts:
-		if action_counts[action] >= 5:  # If any action used 5 or more times in last 10 actions
-			force_different_action = true
-			break
+	var action_taken = 0
 
 	if drl_action.has("action"):
 		print("AI (DRL): Using DRL action: %s" % drl_action["action"])
 		var proposed_action = -1
+		var player_style = drl_action.get("player_style", "balanced")
+		var melee_percentage = drl_action.get("melee_percentage", 0.5)
+		
+		print("Player Style Analysis:")
+		print("- Style: %s" % player_style)
+		print("- Melee Percentage: %.2f" % melee_percentage)
+		print("- Combo History: %s" % str(combo_history))
 		
 		match drl_action["action"]:
 			"summon":
@@ -189,23 +191,23 @@ func handle_ai():
 			_:
 				proposed_action = 0
 
-		# Validate action based on state
-		if force_different_action and proposed_action == last_actions[-1] if last_actions.size() > 0 else false:
-			# Force a different action
-			var available_actions = [0, 1, 2, 3, 4]
-			available_actions.erase(proposed_action)
-			proposed_action = available_actions[randi() % available_actions.size()]
-			print("Forcing different action: %d" % proposed_action)
+		# Update combo history
+		if combo_history.size() > 0:
+			var last_action = combo_history[-1]
+			# Update damage tracking
+			if last_action == "summon" and proposed_action == "tornado":
+				last_damage_dealt = wraith_damage_system.TORNADO_DAMAGE
+			elif last_action == "tornado" and proposed_action == "full_tornado":
+				last_damage_dealt = wraith_damage_system.FULL_TORNADO_DAMAGE
+			elif last_action == "full_tornado" and proposed_action == "retreat":
+				last_damage_dealt = 0  # No damage for retreat
 
-		# Validate action based on distance
-		if distance < 5 and proposed_action == 4:  # Don't chase if too close
-			proposed_action = 3  # Force retreat
-			print("Too close, forcing retreat")
-		elif distance > 15 and proposed_action == 3:  # Don't retreat if too far
-			proposed_action = 4  # Force chase
-			print("Too far, forcing chase")
+		combo_history.append(drl_action["action"])
+		if combo_history.size() > 3:  # Keep last 3 actions
+			combo_history.pop_front()
+		last_action_time = Time.get_ticks_msec()
 
-		# Execute the validated action
+		# Execute the adapted action
 		match proposed_action:
 			0:  # Summon
 				print("AI (DRL): Summoning minion.")
@@ -270,25 +272,17 @@ func handle_ai():
 			direction = to_player.normalized()
 			action_taken = 4  # Changed from 5 to 4
 
-	# Update action history
-	last_actions.append(action_taken)
-	if last_actions.size() > 10:  # Keep last 10 actions
-		last_actions.pop_front()
-	action_history.set_meta("last_actions", last_actions)
-
-	# Log action statistics
-	print("=== Action History Debug ===")
-	print("Last 10 actions: %s" % str(last_actions))
-	print("Action counts: %s" % str(action_counts))
-	print("Current distance: %f" % distance)
-	print("=========================")
-
 	# Build next state after action for PPO training report
 	var next_state = build_state_dict()
 	send_drl_train(state, action_taken, next_state)
 
 	# Log lengkap untuk debug
-	print("AI Log: State=%s | ActionTaken=%d | NextState=%s" % [str(state), action_taken, str(next_state)])
+	print("AI Log: State=%s | ActionTaken=%d | NextState=%s | Combo=%s" % [
+		str(state), 
+		action_taken, 
+		str(next_state),
+		str(combo_history)
+	])
 
 
 # END DRL LOGIC
