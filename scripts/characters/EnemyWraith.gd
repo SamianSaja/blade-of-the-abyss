@@ -61,10 +61,42 @@ func _physics_process(delta):
 	play_animation()
 	rotate_model()
 
+# BEGIN DRL LOGIC
+func send_drl_train(state: Dictionary, action: int, next_state: Dictionary):
+	# Batasi action hanya ke [0, 1, 2, 3] sesuai PPO
+	if action > 3: 
+		action = 0  # fallback jadi attack/idle di PPO
+
+	var train_data = {
+		"state": state.values(),
+		"action": action,
+		"next_state": next_state.values()
+	}
+	var json = JSON.new()
+	var json_train = json.stringify(train_data)
+
+	var http_train = HTTPRequest.new()
+	add_child(http_train)
+	http_train.request(
+		"http://0.0.0.0:5000/train",
+		["Content-Type: application/json"],
+		HTTPClient.METHOD_POST,
+		json_train
+	)
+
+
 func send_drl_request():
 	var state = build_state_dict()
 	var json = JSON.new()
 	var json_state = json.stringify(state)
+	
+	# Add detailed state logging
+	print("=== DRL State Debug ===")
+	print("State being sent to DRL server:")
+	for key in state.keys():
+		print("%s: %s" % [key, state[key]])
+	print("=====================")
+	
 	http_request.request(
 		"http://0.0.0.0:8000/predict",
 		["Content-Type: application/json"],
@@ -77,9 +109,16 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 		var json = JSON.new()
 		if json.parse(body.get_string_from_utf8()) == OK:
 			drl_action = json.get_data()
+			# Add response logging
+			print("=== DRL Response Debug ===")
+			print("Raw response: %s" % body.get_string_from_utf8())
+			print("Parsed action: %s" % str(drl_action))
+			print("=====================")
 		else:
+			print("Failed to parse DRL response")
 			drl_action = {}
 	else:
+		print("DRL request failed with code: %d" % response_code)
 		drl_action = {}
 
 func build_state_dict() -> Dictionary:
@@ -108,48 +147,151 @@ func handle_ai():
 
 	var to_player = player.global_transform.origin - global_transform.origin
 	var distance = to_player.length()
+	var state = build_state_dict()
+	var action_taken = 0  # Default to summon (0) instead of -1
+
+	# Add action history tracking
+	if not has_node("ActionHistory"):
+		var action_history = Node.new()
+		action_history.name = "ActionHistory"
+		action_history.set_meta("last_actions", [])
+		add_child(action_history)
+
+	var action_history = get_node("ActionHistory")
+	var last_actions = action_history.get_meta("last_actions", [])
+	
+	# Force action diversity if too many repeated actions
+	var action_counts = {}
+	for action in last_actions:
+		action_counts[action] = action_counts.get(action, 0) + 1
+	
+	var force_different_action = false
+	for action in action_counts:
+		if action_counts[action] >= 5:  # If any action used 5 or more times in last 10 actions
+			force_different_action = true
+			break
 
 	if drl_action.has("action"):
-		print("AI: Using DRL action: %s" % drl_action["action"])
+		print("AI (DRL): Using DRL action: %s" % drl_action["action"])
+		var proposed_action = -1
+		
 		match drl_action["action"]:
 			"summon":
-				start_summon()
+				proposed_action = 0
 			"tornado":
-				start_tornado()
+				proposed_action = 1
 			"full_tornado":
-				start_full_tornado()
-			"attack":
-				direction = Vector3.ZERO
-				start_attack("wraith-magic-attack")
+				proposed_action = 2
 			"retreat":
-				direction = -to_player.normalized()
+				proposed_action = 3
 			"chase":
-				direction = to_player.normalized()
+				proposed_action = 4
 			_:
-				print("AI: Unknown DRL action: %s" % drl_action["action"])
-	else:
-		print("AI: DRL action not available, using fallback logic.")
-		# Fallback logic
-		if wraith_status and wraith_damage_system:
-			if wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown:
-				print("AI Konvensional: Summoning minion.")
+				proposed_action = 0
+
+		# Validate action based on state
+		if force_different_action and proposed_action == last_actions[-1] if last_actions.size() > 0 else false:
+			# Force a different action
+			var available_actions = [0, 1, 2, 3, 4]
+			available_actions.erase(proposed_action)
+			proposed_action = available_actions[randi() % available_actions.size()]
+			print("Forcing different action: %d" % proposed_action)
+
+		# Validate action based on distance
+		if distance < 5 and proposed_action == 4:  # Don't chase if too close
+			proposed_action = 3  # Force retreat
+			print("Too close, forcing retreat")
+		elif distance > 15 and proposed_action == 3:  # Don't retreat if too far
+			proposed_action = 4  # Force chase
+			print("Too far, forcing chase")
+
+		# Execute the validated action
+		match proposed_action:
+			0:  # Summon
+				print("AI (DRL): Summoning minion.")
 				start_summon()
-			if not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
-				print("AI Konvensional: Using full tornado.")
-				start_full_tornado()
-			if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
-				print("AI Konvensional: Using tornado.")
+				action_taken = 0
+			1:  # Tornado
+				print("AI (DRL): Casting tornado.")
 				start_tornado()
+				action_taken = 1
+			2:  # Full Tornado
+				print("AI (DRL): Casting full tornado.")
+				start_full_tornado()
+				action_taken = 2
+			3:  # Retreat
+				print("AI (DRL): Retreating from player.")
+				direction = -to_player.normalized()
+				action_taken = 3
+			4:  # Chase
+				print("AI (DRL): Chasing player.")
+				direction = to_player.normalized()
+				action_taken = 4
+	else:
+		print("AI (Fallback): DRL action not available, using conventional logic.")
+		
+		# Summon logic
+		if wraith_status and wraith_damage_system:
+			if wraith_status.mp >= wraith_damage_system.SUMMON_COST \
+				and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS \
+				and not wraith_damage_system.summon_on_cooldown:
+				print("AI (Fallback): Summoning minion.")
+				start_summon()
+				action_taken = 0  # Changed from 1 to 0
+
+			# Full Tornado logic
+			elif not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
+				print("AI (Fallback): Using full tornado.")
+				start_full_tornado()
+				action_taken = 2  # Changed from 3 to 2
+
+			# Tornado logic
+			elif not wraith_damage_system.tornado_on_cooldown and distance <= 10:
+				print("AI (Fallback): Using tornado.")
+				start_tornado()
+				action_taken = 1  # Changed from 2 to 1
+
+		# Basic attack logic (only in fallback)
 		if distance <= attack_range and distance >= stop_distance:
-			print("AI Konvensional: Attacking player.")
+			print("AI (Fallback): Attacking player.")
 			direction = Vector3.ZERO
 			start_attack("wraith-magic-attack")
+			action_taken = 0  # Changed from 6 to 0
+
+		# Retreat logic
 		elif distance < stop_distance:
-			print("AI Konvensional: Retreating from player.")
+			print("AI (Fallback): Retreating from player.")
 			direction = -to_player.normalized()
+			action_taken = 3  # Changed from 4 to 3
+
+		# Chase logic
 		else:
-			print("AI Konvensional: Chasing player.")
+			print("AI (Fallback): Chasing player.")
 			direction = to_player.normalized()
+			action_taken = 4  # Changed from 5 to 4
+
+	# Update action history
+	last_actions.append(action_taken)
+	if last_actions.size() > 10:  # Keep last 10 actions
+		last_actions.pop_front()
+	action_history.set_meta("last_actions", last_actions)
+
+	# Log action statistics
+	print("=== Action History Debug ===")
+	print("Last 10 actions: %s" % str(last_actions))
+	print("Action counts: %s" % str(action_counts))
+	print("Current distance: %f" % distance)
+	print("=========================")
+
+	# Build next state after action for PPO training report
+	var next_state = build_state_dict()
+	send_drl_train(state, action_taken, next_state)
+
+	# Log lengkap untuk debug
+	print("AI Log: State=%s | ActionTaken=%d | NextState=%s" % [str(state), action_taken, str(next_state)])
+
+
+# END DRL LOGIC
 
 func move_enemy(delta):
 	if is_attacking:

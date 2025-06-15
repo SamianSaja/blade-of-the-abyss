@@ -1,10 +1,9 @@
+# train_wraith.py
 from stable_baselines3 import PPO
-from gym_wraith import WraithEnv  # Make sure gym_wraith.py is in the same folder or PYTHONPATH
+from gym_wraith import WraithEnv
 
 def main():
     env = WraithEnv()
-
-    # Optional: set seed for reproducibility
     env.reset(seed=42)
 
     model = PPO(
@@ -21,10 +20,9 @@ def main():
         max_grad_norm=0.5,
     )
 
-    # Increase total_timesteps for better training (e.g., 1 million)
-    model.learn(total_timesteps=1_000_000)
-
-    model.save("ppo_wraith_v3")
+    model.learn(total_timesteps=100_000)
+    model.save("ppo_wraith_adaptive_v7")
+    print(f"Total Episodes Completed: {env.episode_count}")
 
 if __name__ == "__main__":
     main()
