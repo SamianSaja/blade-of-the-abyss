@@ -223,6 +223,149 @@ async def predict(state: State):
         "melee_percentage": sum(player_style_history) / len(player_style_history)
     }
 
+@app.post("/test_combo")
+async def test_combo():
+    """Test endpoint to compare DRL vs fallback logic for combo attacks"""
+    test_scenarios = [
+        {
+            "name": "Fighter Close Range",
+            "state": State(
+                enemy_hp=100,
+                enemy_mp=100,
+                player_hp=100,
+                player_mp=100,
+                distance=3.0,  # Close range
+                player_dps=20,  # High DPS indicates fighter
+                damage_taken=0,
+                can_summon=True,
+                can_tornado=True,
+                can_full_tornado=True,
+                tornado_cd=0,
+                summon_cd=0,
+                summon_count=0
+            ),
+            "expected_style": "fighter",
+            "expected_combos": ["summon->tornado", "tornado->full_tornado"]
+        },
+        {
+            "name": "Mage Long Range",
+            "state": State(
+                enemy_hp=100,
+                enemy_mp=100,
+                player_hp=100,
+                player_mp=100,
+                distance=15.0,  # Long range
+                player_dps=5,  # Low DPS indicates mage
+                damage_taken=0,
+                can_summon=True,
+                can_tornado=True,
+                can_full_tornado=True,
+                tornado_cd=0,
+                summon_cd=0,
+                summon_count=0
+            ),
+            "expected_style": "mage",
+            "expected_combos": ["summon->tornado", "retreat->summon"]
+        },
+        {
+            "name": "Balanced Mid Range",
+            "state": State(
+                enemy_hp=100,
+                enemy_mp=100,
+                player_hp=100,
+                player_mp=100,
+                distance=8.0,  # Mid range
+                player_dps=10,  # Medium DPS indicates balanced
+                damage_taken=0,
+                can_summon=True,
+                can_tornado=True,
+                can_full_tornado=True,
+                tornado_cd=0,
+                summon_cd=0,
+                summon_count=0
+            ),
+            "expected_style": "balanced",
+            "expected_combos": ["summon->tornado", "tornado->full_tornado"]
+        }
+    ]
+    
+    results = []
+    for scenario in test_scenarios:
+        # Get DRL prediction
+        drl_result = await predict(scenario["state"])
+        
+        # Simulate fallback logic
+        fallback_action = simulate_fallback(scenario["state"])
+        
+        # Track combo success
+        combo_success_rate = calculate_combo_success(
+            scenario["state"],
+            drl_result["action"],
+            scenario["expected_combos"]
+        )
+        
+        results.append({
+            "scenario": scenario["name"],
+            "player_style": drl_result["player_style"],
+            "expected_style": scenario["expected_style"],
+            "drl_action": drl_result["action"],
+            "fallback_action": fallback_action,
+            "combo_success_rate": combo_success_rate,
+            "melee_percentage": drl_result["melee_percentage"]
+        })
+    
+    return {
+        "test_results": results,
+        "combo_success_stats": {
+            "fighter": combo_success["fighter"],
+            "mage": combo_success["mage"],
+            "balanced": combo_success["balanced"]
+        }
+    }
+
+def simulate_fallback(state: State) -> str:
+    """Simulate the fallback logic from EnemyWraith.gd"""
+    if state.distance < 3.0:  # Danger zone
+        if state.can_full_tornado:
+            return "full_tornado"
+        elif state.can_tornado:
+            return "tornado"
+        else:
+            return "retreat"
+    elif state.distance < 5.0:  # Combat zone
+        if state.can_full_tornado:
+            return "full_tornado"
+        elif state.can_summon:
+            return "summon"
+        elif state.can_tornado:
+            return "tornado"
+        else:
+            return "chase"
+    elif state.distance < 7.0:  # Engagement zone
+        if state.can_summon:
+            return "summon"
+        elif state.can_tornado:
+            return "tornado"
+        else:
+            return "chase"
+    else:  # Long range
+        if state.can_summon:
+            return "summon"
+        else:
+            return "chase"
+
+def calculate_combo_success(state: State, action: str, expected_combos: list) -> float:
+    """Calculate how well the action fits into expected combos"""
+    if not action_history:
+        return 0.0
+        
+    last_action = action_history[-1]
+    current_combo = f"{last_action}->{action}"
+    
+    if current_combo in expected_combos:
+        return 1.0
+    return 0.0
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("drl_server:app", host="0.0.0.0", port=8000, reload=True)
