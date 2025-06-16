@@ -65,7 +65,7 @@ func handle_ai():
 	# Handle low MP - retreat to safe position
 	if nora_status.mp < 10:
 		is_hiding = true
-		if is_instance_valid(player):
+		if is_instance_valid(player) and is_instance_valid(self):
 			var to_player = player.global_transform.origin - global_transform.origin
 			var dist_player = to_player.length()
 			
@@ -78,13 +78,13 @@ func handle_ai():
 				var closest_enemy = null
 				var closest_dist = INF
 				for enemy in detected_enemies:
-					if is_instance_valid(enemy):
+					if is_instance_valid(enemy) and is_instance_valid(self):
 						var dist = global_transform.origin.distance_to(enemy.global_transform.origin)
 						if dist < closest_dist:
 							closest_dist = dist
 							closest_enemy = enemy
 				
-				if is_instance_valid(closest_enemy):
+				if is_instance_valid(closest_enemy) and is_instance_valid(self):
 					var to_enemy = global_transform.origin - closest_enemy.global_transform.origin
 					
 					# Jika terlalu dekat dengan musuh, menjauh
@@ -107,7 +107,7 @@ func handle_ai():
 		var closest_enemy = null
 		var closest_dist = INF
 		for enemy in detected_enemies:
-			if is_instance_valid(enemy):
+			if is_instance_valid(enemy) and is_instance_valid(self):
 				var dist = global_transform.origin.distance_to(enemy.global_transform.origin)
 				if dist < closest_dist:
 					closest_dist = dist
@@ -115,7 +115,7 @@ func handle_ai():
 		target_enemy = closest_enemy
 
 	# Prioritaskan enemy jika masih dalam jarak
-	if is_instance_valid(target_enemy):
+	if is_instance_valid(target_enemy) and is_instance_valid(self):
 		var to_enemy = target_enemy.global_transform.origin - global_transform.origin
 		var dist_enemy = to_enemy.length()
 
@@ -133,7 +133,7 @@ func handle_ai():
 			# Check if we need to retreat (low MP)
 			if nora_status.mp < 10:
 				is_hiding = true
-				if is_instance_valid(player):
+				if is_instance_valid(player) and is_instance_valid(self):
 					var to_player = player.global_transform.origin - global_transform.origin
 					var dist_player = to_player.length()
 					
@@ -168,7 +168,7 @@ func handle_ai():
 			return
 
 	# Jika tidak ada enemy, dekati player
-	elif is_instance_valid(player):
+	elif is_instance_valid(player) and is_instance_valid(self):
 		var to_player = player.global_transform.origin - global_transform.origin
 		var dist_player = to_player.length()
 
@@ -229,12 +229,12 @@ func play_animation():
 
 func rotate_model():
 	var look_target := target_enemy if is_instance_valid(target_enemy) else null
-	if look_target:
+	if look_target and is_instance_valid(self):
 		var to_target = (look_target.global_transform.origin - global_transform.origin).normalized()
 		var target_yaw = atan2(to_target.x, to_target.z)
 		var target_rotation = Quaternion(Vector3.UP, target_yaw)
 		model.rotation = model.rotation.slerp(target_rotation.get_euler(), 0.2)
-	elif direction.length() > 0.1:
+	elif direction.length() > 0.1 and is_instance_valid(self):
 		var target_yaw = atan2(direction.x, direction.z)
 		var target_rotation = Quaternion(Vector3.UP, target_yaw)
 		model.rotation = model.rotation.slerp(target_rotation.get_euler(), 0.2)
