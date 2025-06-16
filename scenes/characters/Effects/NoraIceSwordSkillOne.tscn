@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cckfj35vbbglj"]
+
+[ext_resource type="PackedScene" uid="uid://cooqxqfdsidtb" path="res://assets/characters/effects/ice_sword (1).glb" id="1_rlmd8"]
+
+[node name="NoraIceSwordSkillOne" instance=ExtResource("1_rlmd8")]
+transform = Transform3D(0.687848, -0.725855, -1.50052e-08, 0.660568, 0.62598, -0.414487, 0.300857, 0.285104, 0.910055, 0, 0, 0)
