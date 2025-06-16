@@ -297,8 +297,8 @@ func perform_ice_sword_skill(target: Node3D):
 	
 	# Connect collision signal
 	damage_area.body_entered.connect(func(body):
-		if is_instance_valid(body) and is_instance_valid(target) and body == target:
-			nora_damage_system.perform_skill_one(target)
+		if is_instance_valid(body) and (body.is_in_group("wraith") or body.is_in_group("goblin")):
+			nora_damage_system.perform_skill_one(body)
 			if is_instance_valid(ice_sword):
 				ice_sword.queue_free()
 	)
