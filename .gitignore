@@ -5,3 +5,7 @@
 venv/
 ML/__pycache__/
 assets/
+rewards/
+runs/
+logs/
+drl_server.log

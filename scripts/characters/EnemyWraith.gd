@@ -23,6 +23,13 @@ var is_attacking := false
 var current_attack_anim := ""
 
 var player: Node3D = null
+var support: Node3D = null  # Add support reference
+var current_target: Node3D = null  # Current target to attack
+
+# Damage tracking
+var damage_sources = {}  # Dictionary to track damage from each source
+var damage_tracking_timeout = 5.0  # Time in seconds to remember damage sources
+var last_damage_time = 0.0  # Last time damage was taken
 
 var drl_action = {}
 var drl_interval := 0.5 # seconds between DRL queries
@@ -51,6 +58,10 @@ func _process(delta):
 	# Update combo timeout
 	if Time.get_ticks_msec() - last_action_time > combo_timeout * 1000:
 		combo_history.clear()
+	
+	# Update damage tracking timeout
+	if Time.get_ticks_msec() - last_damage_time > damage_tracking_timeout * 1000:
+		damage_sources.clear()
 	
 	var camera = get_viewport().get_camera_3d()
 	if health_bar and camera:
@@ -138,31 +149,87 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 		drl_action = {}
 
 func build_state_dict() -> Dictionary:
-	var to_player = player.global_transform.origin - global_transform.origin
-	var distance = to_player.length()
+	if not is_instance_valid(current_target):
+		return {
+			"enemy_hp": wraith_status.hp if wraith_status else 0,
+			"enemy_mp": wraith_status.mp if wraith_status else 0,
+			"player_hp": 0,
+			"player_mp": 0,
+			"distance": 0,
+			"player_dps": 0,
+			"damage_taken": wraith_status.self_damage if wraith_status and wraith_status.self_damage else 0,
+			"can_summon": false,
+			"can_tornado": false,
+			"can_full_tornado": false,
+			"summon_count": 0,
+			"tornado_cd": 0,
+			"summon_cd": 0
+		}
+
+	var to_target = current_target.global_transform.origin - global_transform.origin
+	var distance = to_target.length()
+	
+	print("=== Distance Debug ===")
+	print("Current target: %s" % (current_target.name if current_target else "none"))
+	print("Distance to target: %.2f" % distance)
+	print("Target position: %s" % str(current_target.global_transform.origin))
+	print("Wraith position: %s" % str(global_transform.origin))
+	print("====================")
+	
+	# Get target status based on whether it's player or support
+	var target_hp = 0
+	var target_mp = 0
+	var target_dps = 0
+	
+	if current_target.is_in_group("player"):
+		target_hp = current_target.kyle_status.hp if current_target.kyle_status else 100
+		target_mp = current_target.kyle_status.mp if current_target.kyle_status else 100
+		target_dps = current_target.kyle_status.self_damage if current_target.kyle_status else 10
+	elif current_target.is_in_group("support"):
+		target_hp = current_target.nora_status.hp if current_target.nora_status else 100
+		target_mp = current_target.nora_status.mp if current_target.nora_status else 100
+		target_dps = current_target.nora_status.self_damage if current_target.nora_status else 10
+	
+	# Debug skill availability
+	print("=== Skill Availability Debug ===")
+	print("MP: %d/%d" % [wraith_status.mp if wraith_status else 0, wraith_status.max_mp if wraith_status else 0])
+	print("Summon:")
+	print("- MP check: %s" % (wraith_status and wraith_status.mp >= wraith_damage_system.SUMMON_COST))
+	print("- Active summons: %d/%d" % [wraith_damage_system.active_summons.size() if wraith_damage_system else 0, wraith_damage_system.MAX_SUMMONS if wraith_damage_system else 0])
+	print("- Cooldown: %s" % (not wraith_damage_system.summon_on_cooldown if wraith_damage_system else false))
+	print("Tornado:")
+	print("- MP check: %s" % (wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST))
+	print("- Distance check: %s" % (distance <= 10))
+	print("- Cooldown: %s" % (not wraith_damage_system.tornado_on_cooldown if wraith_damage_system else false))
+	print("Full Tornado:")
+	print("- MP check: %s" % (wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST))
+	print("- Distance check: %s" % (distance < 5))
+	print("- Cooldown: %s" % (not wraith_damage_system.full_tornado_on_cooldown if wraith_damage_system else false))
+	print("====================")
+	
 	return {
 		"enemy_hp": wraith_status.hp if wraith_status else 0,
 		"enemy_mp": wraith_status.mp if wraith_status else 0,
-		"player_hp": player.kyle_status.hp if player.kyle_status.hp else 100, # Adjust as needed
-		"player_mp": player.kyle_status.mp if player.kyle_status.mp else 100, # Adjust as needed
+		"player_hp": target_hp,
+		"player_mp": target_mp,
 		"distance": distance,
-		"player_dps": player.kyle_status.self_damage if player.kyle_status.self_damage else 10, # Adjust as needed
+		"player_dps": target_dps,
 		"damage_taken": wraith_status.self_damage if wraith_status and wraith_status.self_damage else 0,
-		"can_summon": wraith_status and wraith_damage_system and wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and wraith_damage_system.SUMMON_COOLDOWN == 0,
-		"can_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and wraith_damage_system.TORNADO_COOLDOWN == 0 and distance <= 10,
-		"can_full_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and wraith_damage_system.FULL_TORNADO_COOLDOWN == 0 and distance < 5,
+		"can_summon": wraith_status and wraith_damage_system and wraith_status.mp >= wraith_damage_system.SUMMON_COST and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS and not wraith_damage_system.summon_on_cooldown,
+		"can_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and not wraith_damage_system.tornado_on_cooldown and distance <= 10,
+		"can_full_tornado": wraith_damage_system and wraith_status.mp >= wraith_damage_system.TORNADO_COST and not wraith_damage_system.full_tornado_on_cooldown and distance < 5,
 		"summon_count": wraith_damage_system.active_summons.size() if wraith_damage_system else 0,
 		"tornado_cd": wraith_damage_system.TORNADO_COOLDOWN if wraith_damage_system else 0,
 		"summon_cd": wraith_damage_system.SUMMON_COOLDOWN if wraith_damage_system else 0
 	}
 
 func handle_ai():
-	if not is_instance_valid(player) or is_attacking:
+	if not is_instance_valid(current_target) or is_attacking:
 		direction = Vector3.ZERO
 		return
 
-	var to_player = player.global_transform.origin - global_transform.origin
-	var distance = to_player.length()
+	var to_target = current_target.global_transform.origin - global_transform.origin
+	var distance = to_target.length()
 	var state = build_state_dict()
 	var action_taken = 0
 
@@ -222,12 +289,12 @@ func handle_ai():
 				start_full_tornado()
 				action_taken = 2
 			3:  # Retreat
-				print("AI (DRL): Retreating from player.")
-				direction = -to_player.normalized()
+				print("AI (DRL): Retreating from target.")
+				direction = -to_target.normalized()
 				action_taken = 3
 			4:  # Chase
-				print("AI (DRL): Chasing player.")
-				direction = to_player.normalized()
+				print("AI (DRL): Chasing target.")
+				direction = to_target.normalized()
 				action_taken = 4
 	else:
 		print("AI (Fallback): DRL action not available, using conventional logic.")
@@ -239,38 +306,38 @@ func handle_ai():
 				and not wraith_damage_system.summon_on_cooldown:
 				print("AI (Fallback): Summoning minion.")
 				start_summon()
-				action_taken = 0  # Changed from 1 to 0
+				action_taken = 0
 
 			# Full Tornado logic
 			elif not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
 				print("AI (Fallback): Using full tornado.")
 				start_full_tornado()
-				action_taken = 2  # Changed from 3 to 2
+				action_taken = 2
 
 			# Tornado logic
 			elif not wraith_damage_system.tornado_on_cooldown and distance <= 10:
 				print("AI (Fallback): Using tornado.")
 				start_tornado()
-				action_taken = 1  # Changed from 2 to 1
+				action_taken = 1
 
 		# Basic attack logic (only in fallback)
 		if distance <= attack_range and distance >= stop_distance:
-			print("AI (Fallback): Attacking player.")
+			print("AI (Fallback): Attacking target.")
 			direction = Vector3.ZERO
 			start_attack("wraith-magic-attack")
-			action_taken = 0  # Changed from 6 to 0
+			action_taken = 0
 
 		# Retreat logic
 		elif distance < stop_distance:
-			print("AI (Fallback): Retreating from player.")
-			direction = -to_player.normalized()
-			action_taken = 3  # Changed from 4 to 3
+			print("AI (Fallback): Retreating from target.")
+			direction = -to_target.normalized()
+			action_taken = 3
 
 		# Chase logic
 		else:
-			print("AI (Fallback): Chasing player.")
-			direction = to_player.normalized()
-			action_taken = 4  # Changed from 5 to 4
+			print("AI (Fallback): Chasing target.")
+			direction = to_target.normalized()
+			action_taken = 4
 
 	# Build next state after action for PPO training report
 	var next_state = build_state_dict()
@@ -314,10 +381,10 @@ func play_animation():
 			anim_player.play("wraith-idle")
 
 func rotate_model():
-	if is_attacking and is_instance_valid(player):
-		# Saat menyerang, selalu menghadap ke pemain
-		var to_player = (player.global_transform.origin - global_transform.origin).normalized()
-		var target_yaw = atan2(to_player.x, to_player.z)
+	if is_attacking and is_instance_valid(current_target):
+		# Saat menyerang, selalu menghadap ke target
+		var to_target = (current_target.global_transform.origin - global_transform.origin).normalized()
+		var target_yaw = atan2(to_target.x, to_target.z)
 		var target_rotation = Quaternion(Vector3.UP, target_yaw)
 		model.rotation = model.rotation.slerp(target_rotation.get_euler(), 0.2)
 	elif direction.length() > 0.1:
@@ -368,17 +435,69 @@ func _on_animation_finished(anim_name: String):
 func _on_body_entered(body: Node):
 	if body.is_in_group("player"):
 		player = body
+		if not current_target:
+			current_target = body
 		if wraith_damage_system:
 			wraith_damage_system.set_player_reference(player)
+	elif body.is_in_group("support"):
+		support = body
+		if not current_target:
+			current_target = body
 
 func _on_body_exited(body: Node):
 	if body == player:
 		player = null
+		if current_target == body:
+			current_target = support if is_instance_valid(support) else null
+	elif body == support:
+		support = null
+		if current_target == body:
+			current_target = player if is_instance_valid(player) else null
 
-func take_damage(amount: int):
+func take_damage(amount: int, source: Node = null):
 	wraith_status.take_damage(amount)
+	last_damage_time = Time.get_ticks_msec()
+	
+	# Track damage source
+	if source:
+		if not damage_sources.has(source):
+			damage_sources[source] = 0
+		damage_sources[source] += amount
+		
+		print("=== Damage Tracking Debug ===")
+		print("Damage taken: %d from %s" % [amount, source.name if source else "unknown"])
+		print("Current damage sources:")
+		for src in damage_sources:
+			print("- %s: %d damage" % [src.name if src else "unknown", damage_sources[src]])
+		print("=========================")
+		
+		# Update target if this source is doing more damage
+		update_target()
+	
 	if wraith_status.is_dead():
 		die()
+
+func update_target():
+	# Find the source doing the most damage
+	var highest_damage = 0
+	var highest_damage_source = null
+	
+	print("=== Target Update Debug ===")
+	print("Current target: %s" % (current_target.name if current_target else "none"))
+	print("Damage sources:")
+	for source in damage_sources:
+		print("- %s: %d damage" % [source.name if source else "unknown", damage_sources[source]])
+		if damage_sources[source] > highest_damage:
+			highest_damage = damage_sources[source]
+			highest_damage_source = source
+	
+	# Update current target if we found a higher damage source
+	if highest_damage_source and highest_damage_source != current_target:
+		print("Switching target to: %s (damage: %d)" % [highest_damage_source.name, highest_damage])
+		current_target = highest_damage_source
+		player = current_target if current_target.is_in_group("player") else player
+		support = current_target if current_target.is_in_group("support") else support
+	print("=========================")
 
 func die():
 	queue_free()

@@ -401,14 +401,21 @@ func perform_ice_sword_rain_skill(target: Node3D):
 	var rain_radius = 5.0  # Radius area hujan pedang
 	var num_swords = 8  # Jumlah pedang yang akan jatuh
 	
+	# Store target position before starting the loop
+	var target_pos = target.global_transform.origin
+	
 	for i in range(num_swords):
+		# Check if target is still valid
+		if not is_instance_valid(target) or not is_instance_valid(self):
+			break
+			
 		# Random position within radius
 		var random_offset = Vector3(
 			randf_range(-rain_radius, rain_radius),
 			0,
 			randf_range(-rain_radius, rain_radius)
 		)
-		var spawn_pos = target.global_transform.origin + random_offset
+		var spawn_pos = target_pos + random_offset
 		
 		# Create ice sword
 		var ice_sword = ice_sword_rain_scene.instantiate()

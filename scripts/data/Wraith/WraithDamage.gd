@@ -57,8 +57,8 @@ func perform_tornado_skill():
 		print("Tornado masih cooldown.")
 		return
 
-	if not is_instance_valid(player):
-		print("Player tidak valid untuk tornado.")
+	if not is_instance_valid(owner.current_target):
+		print("Target tidak valid untuk tornado.")
 		return
 
 	if not tornado_scene:
@@ -73,7 +73,7 @@ func perform_tornado_skill():
 
 	var tornado_instance = tornado_scene.instantiate()
 	get_tree().current_scene.add_child(tornado_instance)
-	tornado_instance.start_skill(player.global_transform.origin)
+	tornado_instance.start_skill(owner.current_target.global_transform.origin)
 
 	# Cooldown
 	start_cooldown("tornado")

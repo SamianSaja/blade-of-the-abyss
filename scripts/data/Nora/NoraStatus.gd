@@ -2,11 +2,11 @@ extends Node
 
 # ==================== Basic Resources ====================
 var hp: int = 200
-var mp: int = 100
+var mp: int = 500
 var tp: int = 100
 
 var max_hp: int = 200
-var max_mp: int = 100
+var max_mp: int = 500
 var max_tp: int = 100
 
 # ==================== Core Stats ====================

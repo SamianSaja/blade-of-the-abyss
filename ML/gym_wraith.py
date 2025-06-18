@@ -39,7 +39,7 @@ class WraithEnv(gym.Env):
         self.MELEE_THRESHOLD = 8.0
         self.COMBO_TIMEOUT = 2.0
         self.last_action_time = 0
-        
+
         # Action mapping
         self.actions = ["summon", "tornado", "full_tornado", "retreat", "chase"]
         
@@ -165,7 +165,7 @@ class WraithEnv(gym.Env):
 
         # Update state
         self.state = self._get_next_state(action)
-        
+
         # Check if episode is done
         terminated = enemy_hp <= 0 or player_hp <= 0
         truncated = False  # No truncation in this environment

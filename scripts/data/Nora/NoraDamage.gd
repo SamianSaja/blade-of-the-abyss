@@ -21,7 +21,7 @@ func deal_damage_to_self(damage: int):
 
 func deal_damage_to_enemy(enemy, damage: int):
 	if enemy and enemy.has_method("take_damage"):
-		enemy.take_damage(damage)
+		enemy.take_damage(damage, get_parent())
 
 # Contoh fungsi serangan
 func perform_basic_attack(target):

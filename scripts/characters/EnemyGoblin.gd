@@ -19,6 +19,11 @@ var player: Node3D = null
 var support: Node3D = null
 var target: Node3D = null
 
+# Damage tracking
+var damage_sources = {}  # Dictionary to track damage from each source
+var damage_tracking_timeout = 5.0  # Time in seconds to remember damage sources
+var last_damage_time = 0.0  # Last time damage was taken
+
 func _ready():
 	detection_area.body_entered.connect(_on_body_entered)
 	detection_area.body_exited.connect(_on_body_exited)
@@ -27,6 +32,10 @@ func _ready():
 	add_to_group("goblin")
 
 func _process(delta):
+	# Update damage tracking timeout
+	if Time.get_ticks_msec() - last_damage_time > damage_tracking_timeout * 1000:
+		damage_sources.clear()
+	
 	camera = get_viewport().get_camera_3d()
 	if health_bar and camera:
 		var head_offset = Vector3(-1.5, 2.5, 0)
@@ -58,6 +67,21 @@ func _physics_process(delta):
 	move_and_slide()
 
 func update_target():
+	# First check damage sources
+	var highest_damage = 0
+	var highest_damage_source = null
+	
+	for source in damage_sources:
+		if damage_sources[source] > highest_damage:
+			highest_damage = damage_sources[source]
+			highest_damage_source = source
+	
+	# If we have a damage source, prioritize it
+	if highest_damage_source and is_instance_valid(highest_damage_source):
+		target = highest_damage_source
+		return
+	
+	# Otherwise use distance-based targeting
 	if is_instance_valid(player) and is_instance_valid(support):
 		var dist_player = global_transform.origin.distance_to(player.global_transform.origin)
 		var dist_support = global_transform.origin.distance_to(support.global_transform.origin)
@@ -100,8 +124,26 @@ func start_attack():
 func _on_animation_finished(anim_name: String):
 	is_attacking = false
 
-func take_damage(amount: int):
+func take_damage(amount: int, source: Node = null):
 	status.take_damage(amount)
+	last_damage_time = Time.get_ticks_msec()
+	
+	# Track damage source
+	if source:
+		if not damage_sources.has(source):
+			damage_sources[source] = 0
+		damage_sources[source] += amount
+		
+		print("=== Goblin Damage Tracking Debug ===")
+		print("Damage taken: %d from %s" % [amount, source.name if source else "unknown"])
+		print("Current damage sources:")
+		for src in damage_sources:
+			print("- %s: %d damage" % [src.name if src else "unknown", damage_sources[src]])
+		print("=========================")
+		
+		# Update target if this source is doing more damage
+		update_target()
+	
 	if status.is_dead():
 		die()
 
