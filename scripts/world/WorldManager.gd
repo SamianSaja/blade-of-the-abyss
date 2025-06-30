@@ -57,6 +57,10 @@ var camera_limits_by_world = {
 }
 
 var world_instance: Node3D
+var current_world_name: String = ""
+
+func get_current_world_name() -> String:
+	return current_world_name
 
 func load_world(world_name: String):
 	if world_instance:
@@ -70,6 +74,7 @@ func load_world(world_name: String):
 	var scene = load(world_path)
 	world_instance = scene.instantiate()
 	add_child(world_instance)
+	current_world_name = world_name
 	
 	# Load status bars
 	get_parent().pause_menu_manager.load_player_status_bar()
@@ -77,6 +82,32 @@ func load_world(world_name: String):
 	
 	# Spawn characters
 	get_parent().spawn_player(world_name)
+	get_parent().play_story_if_any(world_name)
+
+func load_world_with_save_data(world_name: String, save_data):
+	if world_instance:
+		world_instance.queue_free()
+
+	var world_path = worlds.get(world_name, "")
+	if world_path == "":
+		push_error("World '%s' not found in world registry." % world_name)
+		return
+
+	print("Loading world: ", world_name, " from path: ", world_path)
+	
+	var scene = load(world_path)
+	world_instance = scene.instantiate()
+	add_child(world_instance)
+	current_world_name = world_name
+	
+	print("World loaded successfully: ", current_world_name)
+	
+	# Load status bars
+	get_parent().pause_menu_manager.load_player_status_bar()
+	get_parent().pause_menu_manager.load_support_status_bar()
+	
+	# Spawn characters with save data
+	get_parent().spawn_player_with_save_data(world_name, save_data)
 	get_parent().play_story_if_any(world_name)
 
 func change_world(world_name: String, spawn_point_name: String = "PlayerSpawn"):
@@ -107,6 +138,7 @@ func change_world(world_name: String, spawn_point_name: String = "PlayerSpawn"):
 	var scene = load(world_path)
 	world_instance = scene.instantiate()
 	add_child(world_instance)
+	current_world_name = world_name
 
 	# Load status bars
 	get_parent().pause_menu_manager.load_player_status_bar()

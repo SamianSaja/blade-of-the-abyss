@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxdipfynld3vn"]
+
+[ext_resource type="Texture2D" uid="uid://btmpjl4m1503o" path="res://assets/ui/push-button.png" id="1_27ftd"]
+[ext_resource type="Texture2D" uid="uid://dwq06dha1f8qh" path="res://assets/ui/push-button-pressed.png" id="2_noq1h"]
+[ext_resource type="Script" uid="uid://bcdba4t3ptn68" path="res://scripts/ui/AttackController.gd" id="3_tv3jr"]
+
+[node name="PushButton" type="TouchScreenButton"]
+position = Vector2(1433, 588)
+scale = Vector2(0.757, 0.8)
+texture_normal = ExtResource("1_27ftd")
+texture_pressed = ExtResource("2_noq1h")
+script = ExtResource("3_tv3jr")

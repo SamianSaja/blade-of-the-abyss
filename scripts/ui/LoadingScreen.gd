@@ -3,6 +3,8 @@ extends Control
 @export var target_scene_path: String
 @onready var blank: ColorRect = $FadeRect
 
+var load_save_data: bool = false
+var save_system: Node
 
 func _ready():
 	set_process_mode(Node.PROCESS_MODE_ALWAYS)
@@ -20,6 +22,14 @@ func _ready():
 	await get_tree().create_timer(2.0).timeout
 
 	await fade_out()  # Fade keluar ke hitam
+
+	# Store the flag in a global variable or autoload
+	if load_save_data:
+		print("Setting global load save flag")
+		# Use a simple approach - store in a global variable
+		get_tree().set_meta("should_load_save", true)
+	else:
+		get_tree().set_meta("should_load_save", false)
 
 	var target_scene = load(target_scene_path)
 	if target_scene:

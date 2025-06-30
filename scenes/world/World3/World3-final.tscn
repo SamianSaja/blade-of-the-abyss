@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ca0jpfh8tm8f6"]
+[gd_scene load_steps=4 format=3 uid="uid://ca0jpfh8tm8f6"]
 
 [ext_resource type="PackedScene" uid="uid://bg2fu0bm2kqsj" path="res://scenes/world/WorldPortal.tscn" id="1_ad7mt"]
 [ext_resource type="Texture2D" uid="uid://d3fmb0u3fipqi" path="res://assets/environments/world-3/world-3-final.png" id="2_wii1r"]
+[ext_resource type="PackedScene" uid="uid://7dljfe7gwdfc" path="res://scenes/object/CrystalPoint.tscn" id="3_wii1r"]
 
 [node name="World3-final" type="Node3D"]
 
@@ -14,8 +15,11 @@ transform = Transform3D(0.569102, 0, 0, 0, 0.569102, 0, 0, 0, 0.569102, -21.5614
 target_world_name = "world_3_3"
 
 [node name="Background" type="Sprite3D" parent="."]
-transform = Transform3D(3.7437, -0.000862678, -0.00362877, 0.00363607, 0.0322326, 3.74356, -0.000831364, -3.74356, 0.0322334, 0, -0.000110745, -3.94112)
+transform = Transform3D(3.70238, -0.000853156, -0.00358872, 0.00359594, 0.0318768, 3.70224, -0.000822188, -3.70224, 0.0318776, 0, -0.000110745, -3.94112)
 texture = ExtResource("2_wii1r")
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.0345, 1, 41.0237)
+
+[node name="CrystalPoint" parent="." instance=ExtResource("3_wii1r")]
+transform = Transform3D(1.70648, 0, 0, 0, 1.70648, 0, 0, 0, 1.70648, 5.85114, 0, 0)

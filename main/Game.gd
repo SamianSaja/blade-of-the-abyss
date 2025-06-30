@@ -105,6 +105,10 @@ var world_manager: Node
 var dialog_manager: Node
 var inventory_manager: Node
 var equipment_manager: Node
+var save_system: Node
+
+# Save/Load flag
+var should_load_save: bool = false
 
 func _ready():
 	# Initialize managers
@@ -123,9 +127,25 @@ func _ready():
 
 	equipment_manager = load("res://scripts/ui/EquipmentManager.gd").new()
 	add_child(equipment_manager)
+	
+	save_system = load("res://scripts/data/SaveSystem.gd").new()
+	add_child(save_system)
 
-	# Load default world
-	world_manager.load_world("altar_room")
+	# Check if we should load save data from tree metadata
+	if get_tree().has_meta("should_load_save"):
+		should_load_save = get_tree().get_meta("should_load_save")
+		print("Read should_load_save from tree metadata: ", should_load_save)
+		# Clear the metadata after reading
+		get_tree().set_meta("should_load_save", false)
+
+	# Check if we should load save data
+	if should_load_save:
+		print("Loading game from save data...")
+		load_game_from_save()
+	else:
+		print("Starting new game...")
+		# Load default world
+		world_manager.load_world("world_1")
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -150,6 +170,38 @@ func spawn_player(world_name: String):
 	if player_instance.kyle_status.has_method("set_player_status") and pause_menu_manager.player_status_bar:
 		player_instance.kyle_status.set_player_status(pause_menu_manager.player_status_bar)
 	spawn_support(world_name)
+
+func spawn_player_with_save_data(world_name: String, save_data):
+	if player_instance:
+		player_instance.queue_free()
+
+	player_instance = player_scene.instantiate()
+
+	# Set position from save data
+	if save_data.has("game_progress") and save_data.game_progress.has("player_position"):
+		var pos = save_data.game_progress.player_position
+		player_instance.global_transform.origin = Vector3(pos.x, pos.y, pos.z)
+		print("Player spawned at saved position: ", player_instance.global_transform.origin)
+	else:
+		var spawn_point = world_manager.world_instance.get_node_or_null("PlayerSpawn")
+		if spawn_point:
+			player_instance.global_transform.origin = spawn_point.global_transform.origin
+		else:
+			player_instance.global_transform.origin = Vector3.ZERO
+		print("Player spawned at default position: ", player_instance.global_transform.origin)
+	
+	add_child(player_instance)
+
+	spawn_camera(world_name)
+	world_manager.spawn_world_enemy(world_name)
+
+	if player_instance.kyle_status.has_method("set_player_status") and pause_menu_manager.player_status_bar:
+		player_instance.kyle_status.set_player_status(pause_menu_manager.player_status_bar)
+	
+	spawn_support_with_save_data(world_name, save_data)
+	
+	# Apply save data to characters AFTER positions are set
+	save_system.apply_save_data(self, save_data)
 
 func spawn_player_with_custom_spawn(world_name: String, spawn_point_name: String):
 	if player_instance:
@@ -190,6 +242,33 @@ func spawn_support(world_name: String):
 	if support_instance.nora_status.has_method("set_support_status") and pause_menu_manager.support_status_bar:
 		support_instance.nora_status.set_support_status(pause_menu_manager.support_status_bar)
 
+func spawn_support_with_save_data(world_name: String, save_data):
+	if support_instance:
+		support_instance.queue_free()
+	
+	support_instance = support_scene.instantiate()
+	
+	# Set position from save data
+	if save_data.has("game_progress") and save_data.game_progress.has("support_position"):
+		var pos = save_data.game_progress.support_position
+		support_instance.global_transform.origin = Vector3(pos.x, pos.y, pos.z)
+		print("Support spawned at saved position: ", support_instance.global_transform.origin)
+	else:
+		var spawn_point = world_manager.world_instance.get_node_or_null("SupportSpawn")
+		if player_instance:
+			support_instance.global_transform.origin = player_instance.global_transform.origin + Vector3(0, 0, -5)
+		else:
+			if spawn_point:
+				support_instance.global_transform.origin = spawn_point.global_transform.origin
+			else:
+				support_instance.global_transform.origin = Vector3.ZERO
+		print("Support spawned at default position: ", support_instance.global_transform.origin)
+	
+	add_child(support_instance)
+
+	if support_instance.nora_status.has_method("set_support_status") and pause_menu_manager.support_status_bar:
+		support_instance.nora_status.set_support_status(pause_menu_manager.support_status_bar)
+
 func spawn_camera(world_name: String):
 	if camera_instance:
 		camera_instance.queue_free()
@@ -208,3 +287,27 @@ func spawn_camera(world_name: String):
 
 func play_story_if_any(world_name: String):
 	dialog_manager.play_story_if_any(world_name)
+
+# Save/Load functions
+func save_game_at_crystal():
+	return save_system.save_at_crystal_point(self)
+
+func load_game_from_save():
+	var save_data = save_system.load_game()
+	if save_data:
+		var world_name = save_data.game_progress.current_world
+		if world_name != "":
+			print("Loading world: ", world_name)
+			world_manager.load_world_with_save_data(world_name, save_data)
+			return true
+		else:
+			print("Error: No world name in save data")
+			return false
+	else:
+		print("Error: No save data found")
+		return false
+
+# Method to set should_load_save flag
+func set_should_load_save(value: bool):
+	should_load_save = value
+	print("should_load_save set to: ", value)

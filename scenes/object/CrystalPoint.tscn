@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://7dljfe7gwdfc"]
+
+[ext_resource type="PackedScene" uid="uid://jy0s3n5lme0b" path="res://assets/characters/object/crystal.glb" id="1_didca"]
+[ext_resource type="PackedScene" uid="uid://bmhg2b73a10ma" path="res://scenes/characters/Effects/RedRingEffect.tscn" id="2_hnjvt"]
+[ext_resource type="Script" uid="uid://coivn3ksqhjq3" path="res://scripts/object/CrystalPoint.gd" id="3_crystal"]
+[ext_resource type="FontFile" uid="uid://b83osqhc8cgu1" path="res://assets/fonts/NotoSerif-Italic-VariableFont_wdth,wght.ttf" id="4_v3n57"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_crystal"]
+radius = 3.0
+
+[node name="CrystalPoint" instance=ExtResource("1_didca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0275, 0, 0)
+script = ExtResource("3_crystal")
+
+[node name="RedRingEffect" parent="." index="0" instance=ExtResource("2_hnjvt")]
+transform = Transform3D(0.200235, 0, 0, 0, 0.200235, 0, 0, 0, 0.200235, -12.0009, 0, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 0.0211518, -0.999776, 0, 0.999776, 0.0211518, -11.8571, -2.53721, 0)
+light_energy = 16.0
+
+[node name="SaveArea" type="Area3D" parent="." index="3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SaveArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0009, 0, 0)
+shape = SubResource("SphereShape3D_crystal")
+
+[node name="SavePrompt" type="Label" parent="." index="4"]
+offset_left = 846.0
+offset_top = 59.0
+offset_right = 1108.0
+offset_bottom = 159.0
+theme_override_fonts/font = ExtResource("4_v3n57")
+theme_override_font_sizes/font_size = 29
+text = "Press to Save Game"
+horizontal_alignment = 1
+vertical_alignment = 1

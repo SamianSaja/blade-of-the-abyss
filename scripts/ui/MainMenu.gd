@@ -10,6 +10,8 @@ extends CanvasLayer
 	$VBoxContainer/ExitGameContainer
 ]
 
+var save_system: Node
+
 func _ready():
 	var empty_stylebox := StyleBoxEmpty.new()
 
@@ -33,8 +35,15 @@ func _ready():
 	menu_containers[0].get_child(1).grab_focus()
 
 	$VBoxContainer/NewGameContainer/NewGameButton.pressed.connect(_on_new_game_pressed)
+	$VBoxContainer/LoadGameContainer/LoadGameButton.pressed.connect(_on_load_game_pressed)
 	$VBoxContainer/ExitGameContainer/ExitGameButton.pressed.connect(func(): get_tree().quit())
-
+	
+	# Initialize save system
+	save_system = load("res://scripts/data/SaveSystem.gd").new()
+	add_child(save_system)
+	
+	# Update load game button state
+	update_load_game_button()
 
 func _on_button_focus_entered(container: Control):
 	# Tampilkan ikon pedang hanya pada container aktif
@@ -59,3 +68,33 @@ func _on_new_game_pressed():
 	loading.target_scene_path = "res://main/Main.tscn"
 	get_tree().root.add_child(loading)
 	get_tree().current_scene.queue_free()
+
+func _on_load_game_pressed():
+	if save_system.has_save_file():
+		print("Load game button pressed - save file exists")
+		var loading = load("res://scenes/ui/LoadingScreen.tscn").instantiate()
+		loading.target_scene_path = "res://main/Main.tscn"
+		loading.load_save_data = true  # Flag untuk load save data
+		get_tree().root.add_child(loading)
+		get_tree().current_scene.queue_free()
+	else:
+		print("Load game button pressed - no save file")
+		show_no_save_message()
+
+func update_load_game_button():
+	var load_button = $VBoxContainer/LoadGameContainer/LoadGameButton
+	if save_system.has_save_file():
+		load_button.text = "Load Game"
+		load_button.disabled = false
+	else:
+		load_button.text = "No Save Data"
+		load_button.disabled = true
+
+func show_no_save_message():
+	# Create a simple popup message
+	var popup = AcceptDialog.new()
+	popup.title = "No Save Data"
+	popup.dialog_text = "No save data found. Please start a new game first."
+	add_child(popup)
+	popup.popup_centered()
+	popup.confirmed.connect(func(): popup.queue_free())
