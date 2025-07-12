@@ -297,47 +297,71 @@ func handle_ai():
 				direction = to_target.normalized()
 				action_taken = 4
 	else:
-		print("AI (Fallback): DRL action not available, using conventional logic.")
+		print("AI (Fallback): DRL action not available, using random logic.")
 		
-		# Summon logic
+		# Create list of available actions
+		var available_actions = []
+		
+		# Check available skills
 		if wraith_status and wraith_damage_system:
+			# Summon check
 			if wraith_status.mp >= wraith_damage_system.SUMMON_COST \
 				and wraith_damage_system.active_summons.size() < wraith_damage_system.MAX_SUMMONS \
 				and not wraith_damage_system.summon_on_cooldown:
-				print("AI (Fallback): Summoning minion.")
-				start_summon()
-				action_taken = 0
-
-			# Full Tornado logic
-			elif not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
-				print("AI (Fallback): Using full tornado.")
-				start_full_tornado()
-				action_taken = 2
-
-			# Tornado logic
-			elif not wraith_damage_system.tornado_on_cooldown and distance <= 10:
-				print("AI (Fallback): Using tornado.")
-				start_tornado()
-				action_taken = 1
-
-		# Basic attack logic (only in fallback)
+				available_actions.append("summon")
+			
+			# Full Tornado check
+			if not wraith_damage_system.full_tornado_on_cooldown and distance < 5:
+				available_actions.append("full_tornado")
+			
+			# Tornado check
+			if not wraith_damage_system.tornado_on_cooldown and distance <= 10:
+				available_actions.append("tornado")
+		
+		# Movement actions
 		if distance <= attack_range and distance >= stop_distance:
-			print("AI (Fallback): Attacking target.")
-			direction = Vector3.ZERO
-			start_attack("wraith-magic-attack")
-			action_taken = 0
-
-		# Retreat logic
+			available_actions.append("attack")
 		elif distance < stop_distance:
-			print("AI (Fallback): Retreating from target.")
-			direction = -to_target.normalized()
-			action_taken = 3
-
-		# Chase logic
+			available_actions.append("retreat")
 		else:
-			print("AI (Fallback): Chasing target.")
-			direction = to_target.normalized()
-			action_taken = 4
+			available_actions.append("chase")
+		
+		# Randomly select from available actions
+		if available_actions.size() > 0:
+			var random_action = available_actions[randi() % available_actions.size()]
+			print("AI (Fallback): Randomly selected action: %s" % random_action)
+			
+			match random_action:
+				"summon":
+					print("AI (Fallback): Summoning minion.")
+					start_summon()
+					action_taken = 0
+				"full_tornado":
+					print("AI (Fallback): Using full tornado.")
+					start_full_tornado()
+					action_taken = 2
+				"tornado":
+					print("AI (Fallback): Using tornado.")
+					start_tornado()
+					action_taken = 1
+				"attack":
+					print("AI (Fallback): Attacking target.")
+					direction = Vector3.ZERO
+					start_attack("wraith-magic-attack")
+					action_taken = 0
+				"retreat":
+					print("AI (Fallback): Retreating from target.")
+					direction = -to_target.normalized()
+					action_taken = 3
+				"chase":
+					print("AI (Fallback): Chasing target.")
+					direction = to_target.normalized()
+					action_taken = 4
+		else:
+			# Fallback to idle if no actions available
+			print("AI (Fallback): No actions available, staying idle.")
+			direction = Vector3.ZERO
+			action_taken = 0
 
 	# Build next state after action for PPO training report
 	var next_state = build_state_dict()
