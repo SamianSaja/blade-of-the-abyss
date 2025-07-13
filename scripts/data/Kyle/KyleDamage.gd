@@ -46,3 +46,7 @@ func perform_skill_four():
 
 func perform_ultimate_skill(target):
 	deal_damage_to_enemy(target, ultimate_skill_damage)
+
+func perform_ultimate_attack(target):
+	# Ultimate skill doesn't consume mana as it's a buff that lasts 30 seconds
+	deal_damage_to_enemy(target, ultimate_skill_damage)

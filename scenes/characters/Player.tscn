@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://chfbt250gix6k"]
+[gd_scene load_steps=12 format=3 uid="uid://chfbt250gix6k"]
 
 [ext_resource type="Script" uid="uid://u1df4il7a0xy" path="res://scripts/characters/Player.gd" id="1_gin2a"]
 [ext_resource type="PackedScene" uid="uid://c8n83i75e85f0" path="res://scenes/characters/KyleModel.tscn" id="2_gin2a"]
 [ext_resource type="PackedScene" uid="uid://dgi4qapyp8jop" path="res://scenes/characters/Effects/PortalEffect.tscn" id="3_7n8ao"]
 [ext_resource type="PackedScene" uid="uid://dbxmfsqgxsd04" path="res://scenes/characters/Effects/BlueRingEffect.tscn" id="4_7wym0"]
 [ext_resource type="AudioStream" uid="uid://b5onld8rfwvt5" path="res://assets/sounds/effects/sword-basic-attack.mp3" id="5_gj1sn"]
+[ext_resource type="PackedScene" uid="uid://bmhg2b73a10ma" path="res://scenes/characters/Effects/RedRingEffect.tscn" id="5_red_ring"]
 [ext_resource type="AudioStream" uid="uid://b8m5rg7420vaf" path="res://assets/sounds/effects/sword-slash.mp3" id="6_rpfb3"]
 [ext_resource type="AudioStream" uid="uid://dmnxjku3vca6l" path="res://assets/sounds/effects/sword-strike.mp3" id="7_miirx"]
 [ext_resource type="AudioStream" uid="uid://dp4mmd2qp3aha" path="res://assets/sounds/effects/walk.wav" id="8_m6phi"]
@@ -28,6 +29,9 @@ transform = Transform3D(0.74824, 0, 0, 0, 0.74824, 0, 0, 0, 0.74824, 0, 0.046774
 
 [node name="BlueRingEffect" parent="KyleModel" instance=ExtResource("4_7wym0")]
 transform = Transform3D(0.456802, 0, 0, 0, 0.456802, 0, 0, 0, 0.456802, 0, 0, 0)
+
+[node name="RedRingEffect" parent="KyleModel" instance=ExtResource("5_red_ring")]
+transform = Transform3D(0.162777, 0, 0, 0, -0.00684764, -0.162633, 0, 0.162633, -0.00684764, 0, 1.08256, -0.537265)
 
 [node name="DetectionArea" type="Area3D" parent="."]
 transform = Transform3D(2.69219, 0, 0, 0, 2.69219, 0, 0, 0, 2.69219, 0, 0, 0)

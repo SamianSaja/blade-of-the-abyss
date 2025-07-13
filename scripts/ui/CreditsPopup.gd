@@ -22,3 +22,4 @@ func _on_close_button_pressed():
 	visible = false
 	# Return focus to the main menu
 	get_parent().get_node("VBoxContainer/CreditsContainer/CreditsButton").grab_focus() 
+ 

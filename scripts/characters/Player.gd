@@ -17,6 +17,8 @@ extends CharacterBody3D
 @onready var kyle_damage_system = preload("res://scripts/data/Kyle/KyleDamage.gd").new()
 @onready var sword_hit_box: Area3D = $KyleModel/Armature/Skeleton3D/Father_Sword/SwordHitBox
 @onready var detection_area: Area3D = $DetectionArea
+@onready var sword_attachment: BoneAttachment3D = $KyleModel/Armature/Skeleton3D/Father_Sword
+@onready var ultimate_purple_light: OmniLight3D = $KyleModel/UltimatePurpleLight
 
 
 var joystick: Joystick
@@ -43,9 +45,20 @@ var current_attack_anim := ""
 var current_effect_name := ""
 var effect_active := false
 var effect_data := {}  # name -> {model, anim_player, anim_name}
+var active_buff_effects := []  # List of active buff effects
 
 var current_target: Node3D = null
 var current_attack_type: String = "none"
+
+# Sword material for ultimate effect
+var original_sword_material: Material
+var ultimate_sword_material: Material
+
+# Ultimate skill variables
+var ultimate_active := false
+var ultimate_timer := 0.0
+var ultimate_duration := 30.0  # 30 detik
+var ultimate_heal_amount := 20  # HP yang ditambahkan per hit
 
 func _ready():
 	# status and damage
@@ -90,6 +103,7 @@ func _ready():
 	skill_two_button.connect("skill_two_pressed", Callable(self, "_on_skill_two_pressed"))
 	skill_three_button.connect("skill_three_pressed", Callable(self, "_on_skill_three_pressed"))
 	skill_four_button.connect("skill_four_pressed", Callable(self, "_on_skill_four_pressed"))
+	skill_ultimate_button.connect("skill_ultimate_pressed", Callable(self, "_on_skill_ultimate_pressed"))
 
 	# Setup model & animation
 	anim_player = $KyleModel/AnimationPlayer
@@ -115,6 +129,21 @@ func _ready():
 			"model": $KyleModel/PortalEffect,
 			"anim_player": $KyleModel/PortalEffect/AnimationPlayer,
 			"anim_name": "Take 001"
+		},
+		"speed_buff": {
+			"model": $KyleModel/GreenRingEffect,
+			"anim_player": $KyleModel/GreenRingEffect/AnimationPlayer,
+			"anim_name": "Take 01"
+		},
+		"defense_buff": {
+			"model": $KyleModel/YellowRingEffect,
+			"anim_player": $KyleModel/YellowRingEffect/AnimationPlayer,
+			"anim_name": "Take 01"
+		},
+		"ultimate_effect": {
+			"model": $KyleModel/RedRingEffect,
+			"anim_player": $KyleModel/RedRingEffect/AnimationPlayer,
+			"anim_name": "CircleAction"
 		}
 	}
 
@@ -123,12 +152,42 @@ func _ready():
 		var eff = effect_data[key]
 		if eff.model:
 			eff.model.visible = false
+	
+	# Setup sword materials for ultimate effect
+	# For now, we'll create a simple purple material for the ultimate effect
+	ultimate_sword_material = StandardMaterial3D.new()
+	if ultimate_sword_material:
+		ultimate_sword_material.albedo_color = Color(0.8, 0.2, 1.0, 1.0)  # Purple color
+		ultimate_sword_material.emission_enabled = true
+		ultimate_sword_material.emission = Color(0.8, 0.2, 1.0, 1.0)
+		ultimate_sword_material.emission_energy = 2.0
+		print("Ultimate sword material created successfully")
+	else:
+		print("Failed to create ultimate sword material")
 
 #func _process(delta):
 	#if current_attack_type == "skill-four":
 		#kyle_damage_system.perform_skill_four()
 
 func _physics_process(delta):
+	# Update buffs
+	kyle_status.update_buffs(delta)
+	
+	# Update ultimate skill timer
+	if ultimate_active:
+		ultimate_timer -= delta
+		if ultimate_timer <= 0:
+			deactivate_ultimate_skill()
+	
+	# Hide buff effects when buffs expire
+	if not kyle_status.is_speed_buffed() and "speed_buff" in active_buff_effects:
+		stop_effect("speed_buff")
+		active_buff_effects.erase("speed_buff")
+	
+	if not kyle_status.is_defense_buffed() and "defense_buff" in active_buff_effects:
+		stop_effect("defense_buff")
+		active_buff_effects.erase("defense_buff")
+	
 	handle_input()
 	move_player(delta)
 	play_animation()
@@ -205,6 +264,15 @@ func _on_defend_pressed():
 
 func _on_skill_one_pressed():
 	if not is_attacking:
+		# Check if player has enough TP
+		var required_tp = 20
+		if kyle_status.tp < required_tp:
+			print("Not enough TP for Skill 1! Need: ", required_tp, " TP")
+			return
+		
+		# Consume TP
+		kyle_status.consume_tp(required_tp)
+		
 		is_attacking = true
 		current_attack_type = "skill-one"
 		current_attack_anim = "kyle-slash-attack"
@@ -216,6 +284,15 @@ func _on_skill_one_pressed():
 
 func _on_skill_two_pressed():
 	if not is_attacking:
+		# Check if player has enough TP
+		var required_tp = 30
+		if kyle_status.tp < required_tp:
+			print("Not enough TP for Skill 2! Need: ", required_tp, " TP")
+			return
+		
+		# Consume TP
+		kyle_status.consume_tp(required_tp)
+		
 		is_attacking = true
 		current_attack_type = "skill-two"
 		current_attack_anim = "kyle-broken-slash"
@@ -226,21 +303,93 @@ func _on_skill_two_pressed():
 
 func _on_skill_three_pressed():
 	if not is_attacking:
+		# Check if player has enough MP
+		var required_mp = 40
+		if kyle_status.mp < required_mp:
+			print("Not enough MP for Skill 3! Need: ", required_mp, " MP")
+			return
+		
+		# Consume MP
+		kyle_status.consume_mana(required_mp)
+		
 		is_attacking = true
 		current_attack_type = "skill-three"
 		current_attack_anim = "shadow-dash"
 		anim_player.play(current_attack_anim)
 		play_effect("blue_ring")
+		
+		# Apply speed buff
+		kyle_status.apply_speed_buff()
+		
+		# Play speed buff sound
+		if has_node("SpeedBuffSound"):
+			$SpeedBuffSound.play()
+		
+		# Show speed buff effect after a short delay
+		await get_tree().create_timer(0.5).timeout
+		if "speed_buff" not in active_buff_effects:
+			play_effect("speed_buff")
+			active_buff_effects.append("speed_buff")
+		
 		velocity = Vector3.ZERO
 
 func _on_skill_four_pressed():
 	if not is_attacking:
+		# Check if player has enough MP
+		var required_mp = 50
+		if kyle_status.mp < required_mp:
+			print("Not enough MP for Skill 4! Need: ", required_mp, " MP")
+			return
+		
+		# Consume MP
+		kyle_status.consume_mana(required_mp)
+		
 		is_attacking = true
 		current_attack_type = "skill-four"
 		current_attack_anim = "kyle-searing"
 		anim_player.play(current_attack_anim)
 		play_effect("portal")
+		
+		# Apply defense buff
+		kyle_status.apply_defense_buff()
+		
+		# Play defense buff sound
+		if has_node("DefenseBuffSound"):
+			$DefenseBuffSound.play()
+		
+		# Show defense buff effect
+		await get_tree().create_timer(0.5).timeout
+		if "defense_buff" not in active_buff_effects:
+			play_effect("defense_buff")
+			active_buff_effects.append("defense_buff")
+		
 		velocity = Vector3.ZERO
+
+func _on_skill_ultimate_pressed():
+	if not ultimate_active:
+		# Check if player has enough mana (50% of max MP)
+		var required_mana = kyle_status.max_mp * 0.5
+		if kyle_status.mp < required_mana:
+			print("Not enough mana for Mode Abyss! Need: ", required_mana, " MP")
+			return
+		
+		# Consume 50% of max MP
+		kyle_status.consume_mana(required_mana)
+		
+		# Activate ultimate skill for 30 seconds
+		ultimate_active = true
+		ultimate_timer = ultimate_duration
+		
+		# Apply ultimate sword effect
+		apply_ultimate_sword_effect()
+		
+		# Activate purple light
+		activate_ultimate_light()
+		
+		# Play ultimate effect (Red ring behind Kyle's back)
+		play_effect("ultimate_effect")
+		
+		print("Mode Abyss activated for 30 seconds! Consumed ", required_mana, " MP")
 
 # ---- Efek visual dinamis ----
 func play_effect(effect_name: String):
@@ -252,24 +401,88 @@ func play_effect(effect_name: String):
 		if effect.model:
 			effect.model.visible = true
 		if effect.anim_player and effect.anim_name:
-			effect.anim_player.play(effect.anim_name)
+			# For ultimate effect, make it loop
+			if effect_name == "ultimate_effect":
+				effect.anim_player.play(effect.anim_name)
+				effect.anim_player.get_animation_library("").get_animation(effect.anim_name).loop_mode = Animation.LOOP_LINEAR
+			else:
+				effect.anim_player.play(effect.anim_name)
+
+func stop_effect(effect_name: String):
+	if effect_data.has(effect_name):
+		var effect = effect_data[effect_name]
+		if effect.anim_player:
+			effect.anim_player.stop()
+		if effect.model:
+			effect.model.visible = false
+
+func apply_ultimate_sword_effect():
+	if sword_attachment and ultimate_sword_material:
+		# Find the first MeshInstance3D child of the bone attachment
+		for child in sword_attachment.get_children():
+			if child is MeshInstance3D:
+				child.mesh.surface_set_material(0, ultimate_sword_material)
+				print("Ultimate sword effect applied!")
+				return
+		print("No mesh found in sword attachment for ultimate effect")
+
+func restore_sword_material():
+	if sword_attachment:
+		# Find the first MeshInstance3D child of the bone attachment
+		for child in sword_attachment.get_children():
+			if child is MeshInstance3D:
+				# Reset to default material (index 0)
+				child.mesh.surface_set_material(0, null)
+				print("Sword material restored!")
+				return
+		print("No mesh found in sword attachment to restore")
+
+func activate_ultimate_light():
+	if ultimate_purple_light:
+		ultimate_purple_light.light_energy = 8.0
+		print("Ultimate purple light activated!")
+
+func deactivate_ultimate_light():
+	if ultimate_purple_light:
+		ultimate_purple_light.light_energy = 0.0
+		print("Ultimate purple light deactivated!")
+
+func deactivate_ultimate_skill():
+	ultimate_active = false
+	ultimate_timer = 0.0
+	restore_sword_material()
+	deactivate_ultimate_light()
+	stop_effect("ultimate_effect")
+	print("Mode Abyss deactivated!")
 
 # ---- Callback selesai animasi ----
 func _on_animation_finished(anim_name: String):
 	if anim_name == current_attack_anim:
+		# Stop skill effects based on attack type
+		var attack_type = current_attack_type
+		
 		is_attacking = false
 		current_attack_type = "none"
 		current_attack_anim = ""
 		anim_player.speed_scale = 1.0
 
-		if effect_active and effect_data.has(current_effect_name):
-			var effect = effect_data[current_effect_name]
-			if effect.anim_player:
-				effect.anim_player.stop()
-			if effect.model:
-				effect.model.visible = false
-			effect_active = false
-			current_effect_name = ""
+		# Stop skill effects but keep buff effects and ultimate effect
+		if attack_type == "skill-three":
+			stop_effect("blue_ring")
+		elif attack_type == "skill-four":
+			stop_effect("portal")
+		# Note: Ultimate effect and buff effects are not stopped here
+		# Ultimate effect runs for 30 seconds, buff effects are managed separately
+		elif attack_type != "skill-ultimate":  # Don't stop ultimate effect
+			# For other skills, stop current effect only if it's not ultimate
+			if effect_active and effect_data.has(current_effect_name) and current_effect_name != "ultimate_effect":
+				var effect = effect_data[current_effect_name]
+				if effect.anim_player:
+					effect.anim_player.stop()
+				if effect.model:
+					effect.model.visible = false
+				effect_active = false
+				current_effect_name = ""
 
 func _on_body_entered(body: Node):
 	if body.is_in_group("wraith") or body.is_in_group("goblin"):
@@ -284,12 +497,38 @@ func take_damage(amount: int):
 		amount = amount * 0.2  # kurangi damage jika defend
 	kyle_status.take_damage(amount)
 
+# Buff status functions for UI
+func get_speed_buff_remaining() -> float:
+	return kyle_status.get_speed_buff_remaining()
+
+func get_defense_buff_remaining() -> float:
+	return kyle_status.get_defense_buff_remaining()
+
+func is_speed_buffed() -> bool:
+	return kyle_status.is_speed_buffed()
+
+func is_defense_buffed() -> bool:
+	return kyle_status.is_defense_buffed()
+
+# Ultimate status functions for UI
+func is_ultimate_active() -> bool:
+	return ultimate_active
+
+func get_ultimate_remaining() -> float:
+	return ultimate_timer
+
 func _basic_attack_hit_entered(body: Node):
 	if body.is_in_group("wraith") or body.is_in_group("goblin"):
 		match current_attack_type:
 			"basic-attack":
 				kyle_damage_system.perform_basic_attack(body)
+				# Check if ultimate is active for healing (Mode Abyss)
+				if ultimate_active:
+					kyle_status.heal(ultimate_heal_amount)
+					print("Mode Abyss healing applied! +", ultimate_heal_amount, " HP")
 			"skill-one":
 				kyle_damage_system.perform_skill_one(body)
+			"skill-ultimate":
+				kyle_damage_system.perform_ultimate_attack(body)
 				#kyle_status.consume_mana(30)
 				# print("No attack type matched or idle")
