@@ -145,7 +145,7 @@ func _ready():
 	else:
 		print("Starting new game...")
 		# Load default world
-		world_manager.load_world("altar_room")
+		world_manager.load_world("world_1")
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):

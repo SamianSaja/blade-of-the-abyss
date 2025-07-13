@@ -39,10 +39,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -350.0
-offset_right = 400.0
-offset_bottom = 350.0
+offset_left = -500.0
+offset_top = -450.0
+offset_right = 500.0
+offset_bottom = 450.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1")
@@ -67,14 +67,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 40
 text = "How to Play"
 horizontal_alignment = 1
 
 [node name="CloseButton" type="Button" parent="Panel/VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 32
 text = "X"
 flat = true
 
@@ -96,14 +96,14 @@ layout_mode = 2
 [node name="MovementLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/MovementSection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 26
 text = "Movement"
 horizontal_alignment = 1
 
 [node name="MovementText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/MovementSection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 18
 text = "Use the virtual joystick on the left side of the screen to move your character around the world. The joystick allows for 360-degree movement control."
 horizontal_alignment = 1
 autowrap_mode = 2

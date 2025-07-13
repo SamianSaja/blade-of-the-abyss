@@ -36,10 +36,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -400.0
+offset_top = -350.0
+offset_right = 400.0
+offset_bottom = 350.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
@@ -60,14 +60,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 40
 text = "Settings"
 horizontal_alignment = 1
 
 [node name="CloseButton" type="Button" parent="Panel/VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 32
 text = "X"
 flat = true
 
@@ -89,7 +89,7 @@ layout_mode = 2
 [node name="AudioLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 26
 text = "Audio Settings"
 
 [node name="MasterVolume" type="HBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
@@ -99,7 +99,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Master Volume:"
 
 [node name="MasterVolumeSlider" type="HSlider" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MasterVolume"]
@@ -111,7 +111,7 @@ value = 100.0
 [node name="MasterVolumeValue" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MasterVolume"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "100%"
 
 [node name="MusicVolume" type="HBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
@@ -121,7 +121,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Music Volume:"
 
 [node name="MusicVolumeSlider" type="HSlider" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MusicVolume"]
@@ -133,7 +133,7 @@ value = 80.0
 [node name="MusicVolumeValue" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MusicVolume"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "80%"
 
 [node name="SFXVolume" type="HBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
@@ -143,7 +143,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "SFX Volume:"
 
 [node name="SFXVolumeSlider" type="HSlider" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/SFXVolume"]
@@ -155,7 +155,7 @@ value = 90.0
 [node name="SFXVolumeValue" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/SFXVolume"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "90%"
 
 [node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
@@ -167,19 +167,19 @@ layout_mode = 2
 [node name="GraphicsLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GraphicsSection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 26
 text = "Graphics Settings"
 
 [node name="FullscreenToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GraphicsSection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Fullscreen Mode"
 
 [node name="VSyncToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GraphicsSection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "V-Sync"
 pressed = true
 
@@ -192,19 +192,19 @@ layout_mode = 2
 [node name="GameplayLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 26
 text = "Gameplay Settings"
 
 [node name="ShowTutorialToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Show Tutorial Hints"
 pressed = true
 
 [node name="AutoSaveToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Auto Save"
 pressed = true 
