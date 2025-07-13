@@ -1,0 +1,210 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqx8y2n3m4k5l"]
+
+[ext_resource type="Script" path="res://scripts/ui/SettingsPopup.gd" id="1_settings"]
+[ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.1, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="SettingsPopup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_settings")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = 250.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+theme_override_constants/separation = 20
+
+[node name="TitleContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "X"
+flat = true
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ContentContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="AudioSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AudioLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Audio Settings"
+
+[node name="MasterVolume" type="HBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+
+[node name="MasterVolumeLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MasterVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Master Volume:"
+
+[node name="MasterVolumeSlider" type="HSlider" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MasterVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+
+[node name="MasterVolumeValue" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MasterVolume"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "100%"
+
+[node name="MusicVolume" type="HBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+
+[node name="MusicVolumeLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Music Volume:"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 80.0
+
+[node name="MusicVolumeValue" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/MusicVolume"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "80%"
+
+[node name="SFXVolume" type="HBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+
+[node name="SFXVolumeLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "SFX Volume:"
+
+[node name="SFXVolumeSlider" type="HSlider" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 90.0
+
+[node name="SFXVolumeValue" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection/SFXVolume"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "90%"
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GraphicsSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GraphicsLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GraphicsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Graphics Settings"
+
+[node name="FullscreenToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GraphicsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Fullscreen Mode"
+
+[node name="VSyncToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GraphicsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "V-Sync"
+pressed = true
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameplaySection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameplayLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Gameplay Settings"
+
+[node name="ShowTutorialToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Show Tutorial Hints"
+pressed = true
+
+[node name="AutoSaveToggle" type="CheckBox" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Auto Save"
+pressed = true 

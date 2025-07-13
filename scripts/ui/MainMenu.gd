@@ -11,6 +11,9 @@ extends CanvasLayer
 ]
 
 var save_system: Node
+var settings_popup: Control
+var credits_popup: Control
+var htp_popup: Control
 
 func _ready():
 	var empty_stylebox := StyleBoxEmpty.new()
@@ -36,6 +39,9 @@ func _ready():
 
 	$VBoxContainer/NewGameContainer/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$VBoxContainer/LoadGameContainer/LoadGameButton.pressed.connect(_on_load_game_pressed)
+	$VBoxContainer/SettingsContainer/SettingsButton.pressed.connect(_on_settings_pressed)
+	$VBoxContainer/HTPContainer/HTPButton.pressed.connect(_on_htp_pressed)
+	$VBoxContainer/CreditsContainer/CreditsButton.pressed.connect(_on_credits_pressed)
 	$VBoxContainer/ExitGameContainer/ExitGameButton.pressed.connect(func(): get_tree().quit())
 	
 	# Initialize save system
@@ -44,6 +50,11 @@ func _ready():
 	
 	# Update load game button state
 	update_load_game_button()
+	
+	# Initialize popups
+	initialize_popups()
+	
+	# Audio buses are handled by GameSettings autoload
 
 func _on_button_focus_entered(container: Control):
 	# Tampilkan ikon pedang hanya pada container aktif
@@ -98,3 +109,23 @@ func show_no_save_message():
 	add_child(popup)
 	popup.popup_centered()
 	popup.confirmed.connect(func(): popup.queue_free())
+
+func initialize_popups():
+	# Load and instantiate popup scenes
+	settings_popup = load("res://scenes/ui/SettingsPopup.tscn").instantiate()
+	credits_popup = load("res://scenes/ui/CreditsPopup.tscn").instantiate()
+	htp_popup = load("res://scenes/ui/HowToPlayPopup.tscn").instantiate()
+	
+	# Add popups to the scene
+	add_child(settings_popup)
+	add_child(credits_popup)
+	add_child(htp_popup)
+
+func _on_settings_pressed():
+	settings_popup.show_popup()
+
+func _on_credits_pressed():
+	credits_popup.show_popup()
+
+func _on_htp_pressed():
+	htp_popup.show_popup()

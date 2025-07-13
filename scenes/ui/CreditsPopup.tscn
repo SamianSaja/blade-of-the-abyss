@@ -1,0 +1,255 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8yay3n4m5k6l"]
+
+[ext_resource type="Script" uid="uid://dgldfoihijja" path="res://scripts/ui/CreditsPopup.gd" id="1_credits"]
+[ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.1, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="CreditsPopup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_credits")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -300.0
+offset_right = 350.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "X"
+flat = true
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ContentContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+
+[node name="GameTitle" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "Blade of the Abyss 3D"
+horizontal_alignment = 1
+
+[node name="Version" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Version 1.0.0"
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DevelopmentSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DevelopmentLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/DevelopmentSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Development"
+horizontal_alignment = 1
+
+[node name="Developer" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/DevelopmentSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Game Developer: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="Programmer" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/DevelopmentSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Programming: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="Designer" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/DevelopmentSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Game Design: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ArtSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ArtLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ArtSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Art & Assets"
+horizontal_alignment = 1
+
+[node name="CharacterDesign" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ArtSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Character Design: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="EnvironmentDesign" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ArtSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Environment Design: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="UI_Design" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ArtSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "UI Design: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AudioSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AudioLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Audio"
+horizontal_alignment = 1
+
+[node name="Music" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Music: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="SoundEffects" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/AudioSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Sound Effects: [Muhammad Ainul Yaqin]"
+horizontal_alignment = 1
+
+[node name="HSeparator5" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechnologySection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TechnologyLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/TechnologySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Technology"
+horizontal_alignment = 1
+
+[node name="Engine" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/TechnologySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Game Engine: Godot 4"
+horizontal_alignment = 1
+
+[node name="Language" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/TechnologySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Programming Language: GDScript"
+horizontal_alignment = 1
+
+[node name="HSeparator6" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpecialThanks" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpecialThanksLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SpecialThanks"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Special Thanks"
+horizontal_alignment = 1
+
+[node name="ThanksText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SpecialThanks"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Thank you to all the players and supporters who made this game possible. Your feedback and enthusiasm drive us to create better experiences."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Copyright" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "© 2024 [Your Studio Name]. All rights reserved."
+horizontal_alignment = 1

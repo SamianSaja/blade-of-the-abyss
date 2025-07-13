@@ -1,0 +1,273 @@
+[gd_scene load_steps=4 format=3 uid="uid://fj5e2qv2ypgt"]
+
+[ext_resource type="Script" uid="uid://y3kc5ahxk1ud" path="res://scripts/ui/HowToPlayPopup.gd" id="1_htp"]
+[ext_resource type="FontFile" uid="uid://bmk6gno4kubfm" path="res://assets/fonts/NotoSerif-VariableFont_wdth,wght.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.1, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="HowToPlayPopup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_htp")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -350.0
+offset_right = 400.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "How to Play"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "X"
+flat = true
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ContentContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="MovementSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MovementLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/MovementSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Movement"
+horizontal_alignment = 1
+
+[node name="MovementText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/MovementSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Use the virtual joystick on the left side of the screen to move your character around the world. The joystick allows for 360-degree movement control."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CombatSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CombatLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/CombatSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Combat"
+horizontal_alignment = 1
+
+[node name="AttackText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/CombatSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Attack Button: Tap the attack button to perform basic attacks"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DefendText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/CombatSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Defend Button: Hold the defend button to block incoming attacks"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SkillsText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/CombatSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Skills: Use the skill buttons to perform special abilities and combos"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SkillsSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SkillsLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SkillsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Skills & Abilities"
+horizontal_alignment = 1
+
+[node name="SkillOneText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SkillsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Skill 1: Quick dash attack with increased damage"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SkillTwoText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SkillsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Skill 2: Area of effect attack that hits multiple enemies"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SkillThreeText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SkillsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Skill 3: Defensive skill that provides temporary invincibility"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SkillFourText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/SkillsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Skill 4: Ultimate ability with massive damage output"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameplaySection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameplayLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Gameplay Tips"
+horizontal_alignment = 1
+
+[node name="Tip1" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Watch your health bar and use healing items when needed"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Tip2" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Learn enemy attack patterns to time your blocks and dodges"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Tip3" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Use skills strategically - they have cooldown periods"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Tip4" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/GameplaySection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Explore the world to find hidden treasures and power-ups"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator5" type="HSeparator" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ControlsSection" type="VBoxContainer" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ControlsLabel" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ControlsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Additional Controls"
+horizontal_alignment = 1
+
+[node name="PauseText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ControlsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Pause Menu: Access settings, inventory, and save/load options"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="InventoryText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ControlsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Inventory: Manage your equipment and items"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SaveText" type="Label" parent="Panel/VBoxContainer/ContentContainer/VBoxContainer/ControlsSection"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "• Save/Load: Your progress is automatically saved at checkpoints"
+horizontal_alignment = 1
+autowrap_mode = 2
